@@ -17,7 +17,7 @@ public class DashboardController implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		// if a certain button is clicked do the actions inside the brackets
         if(e.getActionCommand().equals("add-rent")){
-            System.out.println("test");
+           model.showName();
         }
 	}
 
