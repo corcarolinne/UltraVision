@@ -2,7 +2,7 @@ package model;
 
 public class Movie extends Title {
 	
-	// properties (that are not for all titles)
+	// properties
 	protected String genre;
 	protected String director;
 	
