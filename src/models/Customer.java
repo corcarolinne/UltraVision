@@ -9,11 +9,11 @@ public class Customer {
 	private String email;
 	private String phoneNumber;
 	private String cardNumber;
-	private String membership;
+	private Memberships membership;
 	private int score;
 	
 	// constructor
-	public Customer(String firstName, String lastName, String address, String email, String phoneNumber, String cardNumber, String membership, int score) {
+	public Customer(String firstName, String lastName, String address, String email, String phoneNumber, String cardNumber, Memberships membership, int score) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.address = address;
