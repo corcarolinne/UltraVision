@@ -1,5 +1,9 @@
+package controllers;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import models.DashboardModel;
+import views.DashboardView;
 
 public class DashboardController implements ActionListener {
 	

@@ -1,8 +1,11 @@
+package views;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
+import controllers.DashboardController;
 
 public class DashboardView extends JFrame {
 

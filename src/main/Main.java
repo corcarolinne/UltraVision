@@ -1,3 +1,5 @@
+package main;
+import controllers.DashboardController;
 
 public class Main {
 
