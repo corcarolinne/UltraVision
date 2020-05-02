@@ -17,8 +17,10 @@ public class DashboardView extends JFrame {
 	private DashboardController controller;
 	private JTable availableTitlesTable;
 	private JTable rentedTitlesTable;
+	private JTable customersTable;
 	public String[][] availabletitlesData;
 	public String[][] rentedTitlesData;
+	public String[][] customersData;
     
 	
 	// constructor
@@ -28,8 +30,8 @@ public class DashboardView extends JFrame {
         this.componentsSetter();
     	this.tablesSetter();
     	this.validation();
-    	
 	}
+	
 	public void attributesSetter() {
 		// basic window properties
 		this.setVisible(true);
@@ -44,7 +46,7 @@ public class DashboardView extends JFrame {
     	// creating label
     	JLabel brandLabel = new JLabel("Ultra Vision"); 
     	panel.add(brandLabel);
-    	
+		
     	// adding a button
     	JButton addRentButton = new JButton("Add Rent");
     	addRentButton.addActionListener((ActionListener) controller);
@@ -59,13 +61,13 @@ public class DashboardView extends JFrame {
     	panel.add(availableTitlesLabel);
     	
 		// creating header
-   	 	String[] header = {"Title", "Type","Year Of Release", "Genre", "Format", "Price", "Director", "Band"};
+   	 	String[] titlesHeader = {"Title", "Type","Year Of Release", "Genre", "Format", "Price", "Director", "Band"};
    	
    	 	// calling method from model to show available titles
    	 	availabletitlesData = controller.titleModel.showAvailableTitles("","");
    	 
    	 	// creating table and adding it to the panel
-   	 	availableTitlesTable = new JTable(availabletitlesData, header);
+   	 	availableTitlesTable = new JTable(availabletitlesData, titlesHeader);
         panel.add(availableTitlesTable);
    
         // scroll
@@ -80,12 +82,30 @@ public class DashboardView extends JFrame {
     	rentedTitlesData = controller.titleModel.showRentedTitles("","");
     	 
 		 // creating table and adding it to the panel
-		 rentedTitlesTable = new JTable(rentedTitlesData, header);
+		 rentedTitlesTable = new JTable(rentedTitlesData, titlesHeader);
 		 panel.add(rentedTitlesTable);
     
 		 // scroll
 		 JScrollPane scroll2 = new JScrollPane(rentedTitlesTable);
 		 panel.add(scroll2);    
+		 
+		// creating label for table
+    	JLabel customersLabel = new JLabel("Customers"); 
+    	panel.add(customersLabel);
+    	
+    	// creating header
+   	 	String[] customersHeader = {"First Name", "Last Name","Address", "Email", "Phone", "Card Number", "Membership", "Loyalty Points"};
+   	 	
+    	// calling method from model to show available titles
+    	customersData = controller.customerModel.showCustomers("","");
+    	 
+		 // creating table and adding it to the panel
+		 customersTable = new JTable(customersData, customersHeader);
+		 panel.add(customersTable);
+    
+		 // scroll
+		 JScrollPane scroll3 = new JScrollPane(customersTable);
+		 panel.add(scroll3);    
 	}
 	
     // validation and repainting
