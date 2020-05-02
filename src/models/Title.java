@@ -59,5 +59,7 @@ public abstract class Title {
 		this.isAvailable = isAvailable;
 	}
 	
+	// method to display available titles
+	
 	
 }
