@@ -1,5 +1,7 @@
 package models;
 
+import main.DBConnection;
+
 public class Movie extends Title {
 	
 	// properties
@@ -7,8 +9,8 @@ public class Movie extends Title {
 	protected String director;
 	
 	// constructor
-	public Movie(String titleName, int yearOfRelease, String format, int price, boolean isAvailable, String genre, String director) {
-		super(titleName, yearOfRelease, format, price, isAvailable);	
+	public Movie(String titleName, int yearOfRelease, String format, int price, boolean isAvailable, String genre, String director, DBConnection dbConnection) {
+		super(titleName, yearOfRelease, format, price, isAvailable, dbConnection);	
 		this.genre = genre;
 		this.director = director;
 	}

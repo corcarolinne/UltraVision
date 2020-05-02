@@ -40,7 +40,7 @@ public class DashboardView extends JFrame {
     	 String[] header = {"Title", "Type","Year Of Release", "Genre", "Format", "Price", "Director", "Band"};
     	
     	// calling method from model to show available titles
-    	 titlesData = controller.model.showAvailableTitles("","");
+    	 titlesData = controller.titleModel.showAvailableTitles("","");
     	 
     	 // 
     	 availableTitlesTable = new JTable(titlesData, header);

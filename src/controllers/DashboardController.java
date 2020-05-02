@@ -3,12 +3,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import models.DashboardModel;
+import models.Title;
 import views.DashboardView;
 
 public class DashboardController implements ActionListener {
 	
 	// properties
-	public DashboardModel model;
+	public Title titleModel;
     DashboardView view;
     String selectedFilter;
     String searchInput;
@@ -16,7 +17,7 @@ public class DashboardController implements ActionListener {
 	
 	// constructor
     public DashboardController(){
-        model = new DashboardModel();
+        titleModel = new Title();
         view = new DashboardView(this);
     }
 
