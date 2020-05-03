@@ -3,6 +3,7 @@ package models;
 import java.sql.ResultSet;
 
 import main.DBConnection;
+import views.SearchResultsView;
 
 public class Title {
 	
@@ -160,8 +161,8 @@ public class Title {
                     	
                     	row++;
                     }
-
-        	}
+                    
+                }
 
         	}
 
