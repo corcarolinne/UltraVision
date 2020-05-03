@@ -2,11 +2,13 @@ package views;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 
 import controllers.DashboardController;
 
@@ -15,6 +17,8 @@ public class DashboardView extends JFrame {
 	// properties
 	private JPanel panel;
 	private DashboardController controller;
+	private JTextField searchTextField;
+	private JComboBox dropdown;
 	private JTable availableTitlesTable;
 	private JTable rentedTitlesTable;
 	private JTable customersTable;
@@ -52,6 +56,25 @@ public class DashboardView extends JFrame {
     	addRentButton.addActionListener((ActionListener) controller);
     	addRentButton.setActionCommand("add-rent");
     	panel.add(addRentButton);
+    	
+    	// search label and input
+        JLabel searchLabel = new JLabel("Search:");        
+        searchTextField = new JTextField(20);
+        panel.add(searchLabel);
+        panel.add(searchTextField);
+        
+        // filter drop down
+        String filterOptions[]={"","Titles","Customers"};        
+        this.dropdown = new JComboBox(filterOptions);
+        dropdown.addActionListener((ActionListener) controller);
+        dropdown.setActionCommand("filter");
+        panel.add(dropdown);
+        
+        // button for search
+        JButton search = new JButton("Search");
+        search.addActionListener((ActionListener) controller);
+        search.setActionCommand("search");
+        panel.add(search);  
 		
 	}
 	// method to create tables for view 
@@ -107,6 +130,15 @@ public class DashboardView extends JFrame {
 		 JScrollPane scroll3 = new JScrollPane(customersTable);
 		 panel.add(scroll3);    
 	}
+	
+	// getters for search 
+    public String getSearchInput() {
+         return this.searchTextField.getText();
+    }
+    
+    public String getDropdownItem() {
+        return this.dropdown.getSelectedItem().toString();
+    }
 	
     // validation and repainting
     private void validation(){

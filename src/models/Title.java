@@ -176,9 +176,8 @@ public class Title {
                     row++;
                 }
         	} else {
-        		// here lays the logic for when we have a search input
         	}
-
+        	
            // close statement and connection
            dbConnection.getStmt().close();
            dbConnection.getConnection().close();
