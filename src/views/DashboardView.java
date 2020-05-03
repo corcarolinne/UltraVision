@@ -70,12 +70,6 @@ public class DashboardView extends JFrame {
         dropdown.setActionCommand("filter");
         panel.add(dropdown);
         
-        // button for search
-        JButton search = new JButton("Search");
-        search.addActionListener((ActionListener) controller);
-        search.setActionCommand("search");
-        panel.add(search);  
-		
 	}
 	// method to create tables for view 
 	public void tablesSetter() {

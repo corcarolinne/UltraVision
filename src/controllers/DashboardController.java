@@ -39,13 +39,13 @@ public class DashboardController implements ActionListener {
                 this.searchInput = view.getSearchInput();
                 // call method to pick data for titles tables passing the search inputs and filter and saving this into a 2d array
                 searchResult= this.titleModel.showAvailableTitles(this.searchInput, this.selectedFilter);
-                searchResultsView = new SearchResultsView(this, searchResult);
+                searchResultsView = new SearchResultsView(this, searchResult, this.selectedFilter);
 	        } else if(view.getDropdownItem().equals("Customers")) {
         		// getting values from input
                 this.searchInput = view.getSearchInput();
                 // call method to pick data for titles tables passing the search inputs and filter and saving this into a 2d array
         		searchResult= this.customerModel.showCustomers(this.searchInput, this.selectedFilter);
-        		searchResultsView = new SearchResultsView(this, searchResult);
+        		searchResultsView = new SearchResultsView(this, searchResult, this.selectedFilter);
 	        }
         } 
 	}
