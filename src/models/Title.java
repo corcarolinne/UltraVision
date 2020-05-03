@@ -121,6 +121,48 @@ public class Title {
                 }
         	} else {
         		// here lays the logic for when we have a search input
+        		// if the filter selected is Title
+                if(selectedFilter == "Titles") {
+                
+                    // query the titles table looking for any title information that matches user input
+                    String checkSize = "SELECT * FROM ultravision.titles WHERE Title LIKE '%"+searchInput+"%' OR Type LIKE '%"+searchInput+"%' OR YearOfRelease LIKE '%"+searchInput+"%' OR Genre LIKE '%"+searchInput+"%' OR Format LIKE '%"+searchInput+"%' OR Price LIKE '%"+searchInput+"%' OR Director LIKE '%"+searchInput+"%' OR Band LIKE '%"+searchInput+"%';";
+                    String searchedData = "SELECT * FROM ultravision.titles WHERE Title LIKE '%"+searchInput+"%' OR Type LIKE '%"+searchInput+"%' OR YearOfRelease LIKE '%"+searchInput+"%' OR Genre LIKE '%"+searchInput+"%' OR Format LIKE '%"+searchInput+"%' OR Price LIKE '%"+searchInput+"%' OR Director LIKE '%"+searchInput+"%' OR Band LIKE '%"+searchInput+"%';";
+                 
+                    int numOfRows = 0;      
+                    // sending the query to the database
+                    ResultSet resultToCheckSize = dbConnection.getStmt().executeQuery(checkSize);
+                    
+                    // while we have rows, or while next() returns true
+                    while(resultToCheckSize.next()) {
+                        // add one to rows
+                        numOfRows++;
+                    }
+               
+                    // set artData number of rows and number of columns
+                   titlesData= new String[numOfRows][8];
+                    
+                   // sending the query to the database
+                   ResultSet searchTitles = dbConnection.getStmt().executeQuery(searchedData);
+                    
+                    int row = 0;
+                    // while there's a result 
+                    while(searchTitles.next()) {
+                        
+                        // set artData array to receive each value from each row, for each corresponding column
+                    	titlesData[row][0] = searchTitles.getString("Title");
+                    	titlesData[row][1] = searchTitles.getString("Type");
+                    	titlesData[row][2] = searchTitles.getString("YearOfRelease");
+                    	titlesData[row][3] = searchTitles.getString("Genre");
+                    	titlesData[row][4] = searchTitles.getString("Format");
+                    	titlesData[row][5] = searchTitles.getString("Price");
+                    	titlesData[row][6] = searchTitles.getString("Director");
+                    	titlesData[row][7] = searchTitles.getString("Band");
+                    	
+                    	row++;
+                    }
+
+        	}
+
         	}
 
            // close statement and connection
