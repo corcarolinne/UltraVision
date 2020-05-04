@@ -111,7 +111,7 @@ public class CreateTitleView extends JFrame{
         priceField = new JTextField(20);
     
         // drop down to select type
-        String typeOptions[]={"","Music","Live Concert Videos","Movies","Box Set"};        
+        String typeOptions[]={"","Music","Live Concert Videos","Movie","Box Set"};        
         this.typeDropdown = new JComboBox(typeOptions);
         typeDropdown.addActionListener((ActionListener) controller);
         typeDropdown.setActionCommand("select-type");

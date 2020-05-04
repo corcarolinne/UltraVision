@@ -23,6 +23,8 @@ public class DashboardController implements ActionListener {
 	String selectedMembership;
 	private int membershipID;
 	CreateTitleView createTitleView;
+	String selectedType;
+	String selectedFormat;
 	
 	// constructor
     public DashboardController(){
@@ -45,7 +47,7 @@ public class DashboardController implements ActionListener {
         if(e.getActionCommand().equals("add-customer")){
         	createCustomerView = new CreateCustomerView(this);
         } else if(e.getActionCommand().equals("select-membership")) {
-        	this.selectedFilter =  createCustomerView.getDropdownItem();
+        	this.selectedMembership =  createCustomerView.getDropdownItem();
         	// setting membership ID according to selected drop down
         	if(createCustomerView.getDropdownItem().equals("Music Lovers")) {
         		membershipID = 1;
@@ -75,6 +77,33 @@ public class DashboardController implements ActionListener {
 	        
          } else if(e.getActionCommand().equals("add-title")){
          	createTitleView = new CreateTitleView(this);
+         } else if(e.getActionCommand().equals("select-type")) {
+         	this.selectedType =  createTitleView.getTypeDropdownItem();
+         	if(createTitleView.getTypeDropdownItem().equals("Music")) {
+         		// insert band text field on create title view
+         		System.out.println("Test Music");
+         	} else if (createTitleView.getTypeDropdownItem().equals("Live Concert Videos")) {
+         		// insert band text field on create title view
+         		System.out.println("Test Live Concert");
+         	} else if (createTitleView.getTypeDropdownItem().equals("Movie")) {
+         		// insert genre, director text fields on create title view
+         		System.out.println("Test Movie");
+         	} else if (createTitleView.getTypeDropdownItem().equals("Box Set")) {
+         		// insert genre, director text fields on create title view
+         		System.out.println("Test Box Set");         	
+         	}
+         } else if(e.getActionCommand().equals("select-format")) {
+          	this.selectedFormat =  createTitleView.getFormatDropdownItem();
+          	if(createTitleView.getFormatDropdownItem().equals("CD")) {
+          		// Save it to a variable
+          		System.out.println("Test CD");
+          	} else if (createTitleView.getFormatDropdownItem().equals("DVD")) {
+          		// Save it to a variable
+          		System.out.println("Test DVD");
+          	} else if (createTitleView.getFormatDropdownItem().equals("Blu-Ray")) {
+          		//// Save it to a variable
+          		System.out.println("Blu-Ray");
+          	} 
          } else if(e.getActionCommand().equals("filter")) {
 	        // call method in view to get selected item in drop down
 	        this.selectedFilter =  view.getDropdownItem();
