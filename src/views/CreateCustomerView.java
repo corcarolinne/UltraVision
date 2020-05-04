@@ -10,7 +10,7 @@ import javax.swing.JTextField;
 
 import controllers.DashboardController;
 
-public class CreateView extends JFrame {
+public class CreateCustomerView extends JFrame {
 	
 	// properties
     private JTextField firstNameField;
@@ -23,7 +23,7 @@ public class CreateView extends JFrame {
     private DashboardController controller;
 
     // constructor
-    public CreateView(DashboardController controller) {
+    public CreateCustomerView(DashboardController controller) {
 
         this.controller= controller;
         // calling methods to make the window or the view
@@ -128,9 +128,9 @@ public class CreateView extends JFrame {
         membershipField = new JTextField(20);
         
         // button
-        JButton createButton = new JButton("Create");
+        JButton createButton = new JButton("Create Customer");
         createButton.addActionListener((ActionListener) controller);
-        createButton.setActionCommand("create");
+        createButton.setActionCommand("create-customer");
         
         // adding components to the panel
         panel.add(firstNameLabel);

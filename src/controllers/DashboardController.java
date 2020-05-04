@@ -4,7 +4,7 @@ import java.awt.event.ActionListener;
 
 import models.Customer;
 import models.Title;
-import views.CreateView;
+import views.CreateCustomerView;
 import views.DashboardView;
 import views.SearchResultsView;
 
@@ -18,7 +18,7 @@ public class DashboardController implements ActionListener {
     String searchInput;
     String[][] searchResult;
     SearchResultsView searchResultsView;
-	CreateView createView;
+	CreateCustomerView createCustomerView;
 	
 	// constructor
     public DashboardController(){
@@ -32,15 +32,15 @@ public class DashboardController implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		// if a certain button is clicked do the actions inside the brackets
         if(e.getActionCommand().equals("add-customer")){
-        	createView = new CreateView(this);
-        } else if(e.getActionCommand().equals("create")) {
-        	String firstName = createView.getFirstNameField();
-            String lastName = createView.getLastNameField();
-            String address = createView.getAddressField();
-            String email = createView.getEmailField();
-            String phone = createView.getPhoneField();
-            String cardNumber = createView.getCardNumberField();
-            String membership = createView.getMembershipField();
+        	createCustomerView = new CreateCustomerView(this);
+        } else if(e.getActionCommand().equals("create-customer")) {
+        	String firstName = createCustomerView.getFirstNameField();
+            String lastName = createCustomerView.getLastNameField();
+            String address = createCustomerView.getAddressField();
+            String email = createCustomerView.getEmailField();
+            String phone = createCustomerView.getPhoneField();
+            String cardNumber = createCustomerView.getCardNumberField();
+            String membership = createCustomerView.getMembershipField();
             // converting membership into integer
             int membershipAsInt = Integer.parseInt(membership);
             // create an instance of the customer class with the data collated
@@ -50,7 +50,7 @@ public class DashboardController implements ActionListener {
             // dispose current view and call a new one to refresh table
             view.dispose();
             view = new DashboardView(this);
-            createView.dispose();
+            createCustomerView.dispose();
         } else if(e.getActionCommand().equals("filter")) {
 	        // call method in view to get selected item in drop down
 	        this.selectedFilter =  view.getDropdownItem();
