@@ -37,7 +37,7 @@ public class CreateView extends JFrame {
     // method to set attributes
     private void attributesSetter(){
         this.setVisible(true);
-        this.setSize(325,400);
+        this.setSize(275,500);
         this.setTitle("Create");
     }
     

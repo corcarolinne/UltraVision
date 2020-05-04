@@ -4,6 +4,7 @@ import java.awt.event.ActionListener;
 
 import models.Customer;
 import models.Title;
+import views.CreateView;
 import views.DashboardView;
 import views.SearchResultsView;
 
@@ -17,6 +18,7 @@ public class DashboardController implements ActionListener {
     String searchInput;
     String[][] searchResult;
     SearchResultsView searchResultsView;
+	CreateView createView;
 	
 	// constructor
     public DashboardController(){
@@ -29,8 +31,9 @@ public class DashboardController implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// if a certain button is clicked do the actions inside the brackets
-        if(e.getActionCommand().equals("add-rent")){
-           //model.showAvailableTitles(searchInput, selectedFilter);
+        if(e.getActionCommand().equals("add-customer")){
+           //this.customerModel.showAvailableTitles(searchInput, selectedFilter);
+        	 createView = new CreateView(this);
         } else if(e.getActionCommand().equals("filter")) {
 	        // call method in view to get selected item in drop down
 	        this.selectedFilter =  view.getDropdownItem();

@@ -52,10 +52,10 @@ public class DashboardView extends JFrame {
     	panel.add(brandLabel);
 		
     	// adding a button
-    	JButton addRentButton = new JButton("Add Rent");
-    	addRentButton.addActionListener((ActionListener) controller);
-    	addRentButton.setActionCommand("add-rent");
-    	panel.add(addRentButton);
+    	JButton addCustomerButton = new JButton("Add Customer");
+    	addCustomerButton.addActionListener((ActionListener) controller);
+    	addCustomerButton.setActionCommand("add-customer");
+    	panel.add(addCustomerButton);
     	
     	// search label and input
         JLabel searchLabel = new JLabel("Search:");        
