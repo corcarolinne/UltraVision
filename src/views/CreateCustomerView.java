@@ -3,6 +3,7 @@ package views;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -19,8 +20,9 @@ public class CreateCustomerView extends JFrame {
     private JTextField emailField;
     private JTextField phoneField;
     private JTextField cardNumberField;
-    private JTextField membershipField;
+    private JComboBox membershipDropdown;
     private DashboardController controller;
+    
 
     // constructor
     public CreateCustomerView(DashboardController controller) {
@@ -65,10 +67,6 @@ public class CreateCustomerView extends JFrame {
 		return this.cardNumberField.getText();
 	}
 
-	public String getMembershipField() {
-		return this.membershipField.getText();
-	}
-
 	public DashboardController getController() {
 		return this.controller;
 	}
@@ -97,14 +95,15 @@ public class CreateCustomerView extends JFrame {
 		this.cardNumberField = cardNumberField;
 	}
 
-	public void setMembershipField(JTextField membershipField) {
-		this.membershipField = membershipField;
-	}
-
 	public void setController(DashboardController controller) {
 		this.controller = controller;
 	}
 
+	// getter for drop down
+	public String getDropdownItem() {
+		   return this.membershipDropdown.getSelectedItem().toString();
+	}
+	
 	// method to organise components of the window
     private void components(){
         JPanel panel = new JPanel();
@@ -125,12 +124,18 @@ public class CreateCustomerView extends JFrame {
         emailField = new JTextField(20);
         phoneField = new JTextField(20);
         cardNumberField = new JTextField(20);
-        membershipField = new JTextField(20);
+    
+        // drop down to select membership
+        String membershipOptions[]={"","Music Lovers","Video Lovers", "TV Lovers", "Premium"};        
+        this.membershipDropdown = new JComboBox(membershipOptions);
+        membershipDropdown.addActionListener((ActionListener) controller);
+        membershipDropdown.setActionCommand("select-membership");
+        //panel.add(membershipDropdown);
         
         // button
-        JButton createButton = new JButton("Create Customer");
-        createButton.addActionListener((ActionListener) controller);
-        createButton.setActionCommand("create-customer");
+        JButton createCustomerButton = new JButton("Create Customer");
+        createCustomerButton.addActionListener((ActionListener) controller);
+        createCustomerButton.setActionCommand("create-customer");
         
         // adding components to the panel
         panel.add(firstNameLabel);
@@ -146,8 +151,8 @@ public class CreateCustomerView extends JFrame {
         panel.add(cardNumberLabel);
         panel.add(cardNumberField);
         panel.add(membershipLabel);
-        panel.add(membershipField);
-        panel.add(createButton);
+        panel.add(membershipDropdown);
+        panel.add(createCustomerButton);
     }
     
     // validation and repainting

@@ -36,7 +36,7 @@ public class Customer {
 		// empty constructor
 	}
 
-	public Customer(String firstName, String lastName, String address, String email, String phoneNumber, String cardNumber, int membership) {
+	public Customer(String firstName, String lastName, String address, String email, String phoneNumber, String cardNumber, int membership, DashboardController controller) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.address = address;
@@ -44,6 +44,7 @@ public class Customer {
 		this.phoneNumber = phoneNumber;
 		this.cardNumber = cardNumber;
 		this.membership = membership;
+		this.controller = controller;
 	}
 
 	public String getFirstName() {
@@ -68,10 +69,6 @@ public class Customer {
 
 	public String getCardNumber() {
 		return this.cardNumber;
-	}
-
-	public int getMembership() {
-		return this.membership;
 	}
 
 	public int getScore() {
@@ -106,16 +103,17 @@ public class Customer {
 		this.cardNumber = cardNumber;
 	}
 
-	public void setMembership(int membership) {
-		this.membership = membership;
-	}
-
 	public void setScore(int score) {
 		this.score = score;
 	}
 
 	public void setController(DashboardController controller) {
 		this.controller = controller;
+	}
+	
+	// method to get membership from controller
+	public int getMembership() {
+		return this.controller.getMembershipID();
 	}
 
 	// method to query database for customer data
