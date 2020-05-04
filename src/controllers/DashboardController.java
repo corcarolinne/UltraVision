@@ -25,6 +25,7 @@ public class DashboardController implements ActionListener {
 	CreateTitleView createTitleView;
 	String selectedType;
 	String selectedFormat;
+	private String format;
 	
 	// constructor
     public DashboardController(){
@@ -33,14 +34,18 @@ public class DashboardController implements ActionListener {
         view = new DashboardView(this);
        
     }
+    
+    // some getters and setters
 	public int getMembershipID() {
 		return this.membershipID;
 	}
-
-	public void setSelectedMembership(String selectedMembership) {
-		this.selectedMembership = selectedMembership;
+//	public void setSelectedMembership(String selectedMembership) {
+//		this.selectedMembership = selectedMembership;
+//	}
+	public String getFormat() {
+		return this.format;
 	}
-
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// if a certain button is clicked do the actions inside the brackets
@@ -95,14 +100,11 @@ public class DashboardController implements ActionListener {
          } else if(e.getActionCommand().equals("select-format")) {
           	this.selectedFormat =  createTitleView.getFormatDropdownItem();
           	if(createTitleView.getFormatDropdownItem().equals("CD")) {
-          		// Save it to a variable
-          		System.out.println("Test CD");
+          		format = "CD";
           	} else if (createTitleView.getFormatDropdownItem().equals("DVD")) {
-          		// Save it to a variable
-          		System.out.println("Test DVD");
+          		format = "DVD";
           	} else if (createTitleView.getFormatDropdownItem().equals("Blu-Ray")) {
-          		//// Save it to a variable
-          		System.out.println("Blu-Ray");
+          		format = "Blu-Ray";
           	} 
          } else if(e.getActionCommand().equals("filter")) {
 	        // call method in view to get selected item in drop down
