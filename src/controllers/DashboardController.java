@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import models.Customer;
 import models.Title;
 import views.CreateCustomerView;
+import views.CreateTitleView;
 import views.DashboardView;
 import views.SearchResultsView;
 
@@ -21,6 +22,7 @@ public class DashboardController implements ActionListener {
 	CreateCustomerView createCustomerView;
 	String selectedMembership;
 	private int membershipID;
+	CreateTitleView createTitleView;
 	
 	// constructor
     public DashboardController(){
@@ -71,6 +73,8 @@ public class DashboardController implements ActionListener {
             view = new DashboardView(this);
             createCustomerView.dispose();
 	        
+         } else if(e.getActionCommand().equals("add-title")){
+         	createTitleView = new CreateTitleView(this);
          } else if(e.getActionCommand().equals("filter")) {
 	        // call method in view to get selected item in drop down
 	        this.selectedFilter =  view.getDropdownItem();

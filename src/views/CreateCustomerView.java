@@ -34,8 +34,6 @@ public class CreateCustomerView extends JFrame {
         validation();
     }
     
-    // getters and setters
-    
     // method to set attributes
     private void attributesSetter(){
         this.setVisible(true);
@@ -43,6 +41,7 @@ public class CreateCustomerView extends JFrame {
         this.setTitle("Create");
     }
     
+    // getters and setters
     public String getFirstNameField() {
 		return this.firstNameField.getText();
 	}
@@ -130,7 +129,6 @@ public class CreateCustomerView extends JFrame {
         this.membershipDropdown = new JComboBox(membershipOptions);
         membershipDropdown.addActionListener((ActionListener) controller);
         membershipDropdown.setActionCommand("select-membership");
-        //panel.add(membershipDropdown);
         
         // button
         JButton createCustomerButton = new JButton("Create Customer");
