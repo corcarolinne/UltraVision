@@ -1,6 +1,7 @@
 package models;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import controllers.DashboardController;
 import main.DBConnection;
@@ -14,12 +15,12 @@ public class Customer {
 	private String email;
 	private String phoneNumber;
 	private String cardNumber;
-	private Memberships membership;
+	private int membership;
 	private int score;
 	private DashboardController controller;
 	
 	// constructor
-	public Customer(String firstName, String lastName, String address, String email, String phoneNumber, String cardNumber, Memberships membership, int score, DashboardController controller) {
+	public Customer(String firstName, String lastName, String address, String email, String phoneNumber, String cardNumber, int membership, int score, DashboardController controller) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.address = address;
@@ -33,6 +34,88 @@ public class Customer {
 
 	public Customer() {
 		// empty constructor
+	}
+
+	public Customer(String firstName, String lastName, String address, String email, String phoneNumber, String cardNumber, int membership) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.address = address;
+		this.email = email;
+		this.phoneNumber = phoneNumber;
+		this.cardNumber = cardNumber;
+		this.membership = membership;
+	}
+
+	public String getFirstName() {
+		return this.firstName;
+	}
+
+	public String getLastName() {
+		return this.lastName;
+	}
+
+	public String getAddress() {
+		return this.address;
+	}
+
+	public String getEmail() {
+		return this.email;
+	}
+
+	public String getPhoneNumber() {
+		return this.phoneNumber;
+	}
+
+	public String getCardNumber() {
+		return this.cardNumber;
+	}
+
+	public int getMembership() {
+		return this.membership;
+	}
+
+	public int getScore() {
+		return this.score;
+	}
+
+	public DashboardController getController() {
+		return this.controller;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public void setCardNumber(String cardNumber) {
+		this.cardNumber = cardNumber;
+	}
+
+	public void setMembership(int membership) {
+		this.membership = membership;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
+	}
+
+	public void setController(DashboardController controller) {
+		this.controller = controller;
 	}
 
 	// method to query database for customer data
@@ -108,13 +191,6 @@ public class Customer {
                    // sending the query to the database
                    ResultSet searchCustomers = dbConnection.getStmt().executeQuery(searchedData);
                    
-                   
-                   // while we have rows, or while next() returns true
-                   //while(resultToCheckSize.next()) {
-                       // add one to rows
-                       
-                   //}
-                   
                    // set artData number of rows and number of columns
                    customersData= new String[numOfRows][8];
                    
@@ -133,11 +209,8 @@ public class Customer {
                     	customersData[row][7] = searchCustomers.getString("Score");
                     	
                     	row++;
-                    }
-                    
+                    }   
                 }
-
-
         	}
            // close statement and connection
            dbConnection.getStmt().close();
@@ -147,6 +220,39 @@ public class Customer {
        }
        return customersData;
    }
+	
+	// method to create a customer, receives a customer object
+    public void createCustomer(Customer newCustomer){
+        try{
+        	DBConnection dbConnection = new DBConnection();
+            
+            // building the query
+            String query = "INSERT INTO ultravision.customers (FirstName, LastName, Address, Email, Phone, CardNumber, MembershipID) VALUES ('"+newCustomer.getFirstName()+"','"+newCustomer.getLastName()+"','"+newCustomer.getAddress()+"','"+newCustomer.getEmail()+"','"+newCustomer.getPhoneNumber()+"', '"+newCustomer.getCardNumber()+"', '"+newCustomer.getMembership()+"');";
+            
+            // execute query
+	        dbConnection.getStmt().execute(query);
+
+            // closing statement and connections
+            dbConnection.getStmt().close();
+            dbConnection.getConnection().close();
+            
+        } catch( SQLException se ){
+            System.out.println( "SQL Exception:" ) ;
+
+            // Loop through the SQL Exceptions
+            while( se != null ){
+                System.out.println( "State  : " + se.getSQLState()  ) ;
+                System.out.println( "Message: " + se.getMessage()   ) ;
+                System.out.println( "Error  : " + se.getErrorCode() ) ;
+
+                se = se.getNextException() ;
+            }
+        }
+        catch( Exception e ){
+                System.out.println( e ) ;
+        }
+    }
+	
 		
 }
 

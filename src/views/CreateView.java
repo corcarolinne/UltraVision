@@ -41,32 +41,32 @@ public class CreateView extends JFrame {
         this.setTitle("Create");
     }
     
-    public JTextField getFirstNameField() {
-		return this.firstNameField;
+    public String getFirstNameField() {
+		return this.firstNameField.getText();
 	}
 
-	public JTextField getLastNameField() {
-		return this.lastNameField;
+	public String getLastNameField() {
+		return this.lastNameField.getText();
 	}
 
-	public JTextField getAddressField() {
-		return this.addressField;
+	public String getAddressField() {
+		return this.addressField.getText();
 	}
 
-	public JTextField getEmailField() {
-		return this.emailField;
+	public String getEmailField() {
+		return this.emailField.getText();
 	}
 
-	public JTextField getPhoneField() {
-		return this.phoneField;
+	public String getPhoneField() {
+		return this.phoneField.getText();
 	}
 
-	public JTextField getCardNumberField() {
-		return this.cardNumberField;
+	public String getCardNumberField() {
+		return this.cardNumberField.getText();
 	}
 
-	public JTextField getMembershipField() {
-		return this.membershipField;
+	public String getMembershipField() {
+		return this.membershipField.getText();
 	}
 
 	public DashboardController getController() {
