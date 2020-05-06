@@ -18,6 +18,8 @@ public class CreateTitleView extends JFrame{
     private JTextField yearOfReleaseField;
     private JComboBox formatDropdown;
     private JTextField priceField;
+    private JTextField bandField;
+    
     private DashboardController controller;
     
     // constructor
@@ -38,28 +40,28 @@ public class CreateTitleView extends JFrame{
     }
 
     // getters and setters
-	public JTextField getTitleField() {
-		return titleField;
+	public String getTitleField() {
+		return titleField.getText();
 	}
 
-	public JComboBox getTypeDropdown() {
-		return typeDropdown;
+	public String getYearOfReleaseField() {
+		return yearOfReleaseField.getText();
 	}
 
-	public JTextField getYearOfReleaseField() {
-		return yearOfReleaseField;
-	}
-
-	public JComboBox getFormatDropdown() {
-		return formatDropdown;
-	}
-
-	public JTextField getPriceField() {
-		return priceField;
+	public String getPriceField() {
+		return priceField.getText();
 	}
 
 	public DashboardController getController() {
 		return controller;
+	}
+
+	public String getBandField() {
+		return bandField.getText();
+	}
+
+	public void setBandField(JTextField bandField) {
+		this.bandField = bandField;
 	}
 
 	public void setTitleField(JTextField titleField) {
@@ -94,21 +96,31 @@ public class CreateTitleView extends JFrame{
 		return this.formatDropdown.getSelectedItem().toString();
 	}
 	
+	// getters for text fields of band, genre and director
+	public JTextField getBandTextField() {
+		return bandField;
+	}
+	
 	// method to organise components of the window
     private void components(){
         JPanel panel = new JPanel();
         this.add(panel);
         
         // creating text fields and labels
-        JLabel titleLabel, typeLabel, yearOfReleaseLabel, formatLabel, priceLabel; 
+        JLabel titleLabel, typeLabel, yearOfReleaseLabel, formatLabel, priceLabel, bandLabel; 
         titleLabel = new JLabel("Title");
         typeLabel = new JLabel("Type");
         yearOfReleaseLabel = new JLabel("Year Of Release");  
         formatLabel = new JLabel("Format");
         priceLabel = new JLabel("Price");
+        bandLabel = new JLabel("Band");
         titleField = new JTextField(20);
         yearOfReleaseField = new JTextField(20);
         priceField = new JTextField(20);
+        bandField = new JTextField(20);
+        
+        // set some fields unable to edit
+        bandField.setEnabled(false);
     
         // drop down to select type
         String typeOptions[]={"","Music","Live Concert Videos","Movie","Box Set"};        
@@ -138,6 +150,8 @@ public class CreateTitleView extends JFrame{
         panel.add(formatDropdown);
         panel.add(priceLabel);
         panel.add(priceField);
+        panel.add(bandLabel);
+        panel.add(bandField);
         panel.add(createCustomerButton);
     }
     

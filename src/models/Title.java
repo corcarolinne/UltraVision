@@ -1,7 +1,9 @@
 package models;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
+import controllers.DashboardController;
 import main.DBConnection;
 import views.SearchResultsView;
 
@@ -9,20 +11,26 @@ public class Title {
 	
 	// properties
 	protected String titleName;
-	protected int yearOfRelease;
+	private String type;
+	protected String yearOfRelease;
 	protected String format;
-	protected int price;
+	protected double price;
+	protected String band;
 	protected boolean isAvailable;
-	protected DBConnection dbConnection;
+	//protected DBConnection dbConnection;
+	private DashboardController controller;
 	
 	// constructors
-	public Title(String titleName, int yearOfRelease, String format, int price, boolean isAvailable, DBConnection dbConnection) {
+	public Title(String titleName, String type, String yearOfRelease, String format, double price, boolean isAvailable, String band, DashboardController controller) {
 		this.titleName = titleName;
+		this.type = type;
 		this.yearOfRelease = yearOfRelease;
 		this.format = format;
 		this.price = price;
 		this.isAvailable = isAvailable;
-		this.dbConnection = dbConnection;
+		this.band = band;
+		//this.dbConnection = dbConnection;
+		this.controller = controller;
 	}
 	public Title() {
 		// empty constructor
@@ -33,15 +41,33 @@ public class Title {
 		return this.titleName;
 	}
 
-	public int getYearOfRelease() {
+	public String getBand() {
+		return this.band;
+	}
+	public DashboardController getController() {
+		return this.controller;
+	}
+	public void setBand(String band) {
+		this.band = band;
+	}
+	public void setController(DashboardController controller) {
+		this.controller = controller;
+	}
+	public String getType() {
+		return this.controller.getType();
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
+	public String getYearOfRelease() {
 		return this.yearOfRelease;
 	}
 
 	public String getFormat() {
-		return this.format;
+		return this.controller.getFormat();
 	}
 
-	public int getPrice() {
+	public double getPrice() {
 		return this.price;
 	}
 
@@ -49,15 +75,15 @@ public class Title {
 		return this.isAvailable;
 	}
 
-	public DBConnection getDbConnection() {
-		return dbConnection;
-	}
+//	public DBConnection getDbConnection() {
+//		return dbConnection;
+//	}
 
 	public void setTitleName(String titleName) {
 		this.titleName = titleName;
 	}
 
-	public void setYearOfRelease(int yearOfRelease) {
+	public void setYearOfRelease(String yearOfRelease) {
 		this.yearOfRelease = yearOfRelease;
 	}
 
@@ -65,7 +91,7 @@ public class Title {
 		this.format = format;
 	}
 
-	public void setPrice(int price) {
+	public void setPrice(double price) {
 		this.price = price;
 	}
 
@@ -73,9 +99,9 @@ public class Title {
 		this.isAvailable = isAvailable;
 	}
 	
-	public void setDbConnection(DBConnection dbConnection) {
-		this.dbConnection = dbConnection;
-	}
+//	public void setDbConnection(DBConnection dbConnection) {
+//		this.dbConnection = dbConnection;
+//	}
 	
 	// method to display available titles
     public String[][] showAvailableTitles (String searchInput, String selectedFilter) {
@@ -84,7 +110,7 @@ public class Title {
         String[][] titlesData = null;
         
        try {
-        	dbConnection = new DBConnection();
+        	DBConnection dbConnection = new DBConnection();
         	if(searchInput.isEmpty()) {
                 // building the queries
                 String numOfRowsQuery = "SELECT * FROM ultravision.titles";
@@ -182,7 +208,7 @@ public class Title {
         String[][] titlesData = null;
         
        try {
-        	dbConnection = new DBConnection();
+        	DBConnection dbConnection = new DBConnection();
         	if(searchInput.isEmpty()) {
                 // building the queries
                 String numOfRowsQuery = "SELECT * FROM ultravision.titles";
@@ -229,4 +255,36 @@ public class Title {
        }
        return titlesData;
    }
+    
+    // method to create a title, receives a title object
+    public void createTitle(Title newTitle){
+        try{
+        	DBConnection dbConnection = new DBConnection();
+            
+            // building the query
+            String query = "INSERT INTO ultravision.titles (Title, Type, YearOfRelease, Format, Price, isAvailable, Band) VALUES ('"+newTitle.getTitleName()+"','"+newTitle.getType()+"','"+newTitle.getYearOfRelease()+"','"+newTitle.getFormat()+"','"+newTitle.getPrice()+"', '1', '"+newTitle.getBand()+"');";
+            
+            // execute query
+	        dbConnection.getStmt().execute(query);
+
+            // closing statement and connections
+            dbConnection.getStmt().close();
+            dbConnection.getConnection().close();
+            
+        } catch( SQLException se ){
+            System.out.println( "SQL Exception:" ) ;
+
+            // Loop through the SQL Exceptions
+            while( se != null ){
+                System.out.println( "State  : " + se.getSQLState()  ) ;
+                System.out.println( "Message: " + se.getMessage()   ) ;
+                System.out.println( "Error  : " + se.getErrorCode() ) ;
+
+                se = se.getNextException() ;
+            }
+        }
+        catch( Exception e ){
+                System.out.println( e ) ;
+        }
+    }
 }
