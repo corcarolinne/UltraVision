@@ -92,7 +92,7 @@ public class DashboardController implements ActionListener {
          	if(createTitleView.getTypeDropdownItem().equals("Music")) {
          		// insert band text field on create title view
          		this.type = "Music";
-         		createTitleView.getBandTextField().setEnabled(true);
+         		createTitleView.getArtistFieldComponent().setEnabled(true);
          	} else if (createTitleView.getTypeDropdownItem().equals("Live Concert Videos")) {
          		// insert band text field on create title view
          		System.out.println("Test Live Concert");
@@ -120,7 +120,7 @@ public class DashboardController implements ActionListener {
             String price = createTitleView.getPriceField();
             double priceAsDouble = Double.parseDouble(price);
             boolean isAvailable = true;
-            String band = createTitleView.getBandField();
+            String band = createTitleView.getArtistField();
             // create an instance of the customer class with the data collated
             Title newTitle = new Title(titleName, type, yearOfRelease, format, priceAsDouble, isAvailable, band, this);
             // using model to call method
@@ -132,7 +132,7 @@ public class DashboardController implements ActionListener {
 	        
          }else if(e.getActionCommand().equals("filter")) {
 	        // call method in view to get selected item in drop down
-	        this.selectedFilter =  view.getDropdownItem();
+	        this.selectedFilter = view.getDropdownItem();
 	        if(view.getDropdownItem().equals("Titles")) {
         		// getting values from input
                 this.searchInput = view.getSearchInput();

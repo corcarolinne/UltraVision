@@ -84,7 +84,7 @@ public class DashboardView extends JFrame {
     	panel.add(availableTitlesLabel);
     	
 		// creating header
-   	 	String[] titlesHeader = {"Title", "Type","Year Of Release", "Genre", "Format", "Price", "Director", "Band"};
+   	 	String[] titlesHeader = {"Title", "Type","Year Of Release", "Genre", "Format", "Price", "Director", "Artist"};
    	
    	 	// calling method from model to show available titles
    	 	availabletitlesData = controller.titleModel.showAvailableTitles("","");

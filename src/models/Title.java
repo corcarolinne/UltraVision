@@ -15,20 +15,20 @@ public class Title {
 	protected String yearOfRelease;
 	protected String format;
 	protected double price;
-	protected String band;
+	protected String artist;
 	protected boolean isAvailable;
 	//protected DBConnection dbConnection;
 	private DashboardController controller;
 	
 	// constructors
-	public Title(String titleName, String type, String yearOfRelease, String format, double price, boolean isAvailable, String band, DashboardController controller) {
+	public Title(String titleName, String type, String yearOfRelease, String format, double price, boolean isAvailable, String artist, DashboardController controller) {
 		this.titleName = titleName;
 		this.type = type;
 		this.yearOfRelease = yearOfRelease;
 		this.format = format;
 		this.price = price;
 		this.isAvailable = isAvailable;
-		this.band = band;
+		this.artist = artist;
 		//this.dbConnection = dbConnection;
 		this.controller = controller;
 	}
@@ -41,14 +41,14 @@ public class Title {
 		return this.titleName;
 	}
 
-	public String getBand() {
-		return this.band;
+	public String getArtist() {
+		return this.artist;
 	}
 	public DashboardController getController() {
 		return this.controller;
 	}
-	public void setBand(String band) {
-		this.band = band;
+	public void setArtist(String artist) {
+		this.artist = artist;
 	}
 	public void setController(DashboardController controller) {
 		this.controller = controller;
@@ -114,7 +114,7 @@ public class Title {
         	if(searchInput.isEmpty()) {
                 // building the queries
                 String numOfRowsQuery = "SELECT * FROM ultravision.titles";
-                String availableTitlesQuery = "SELECT titles.Title, titles.Type, titles.YearOfRelease, titles.Genre, titles.Format, titles.Price, titles.Director, titles.Band FROM ultravision.titles WHERE IsAvailable=1;";
+                String availableTitlesQuery = "SELECT titles.Title, titles.Type, titles.YearOfRelease, titles.Genre, titles.Format, titles.Price, titles.Director, titles.Artist FROM ultravision.titles WHERE IsAvailable=1;";
                 
                 // sending the query to the database       
                 ResultSet resultNumOfRows = dbConnection.getStmt().executeQuery(numOfRowsQuery) ;
@@ -141,7 +141,7 @@ public class Title {
                 	titlesData[row][4] = result.getString("Format");
                 	titlesData[row][5] = result.getString("Price");
                 	titlesData[row][6] = result.getString("Director");
-                	titlesData[row][7] = result.getString("Band");
+                	titlesData[row][7] = result.getString("Artist");
 
                    // increase row to populate the next row
                     row++;
@@ -152,8 +152,8 @@ public class Title {
                 if(selectedFilter == "Titles") {
                 
                     // query the titles table looking for any title information that matches user input
-                    String checkSize = "SELECT * FROM ultravision.titles WHERE Title LIKE '%"+searchInput+"%' OR Type LIKE '%"+searchInput+"%' OR YearOfRelease LIKE '%"+searchInput+"%' OR Genre LIKE '%"+searchInput+"%' OR Format LIKE '%"+searchInput+"%' OR Price LIKE '%"+searchInput+"%' OR Director LIKE '%"+searchInput+"%' OR Band LIKE '%"+searchInput+"%';";
-                    String searchedData = "SELECT * FROM ultravision.titles WHERE Title LIKE '%"+searchInput+"%' OR Type LIKE '%"+searchInput+"%' OR YearOfRelease LIKE '%"+searchInput+"%' OR Genre LIKE '%"+searchInput+"%' OR Format LIKE '%"+searchInput+"%' OR Price LIKE '%"+searchInput+"%' OR Director LIKE '%"+searchInput+"%' OR Band LIKE '%"+searchInput+"%';";
+                    String checkSize = "SELECT * FROM ultravision.titles WHERE Title LIKE '%"+searchInput+"%' OR Type LIKE '%"+searchInput+"%' OR YearOfRelease LIKE '%"+searchInput+"%' OR Genre LIKE '%"+searchInput+"%' OR Format LIKE '%"+searchInput+"%' OR Price LIKE '%"+searchInput+"%' OR Director LIKE '%"+searchInput+"%' OR Artist LIKE '%"+searchInput+"%';";
+                    String searchedData = "SELECT * FROM ultravision.titles WHERE Title LIKE '%"+searchInput+"%' OR Type LIKE '%"+searchInput+"%' OR YearOfRelease LIKE '%"+searchInput+"%' OR Genre LIKE '%"+searchInput+"%' OR Format LIKE '%"+searchInput+"%' OR Price LIKE '%"+searchInput+"%' OR Director LIKE '%"+searchInput+"%' OR Artist LIKE '%"+searchInput+"%';";
                  
                     int numOfRows = 0;      
                     // sending the query to the database
@@ -183,7 +183,7 @@ public class Title {
                     	titlesData[row][4] = searchTitles.getString("Format");
                     	titlesData[row][5] = searchTitles.getString("Price");
                     	titlesData[row][6] = searchTitles.getString("Director");
-                    	titlesData[row][7] = searchTitles.getString("Band");
+                    	titlesData[row][7] = searchTitles.getString("Artist");
                     	
                     	row++;
                     }
@@ -212,7 +212,7 @@ public class Title {
         	if(searchInput.isEmpty()) {
                 // building the queries
                 String numOfRowsQuery = "SELECT * FROM ultravision.titles";
-                String availableTitlesQuery = "SELECT titles.Title, titles.Type, titles.YearOfRelease, titles.Genre, titles.Format, titles.Price, titles.Director, titles.Band FROM ultravision.titles WHERE IsAvailable=0;";
+                String availableTitlesQuery = "SELECT titles.Title, titles.Type, titles.YearOfRelease, titles.Genre, titles.Format, titles.Price, titles.Director, titles.Artist FROM ultravision.titles WHERE IsAvailable=0;";
                 
                 // sending the query to the database       
                 ResultSet resultNumOfRows = dbConnection.getStmt().executeQuery(numOfRowsQuery) ;
@@ -239,7 +239,7 @@ public class Title {
                 	titlesData[row][4] = result.getString("Format");
                 	titlesData[row][5] = result.getString("Price");
                 	titlesData[row][6] = result.getString("Director");
-                	titlesData[row][7] = result.getString("Band");
+                	titlesData[row][7] = result.getString("Artist");
 
                    // increase row to populate the next row
                     row++;
@@ -262,7 +262,7 @@ public class Title {
         	DBConnection dbConnection = new DBConnection();
             
             // building the query
-            String query = "INSERT INTO ultravision.titles (Title, Type, YearOfRelease, Format, Price, isAvailable, Band) VALUES ('"+newTitle.getTitleName()+"','"+newTitle.getType()+"','"+newTitle.getYearOfRelease()+"','"+newTitle.getFormat()+"','"+newTitle.getPrice()+"', '1', '"+newTitle.getBand()+"');";
+            String query = "INSERT INTO ultravision.titles (Title, Type, YearOfRelease, Format, Price, isAvailable, Artist) VALUES ('"+newTitle.getTitleName()+"','"+newTitle.getType()+"','"+newTitle.getYearOfRelease()+"','"+newTitle.getFormat()+"','"+newTitle.getPrice()+"', '1', '"+newTitle.getArtist()+"');";
             
             // execute query
 	        dbConnection.getStmt().execute(query);
