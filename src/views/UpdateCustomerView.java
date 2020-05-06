@@ -106,7 +106,7 @@ public class UpdateCustomerView extends JFrame {
 	public String getDropdownItem() {
 		   return this.membershipDropdown.getSelectedItem().toString();
 	}
-	
+
 	// method to organise components of the window
     private void components(){
         JPanel panel = new JPanel();
@@ -131,8 +131,8 @@ public class UpdateCustomerView extends JFrame {
         // drop down to select membership
         String membershipOptions[]={"","Music Lovers","Video Lovers", "TV Lovers", "Premium"};        
         this.membershipDropdown = new JComboBox(membershipOptions);
-        membershipDropdown.addActionListener((ActionListener) controller);
-        membershipDropdown.setActionCommand("select-membership");
+        this.membershipDropdown.addActionListener((ActionListener) controller);
+        this.membershipDropdown.setActionCommand("update-membership");
         
         // button
         JButton updateCustomerButton = new JButton("Update Customer");

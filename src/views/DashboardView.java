@@ -150,7 +150,7 @@ public class DashboardView extends JFrame {
     // method to pick customer selected from table
     public Customer getSelectedCustomer() {
         // creates a new instance of Customer
-    	Customer selectedCustomer = new Customer();
+    	Customer selectedCustomer = new Customer(this.controller);
        // save index from row in a variable
        int selectedCustomerIndex = customersTable.getSelectedRow();
        // if something is selected

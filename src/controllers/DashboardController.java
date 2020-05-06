@@ -26,6 +26,8 @@ public class DashboardController implements ActionListener {
 	CreateCustomerView createCustomerView;
 	String selectedMembership;
 	private int membershipID;
+	String selectedMembership2;
+	private int membershipID2;
 	CreateTitleView createTitleView;
 	String selectedType;
 	String selectedFormat;
@@ -33,9 +35,9 @@ public class DashboardController implements ActionListener {
 	private String format;
 	Customer customerToUpdate;
 	UpdateCustomerView updateCustomerView;
+	String updatedMembership;
 	
-	
-	
+
 	// constructor
     public DashboardController(){
         titleModel = new Title();
@@ -47,6 +49,10 @@ public class DashboardController implements ActionListener {
     // some getters and setters
 	public int getMembershipID() {
 		return this.membershipID;
+	}
+	// some getters and setters
+		public int getMembershipID2() {
+			return this.membershipID2;
 	}
 	public String getType() {
 		return this.type;
@@ -146,18 +152,36 @@ public class DashboardController implements ActionListener {
              this.customerToUpdate= view.getSelectedCustomer();
              // redirects to customer update page
             updateCustomerView = new UpdateCustomerView(this, customerToUpdate);
-         } else if(e.getActionCommand().equals("select-membership")) {
-         	this.selectedMembership =  createCustomerView.getDropdownItem();
+         } else if(e.getActionCommand().equals("update-membership")) {
+         	this.selectedMembership2 =  updateCustomerView.getDropdownItem();
+         	System.out.println(this.selectedMembership2);
          	// setting membership ID according to selected drop down
-         	if(createCustomerView.getDropdownItem().equals("Music Lovers")) {
-         		this.membershipID = 1;
-         	} else if (createCustomerView.getDropdownItem().equals("Video Lovers")) {
-         		this.membershipID = 2;
-         	} else if (createCustomerView.getDropdownItem().equals("TV Lovers")) {
-         		this.membershipID = 3;
-         	} else if (createCustomerView.getDropdownItem().equals("Premium")) {
-         		this.membershipID = 4;
+         	if(updateCustomerView.getDropdownItem().equals("Music Lovers")) {
+         		this.membershipID2 = 1;
+         	} else if (updateCustomerView.getDropdownItem().equals("Video Lovers")) {
+         		this.membershipID2 = 2;
+         	} else if (updateCustomerView.getDropdownItem().equals("TV Lovers")) {
+         		this.membershipID2 = 3;
+         	} else if (updateCustomerView.getDropdownItem().equals("Premium")) {
+         		this.membershipID2 = 4;
          	}
+         } else if(e.getActionCommand().equals("update-customer")) {
+        	String firstName = updateCustomerView.getFirstNameField();
+            String lastName = updateCustomerView.getLastNameField();
+            String address = updateCustomerView.getAddressField();
+            String email = updateCustomerView.getEmailField();
+            String phone = updateCustomerView.getPhoneField();
+            String cardNumber = updateCustomerView.getCardNumberField();
+            int membership2 = this.getMembershipID2();
+            // create an instance of the customer class with the data collated
+            Customer customerSelected = new Customer(firstName, lastName, address, email, phone, cardNumber, membership2, this);
+            // using model to call method
+            this.customerModel.updateCustomer(customerSelected, this.customerToUpdate);
+            // dispose current view and call a new one to refresh table
+            view.dispose();
+            view = new DashboardView(this);
+            updateCustomerView.dispose();
+	        
          } else if(e.getActionCommand().equals("filter")) {
 	        // call method in view to get selected item in drop down
 	        this.selectedFilter = view.getDropdownItem();

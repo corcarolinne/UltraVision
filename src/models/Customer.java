@@ -5,6 +5,7 @@ import java.sql.SQLException;
 
 import controllers.DashboardController;
 import main.DBConnection;
+import views.DashboardView;
 
 public class Customer {
 	
@@ -16,7 +17,7 @@ public class Customer {
 	private String email;
 	private String phoneNumber;
 	private String cardNumber;
-	public int membership;
+	private int membership;
 	private int score;
 	private DashboardController controller;
 	
@@ -34,8 +35,8 @@ public class Customer {
 		this.controller = controller;
 	}
 
-	public Customer() {
-		// empty constructor
+	public Customer(DashboardController controller) {
+		this.controller = controller;
 	}
 
 	public Customer(String firstName, String lastName, String address, String email, String phoneNumber, String cardNumber, int membership, DashboardController controller) {
@@ -47,6 +48,10 @@ public class Customer {
 		this.cardNumber = cardNumber;
 		this.membership = membership;
 		this.controller = controller;
+	}
+
+	public Customer() {
+		// empty constructor 
 	}
 
 	public int getID() {
@@ -113,7 +118,6 @@ public class Customer {
 		this.cardNumber = cardNumber;
 	}
 
-
 	public void setMembership(int membership) {
 		this.membership = membership;
 	}
@@ -127,7 +131,7 @@ public class Customer {
 	
 	// method to get membership from controller
 	public int getMembership() {
-		return this.controller.getMembershipID();
+		return this.controller.getMembershipID2();
 	}
 
 	// method to query database for customer data
@@ -267,43 +271,47 @@ public class Customer {
         }
     }
 	
-//    // method to update customer, receives 2 instances of Customer object
-//    public void updateCustomer(Customer customerToBeUpdated, Customer customerSelected ) {
-//        try{
-//        	DBConnection dbConnection = new DBConnection();
-//       
-//            // building the query
-//            String query = "UPDATE ultravision.customers SET FirstName= '"+artistToBeEdited.getFirstName()+"', LastName= '"+artistToBeEdited.getLastName()+"', Address= '"+artistToBeEdited.getAddress()+"', Website= '"+artistToBeEdited.getWebsite()+"' WHERE CustomerID = '"+customerSelected.getCustomerID()+"';"; 
-//            
-//            stmt.execute(query);
-//
-//            // Calling the method in charge of closing the connections
-//            stmt.close();
-//            connection.close();
-//            
-//            // setting artist object to have the values from the other artist that now has new values
-//            artistSelected.setFirstName(artistToBeEdited.getFirstName());
-//            artistSelected.setLastName(artistToBeEdited.getLastName());
-//            artistSelected.setAddress(artistToBeEdited.getAddress());
-//            artistSelected.setWebsite(artistToBeEdited.getWebsite());
-//            
-//        }
-//        catch( SQLException se ){
-//            System.out.println( "SQL Exception:" ) ;
-//
-//            // Loop through the SQL Exceptions
-//            while( se != null ){
-//                System.out.println( "State  : " + se.getSQLState()  ) ;
-//                System.out.println( "Message: " + se.getMessage()   ) ;
-//                System.out.println( "Error  : " + se.getErrorCode() ) ;
-//
-//                se = se.getNextException() ;
-//            }
-//        }
-//        catch( Exception e ){
-//                System.out.println( e ) ;
-//        }
-//    }
+ // method to update customer details, receives 2 instances of Customer object
+    public void updateCustomer(Customer customerToUpdate, Customer customerSelected ){
+        try{
+        	DBConnection dbConnection = new DBConnection();
+
+            // building the query
+            String updateQuery = "UPDATE ultravision.customers SET FirstName= '"+customerToUpdate.getFirstName()+"', LastName= '"+customerToUpdate.getLastName()+"', Address= '"+customerToUpdate.getAddress()+"', Email= '"+customerToUpdate.getEmail()+"', Phone= '"+customerToUpdate.getPhoneNumber()+"', CardNumber= '"+customerToUpdate.getCardNumber()+"', MembershipID= '"+customerToUpdate.getMembership()+"' WHERE CustomerID = '"+customerSelected.getID()+"';"; 
+            
+            // execute query
+	        dbConnection.getStmt().execute(updateQuery);
+	        
+	        // closing statement and connections
+            dbConnection.getStmt().close();
+            dbConnection.getConnection().close();
+            
+            // setting art object to have the values from the other art that now has new values
+            customerSelected.setFirstName(customerToUpdate.getFirstName());
+            customerSelected.setLastName(customerToUpdate.getLastName());
+            customerSelected.setAddress(customerToUpdate.getAddress());
+            customerSelected.setEmail(customerToUpdate.getEmail());
+            customerSelected.setPhoneNumber(customerToUpdate.getPhoneNumber());
+            customerSelected.setCardNumber(customerToUpdate.getCardNumber());
+            customerSelected.setMembership(customerToUpdate.getMembership());
+            
+        }
+        catch( SQLException se ){
+            System.out.println( "SQL Exception:" ) ;
+
+            // Loop through the SQL Exceptions
+            while( se != null ){
+                System.out.println( "State  : " + se.getSQLState()  ) ;
+                System.out.println( "Message: " + se.getMessage()   ) ;
+                System.out.println( "Error  : " + se.getErrorCode() ) ;
+
+                se = se.getNextException() ;
+            }
+        }
+        catch( Exception e ){
+                System.out.println( e ) ;
+        }
+    }
 		
 }
 
