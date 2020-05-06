@@ -16,12 +16,14 @@ public class Title {
 	protected String format;
 	protected double price;
 	protected String artist;
+	protected String genre;
+	protected String director;
 	protected boolean isAvailable;
 	//protected DBConnection dbConnection;
 	private DashboardController controller;
 	
 	// constructors
-	public Title(String titleName, String type, String yearOfRelease, String format, double price, boolean isAvailable, String artist, DashboardController controller) {
+	public Title(String titleName, String type, String yearOfRelease, String format, double price, boolean isAvailable, String artist, String genre, String director, DashboardController controller) {
 		this.titleName = titleName;
 		this.type = type;
 		this.yearOfRelease = yearOfRelease;
@@ -29,6 +31,8 @@ public class Title {
 		this.price = price;
 		this.isAvailable = isAvailable;
 		this.artist = artist;
+		this.genre = genre;
+		this.director = director;
 		//this.dbConnection = dbConnection;
 		this.controller = controller;
 	}
@@ -41,6 +45,18 @@ public class Title {
 		return this.titleName;
 	}
 
+	public String getGenre() {
+		return this.genre;
+	}
+	public String getDirector() {
+		return this.director;
+	}
+	public void setGenre(String genre) {
+		this.genre = genre;
+	}
+	public void setDirector(String director) {
+		this.director = director;
+	}
 	public String getArtist() {
 		return this.artist;
 	}
@@ -262,7 +278,7 @@ public class Title {
         	DBConnection dbConnection = new DBConnection();
             
             // building the query
-            String query = "INSERT INTO ultravision.titles (Title, Type, YearOfRelease, Format, Price, isAvailable, Artist) VALUES ('"+newTitle.getTitleName()+"','"+newTitle.getType()+"','"+newTitle.getYearOfRelease()+"','"+newTitle.getFormat()+"','"+newTitle.getPrice()+"', '1', '"+newTitle.getArtist()+"');";
+            String query = "INSERT INTO ultravision.titles (Title, Type, YearOfRelease, Genre, Format, Price, isAvailable, Director, Artist) VALUES ('"+newTitle.getTitleName()+"','"+newTitle.getType()+"','"+newTitle.getYearOfRelease()+"','"+newTitle.getGenre()+"','"+newTitle.getFormat()+"','"+newTitle.getPrice()+"', '1','"+newTitle.getDirector()+"','"+newTitle.getArtist()+"');";
             
             // execute query
 	        dbConnection.getStmt().execute(query);

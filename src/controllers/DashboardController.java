@@ -95,13 +95,18 @@ public class DashboardController implements ActionListener {
          		createTitleView.getArtistFieldComponent().setEnabled(true);
          	} else if (createTitleView.getTypeDropdownItem().equals("Live Concert Videos")) {
          		// insert band text field on create title view
+         		this.type = "Live Concert Videos";
+         		createTitleView.getArtistFieldComponent().setEnabled(true);
          		System.out.println("Test Live Concert");
          	} else if (createTitleView.getTypeDropdownItem().equals("Movie")) {
          		// insert genre, director text fields on create title view
-         		System.out.println("Test Movie");
+         		this.type = "Movie";
+         		createTitleView.getGenreFieldComponent().setEnabled(true);
+         		createTitleView.getDirectorFieldComponent().setEnabled(true);
          	} else if (createTitleView.getTypeDropdownItem().equals("Box Set")) {
-         		// insert genre, director text fields on create title view
-         		System.out.println("Test Box Set");         	
+         		// insert genre text field on create title view
+         		this.type = "Box Set";
+         		createTitleView.getGenreFieldComponent().setEnabled(true);      	
          	}
          } else if(e.getActionCommand().equals("select-format")) {
           	this.selectedFormat =  createTitleView.getFormatDropdownItem();
@@ -120,9 +125,11 @@ public class DashboardController implements ActionListener {
             String price = createTitleView.getPriceField();
             double priceAsDouble = Double.parseDouble(price);
             boolean isAvailable = true;
-            String band = createTitleView.getArtistField();
+            String artist = createTitleView.getArtistField();
+            String genre = createTitleView.getGenreField();
+            String director = createTitleView.getDirectorField();
             // create an instance of the customer class with the data collated
-            Title newTitle = new Title(titleName, type, yearOfRelease, format, priceAsDouble, isAvailable, band, this);
+            Title newTitle = new Title(titleName, type, yearOfRelease, format, priceAsDouble, isAvailable, artist, genre, director, this);
             // using model to call method
             this.titleModel.createTitle(newTitle);
             // dispose current view and call a new one to refresh table
