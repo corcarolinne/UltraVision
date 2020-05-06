@@ -131,7 +131,7 @@ public class Customer {
 	
 	// method to get membership from controller
 	public int getMembership() {
-		return this.controller.getMembershipID2();
+		return this.controller.getMembershipID();
 	}
 
 	// method to query database for customer data

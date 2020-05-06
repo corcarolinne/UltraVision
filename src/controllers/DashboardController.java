@@ -26,8 +26,6 @@ public class DashboardController implements ActionListener {
 	CreateCustomerView createCustomerView;
 	String selectedMembership;
 	private int membershipID;
-	String selectedMembership2;
-	private int membershipID2;
 	CreateTitleView createTitleView;
 	String selectedType;
 	String selectedFormat;
@@ -49,10 +47,6 @@ public class DashboardController implements ActionListener {
     // some getters and setters
 	public int getMembershipID() {
 		return this.membershipID;
-	}
-	// some getters and setters
-		public int getMembershipID2() {
-			return this.membershipID2;
 	}
 	public String getType() {
 		return this.type;
@@ -153,17 +147,17 @@ public class DashboardController implements ActionListener {
              // redirects to customer update page
             updateCustomerView = new UpdateCustomerView(this, customerToUpdate);
          } else if(e.getActionCommand().equals("update-membership")) {
-         	this.selectedMembership2 =  updateCustomerView.getDropdownItem();
-         	System.out.println(this.selectedMembership2);
+         	this.selectedMembership =  updateCustomerView.getDropdownItem();
+         	System.out.println(this.selectedMembership);
          	// setting membership ID according to selected drop down
          	if(updateCustomerView.getDropdownItem().equals("Music Lovers")) {
-         		this.membershipID2 = 1;
+         		this.membershipID = 1;
          	} else if (updateCustomerView.getDropdownItem().equals("Video Lovers")) {
-         		this.membershipID2 = 2;
+         		this.membershipID = 2;
          	} else if (updateCustomerView.getDropdownItem().equals("TV Lovers")) {
-         		this.membershipID2 = 3;
+         		this.membershipID = 3;
          	} else if (updateCustomerView.getDropdownItem().equals("Premium")) {
-         		this.membershipID2 = 4;
+         		this.membershipID = 4;
          	}
          } else if(e.getActionCommand().equals("update-customer")) {
         	String firstName = updateCustomerView.getFirstNameField();
@@ -172,9 +166,9 @@ public class DashboardController implements ActionListener {
             String email = updateCustomerView.getEmailField();
             String phone = updateCustomerView.getPhoneField();
             String cardNumber = updateCustomerView.getCardNumberField();
-            int membership2 = this.getMembershipID2();
+            int membership = this.getMembershipID();
             // create an instance of the customer class with the data collated
-            Customer customerSelected = new Customer(firstName, lastName, address, email, phone, cardNumber, membership2, this);
+            Customer customerSelected = new Customer(firstName, lastName, address, email, phone, cardNumber, membership, this);
             // using model to call method
             this.customerModel.updateCustomer(customerSelected, this.customerToUpdate);
             // dispose current view and call a new one to refresh table
