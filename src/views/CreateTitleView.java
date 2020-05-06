@@ -37,7 +37,7 @@ public class CreateTitleView extends JFrame{
     private void attributesSetter(){
         this.setVisible(true);
         this.setSize(275,500);
-        this.setTitle("Create");
+        this.setTitle("Create Title");
     }
 
     // getters and setters

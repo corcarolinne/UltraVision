@@ -11,6 +11,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 
 import controllers.DashboardController;
+import models.Customer;
 
 public class DashboardView extends JFrame {
 
@@ -51,17 +52,23 @@ public class DashboardView extends JFrame {
     	JLabel brandLabel = new JLabel("Ultra Vision"); 
     	panel.add(brandLabel);
 		
-    	// adding a button
+    	// adding button
     	JButton addCustomerButton = new JButton("Add Customer");
     	addCustomerButton.addActionListener((ActionListener) controller);
     	addCustomerButton.setActionCommand("add-customer");
     	panel.add(addCustomerButton);
     	
-    	// adding a button
+    	// adding button
     	JButton addTitleButton = new JButton("Add Title");
     	addTitleButton.addActionListener((ActionListener) controller);
     	addTitleButton.setActionCommand("add-title");
     	panel.add(addTitleButton);
+    	
+    	// adding button
+    	JButton updateCustomerPageButton = new JButton("Update Customer");
+    	updateCustomerPageButton.addActionListener((ActionListener) controller);
+    	updateCustomerPageButton.setActionCommand("update-customer-page");
+    	panel.add(updateCustomerPageButton);
     	
     	// search label and input
         JLabel searchLabel = new JLabel("Search:");        
@@ -117,7 +124,7 @@ public class DashboardView extends JFrame {
     	panel.add(customersLabel);
     	
     	// creating header
-   	 	String[] customersHeader = {"First Name", "Last Name","Address", "Email", "Phone", "Card Number", "Membership", "Loyalty Points"};
+   	 	String[] customersHeader = {"ID", "First Name", "Last Name","Address", "Email", "Phone", "Card Number", "Membership", "Loyalty Points"};
    	 	
     	// calling method from model to show available titles
     	customersData = controller.customerModel.showCustomers("","");
@@ -139,6 +146,39 @@ public class DashboardView extends JFrame {
     public String getDropdownItem() {
         return this.dropdown.getSelectedItem().toString();
     }
+    
+    // method to pick customer selected from table
+    public Customer getSelectedCustomer() {
+        // creates a new instance of Customer
+    	Customer selectedCustomer = new Customer();
+       // save index from row in a variable
+       int selectedCustomerIndex = customersTable.getSelectedRow();
+       // if something is selected
+       if (selectedCustomerIndex > -1) {
+           // creates array to store selected row inside 2d array
+           String[] selectedCustomersArray = customersData[selectedCustomerIndex];
+           // using setters to pass the values in the row to the Customer object
+           selectedCustomer.setID(Integer.parseInt(selectedCustomersArray[0]));
+           selectedCustomer.setFirstName(selectedCustomersArray[1]);
+           selectedCustomer.setLastName(selectedCustomersArray[2]);
+           selectedCustomer.setAddress(selectedCustomersArray[3]);
+           selectedCustomer.setEmail(selectedCustomersArray[4]);
+           selectedCustomer.setPhoneNumber(selectedCustomersArray[5]);
+           selectedCustomer.setCardNumber(selectedCustomersArray[6]);
+           
+           // to select membership
+           if(selectedCustomersArray[7].equals("Music Lovers")) {
+        	   selectedCustomer.setMembership(1);
+           } else if(selectedCustomersArray[7].equals("Video Lovers")) {
+        	   selectedCustomer.setMembership(2);
+           } else if(selectedCustomersArray[7].equals("TV Lovers")) {
+        	   selectedCustomer.setMembership(3);
+           } else if(selectedCustomersArray[7].equals("Premium")) {
+        	   selectedCustomer.setMembership(4);
+           }
+       }
+       return selectedCustomer;
+   }
 	
     // validation and repainting
     private void validation(){

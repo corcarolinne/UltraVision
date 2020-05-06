@@ -11,6 +11,7 @@ import views.CreateCustomerView;
 import views.CreateTitleView;
 import views.DashboardView;
 import views.SearchResultsView;
+import views.UpdateCustomerView;
 
 public class DashboardController implements ActionListener {
 	
@@ -30,6 +31,9 @@ public class DashboardController implements ActionListener {
 	String selectedFormat;
 	private String type;
 	private String format;
+	Customer customerToUpdate;
+	UpdateCustomerView updateCustomerView;
+	
 	
 	
 	// constructor
@@ -137,7 +141,24 @@ public class DashboardController implements ActionListener {
             view = new DashboardView(this);
             createTitleView.dispose();
 	        
-         }else if(e.getActionCommand().equals("filter")) {
+         }  if(e.getActionCommand().equals("update-customer-page")){
+        	// calling method from view to get customer selected from table
+             this.customerToUpdate= view.getSelectedCustomer();
+             // redirects to customer update page
+            updateCustomerView = new UpdateCustomerView(this, customerToUpdate);
+         } else if(e.getActionCommand().equals("select-membership")) {
+         	this.selectedMembership =  createCustomerView.getDropdownItem();
+         	// setting membership ID according to selected drop down
+         	if(createCustomerView.getDropdownItem().equals("Music Lovers")) {
+         		this.membershipID = 1;
+         	} else if (createCustomerView.getDropdownItem().equals("Video Lovers")) {
+         		this.membershipID = 2;
+         	} else if (createCustomerView.getDropdownItem().equals("TV Lovers")) {
+         		this.membershipID = 3;
+         	} else if (createCustomerView.getDropdownItem().equals("Premium")) {
+         		this.membershipID = 4;
+         	}
+         } else if(e.getActionCommand().equals("filter")) {
 	        // call method in view to get selected item in drop down
 	        this.selectedFilter = view.getDropdownItem();
 	        if(view.getDropdownItem().equals("Titles")) {

@@ -10,8 +10,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import controllers.DashboardController;
+import models.Customer;
 
-public class CreateCustomerView extends JFrame {
+public class UpdateCustomerView extends JFrame {
 	
 	// properties
     private JTextField firstNameField;
@@ -22,23 +23,26 @@ public class CreateCustomerView extends JFrame {
     private JTextField cardNumberField;
     private JComboBox membershipDropdown;
     private DashboardController controller;
+    private Customer customerToUpdate;
     
 
     // constructor
-    public CreateCustomerView(DashboardController controller) {
-
-        this.controller= controller;
-        // calling methods to make the window or the view
+    public UpdateCustomerView(DashboardController controller, Customer customerToUpdate) {
+    	this.controller = controller;
+    	this.customerToUpdate = customerToUpdate;
+    	
+    	// calling methods to make the window or the view
         attributesSetter();
         components();
         validation();
-    }
-    
-    // method to set attributes
+    	
+	}
+
+	// method to set attributes
     private void attributesSetter(){
         this.setVisible(true);
         this.setSize(275,500);
-        this.setTitle("Create Customer");
+        this.setTitle("Update Customer");
     }
     
     // getters and setters
@@ -117,13 +121,13 @@ public class CreateCustomerView extends JFrame {
         phoneLabel = new JLabel("Phone");
         cardNumberLabel = new JLabel("Card Number");
         membershipLabel = new JLabel("Membership");
-        firstNameField = new JTextField(20);
-        lastNameField = new JTextField(20);
-        addressField = new JTextField(20);
-        emailField = new JTextField(20);
-        phoneField = new JTextField(20);
-        cardNumberField = new JTextField(20);
-    
+        firstNameField = new JTextField(this.customerToUpdate.getFirstName(), 20);
+        lastNameField = new JTextField(this.customerToUpdate.getLastName(), 20);
+        addressField = new JTextField(this.customerToUpdate.getAddress(), 20);
+        emailField = new JTextField(this.customerToUpdate.getEmail(), 20);
+        phoneField = new JTextField(this.customerToUpdate.getPhoneNumber(), 20);
+        cardNumberField = new JTextField(this.customerToUpdate.getCardNumber(), 20);
+   
         // drop down to select membership
         String membershipOptions[]={"","Music Lovers","Video Lovers", "TV Lovers", "Premium"};        
         this.membershipDropdown = new JComboBox(membershipOptions);
@@ -131,9 +135,9 @@ public class CreateCustomerView extends JFrame {
         membershipDropdown.setActionCommand("select-membership");
         
         // button
-        JButton createCustomerButton = new JButton("Create Customer");
-        createCustomerButton.addActionListener((ActionListener) controller);
-        createCustomerButton.setActionCommand("create-customer");
+        JButton updateCustomerButton = new JButton("Update Customer");
+        updateCustomerButton.addActionListener((ActionListener) controller);
+        updateCustomerButton.setActionCommand("update-customer");
         
         // adding components to the panel
         panel.add(firstNameLabel);
@@ -150,7 +154,7 @@ public class CreateCustomerView extends JFrame {
         panel.add(cardNumberField);
         panel.add(membershipLabel);
         panel.add(membershipDropdown);
-        panel.add(createCustomerButton);
+        panel.add(updateCustomerButton);
     }
     
     // validation and repainting
@@ -158,4 +162,5 @@ public class CreateCustomerView extends JFrame {
         this.validate();
         this.repaint();
     }
-}    
+
+}
