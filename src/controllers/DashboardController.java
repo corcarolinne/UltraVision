@@ -73,16 +73,24 @@ public class DashboardController implements ActionListener {
         } else if(e.getActionCommand().equals("rent")){
         	//titleModel.rentTitle(titleToRent, rentView.getEmailField());
         	// if method is successful
-        	if(titleModel.rentTitle(titleToRent, rentView.getEmailField())) {
+        	if(titleModel.validateRent(titleToRent, rentView.getEmailField()).equals("successfulTransaction")) {
+        		// call method here!!
+        		System.out.println("call rent method!");
+        		//view.dispose();
+                //view = new DashboardView(this);
+                //rentView.dispose();
+        	} else if (titleModel.validateRent(titleToRent, rentView.getEmailField()).equals("customerNotFoundError")) {
         		JFrame f = new JFrame();
-        		JOptionPane.showMessageDialog(f,"Rent successful!");
-        		
-        		view.dispose();
-                view = new DashboardView(this);
-                rentView.dispose();
-        	} else {
+        		JOptionPane.showMessageDialog(f,"This email do not match any customer. Please enter another email.","Alert",JOptionPane.ERROR_MESSAGE);
+        	} else if (titleModel.validateRent(titleToRent, rentView.getEmailField()).equals("membershipPermissionError1")) {
         		JFrame f = new JFrame();
-        		JOptionPane.showMessageDialog(f,"Customer not found. Email do not match any customer.","Alert",JOptionPane.ERROR_MESSAGE);
+        		JOptionPane.showMessageDialog(f,"This customer is not allowed to rent this title. Please select Music or Live Concert.","Alert",JOptionPane.ERROR_MESSAGE);
+        	}  else if (titleModel.validateRent(titleToRent, rentView.getEmailField()).equals("membershipPermissionError2")) {
+        		JFrame f = new JFrame();
+        		JOptionPane.showMessageDialog(f,"This customer is not allowed to rent this title. Please select a Movie.","Alert",JOptionPane.ERROR_MESSAGE);
+        	} else if (titleModel.validateRent(titleToRent, rentView.getEmailField()).equals("membershipPermissionError3")) {
+        		JFrame f = new JFrame();
+        		JOptionPane.showMessageDialog(f,"This customer is not allowed to rent this title. Please select a Box Set.","Alert",JOptionPane.ERROR_MESSAGE);
         	}
             
         } else if(e.getActionCommand().equals("cancel-rent")) {
@@ -127,9 +135,9 @@ public class DashboardController implements ActionListener {
          		// insert band text field on create title view
          		this.type = "Music";
          		createTitleView.getArtistFieldComponent().setEnabled(true);
-         	} else if (createTitleView.getTypeDropdownItem().equals("Live Concert Videos")) {
+         	} else if (createTitleView.getTypeDropdownItem().equals("Live Concert")) {
          		// insert band text field on create title view
-         		this.type = "Live Concert Videos";
+         		this.type = "Live Concert";
          		createTitleView.getArtistFieldComponent().setEnabled(true);
          		System.out.println("Test Live Concert");
          	} else if (createTitleView.getTypeDropdownItem().equals("Movie")) {

@@ -151,7 +151,7 @@ public class CreateTitleView extends JFrame{
         this.directorField.setEnabled(false);
     
         // drop down to select type
-        String typeOptions[]={"","Music","Live Concert Videos","Movie","Box Set"};        
+        String typeOptions[]={"","Music","Live Concert","Movie","Box Set"};        
         this.typeDropdown = new JComboBox(typeOptions);
         typeDropdown.addActionListener((ActionListener) controller);
         typeDropdown.setActionCommand("select-type");

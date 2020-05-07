@@ -327,11 +327,10 @@ public class Title {
                 System.out.println( e ) ;
         }
     }
-    
-    // method to rent a title, receives a title object and returns a boolean representing method status
-    public boolean rentTitle(Title titleToRent, String customerEmail){
+    // method to make the validation of a rent, receives a title object and returns a string with the type of message that should be displayed
+    public String validateRent(Title titleToRent, String customerEmail){
     	
-    	boolean isValid = true;
+    	String messageType = "";
         try{
         	String customerID = "";
         	String membershipID = "";
@@ -351,16 +350,73 @@ public class Title {
             	customerID = result.getString("CustomerID");
             	membershipID = result.getString("MembershipID");
             	// membership validation
-                if(membershipID.equals("1") && type.equals("Movie")) {
-                	System.out.println("test comparison");
+                if(membershipID.equals("1") && (type.equals("Movie") || type.equals("Box Set"))) {
+                	messageType = "membershipPermissionError1";
+                } else if(membershipID.equals("2") && (type.equals("Music") || type.equals("Live Concert") || type.equals("Box Set"))) {
+                	messageType = "membershipPermissionError2";
+                } else if(membershipID.equals("3") && (type.equals("Music") || type.equals("Live Concert") || type.equals("Movie"))) {
+                	messageType = "membershipPermissionError3";
+                } else {
+                	messageType = "successfulTransaction";
                 }
             } else {
-            	isValid = false;
-            	return isValid;
+            	messageType = "customerNotFoundError";
             	
             }
+	        
+            // closing statement and connections
+            dbConnection.getStmt().close();
+            dbConnection.getConnection().close();
             
+        } catch( SQLException se ){
+            System.out.println( "SQL Exception:" ) ;
+
+            // Loop through the SQL Exceptions
+            while( se != null ){
+                System.out.println( "State  : " + se.getSQLState()  ) ;
+                System.out.println( "Message: " + se.getMessage()   ) ;
+                System.out.println( "Error  : " + se.getErrorCode() ) ;
+
+                se = se.getNextException() ;
+            }
+        }
+        catch( Exception e ){
+                System.out.println( e ) ;
+        }
+        return messageType;
+    }
+    
+    // method to rent a title, receives a title object and returns a string with the type of message that should be displayed
+    public String rentTitle(Title titleToRent, String customerEmail){
+    	
+    	String messageType = "successfulTransaction";
+        try{
+        	String customerID = "";
+        	String membershipID = "";
+        	
+        	String type = titleToRent.type;
+
+        	DBConnection dbConnection = new DBConnection();
             
+        	// query database for customer ID
+        	String findCustomerID = "SELECT * FROM ultravision.customers WHERE Email = '"+customerEmail+"';";
+        	
+	        ResultSet result = dbConnection.getStmt().executeQuery(findCustomerID) ;
+           
+            // email validation
+            if(result.next()) {
+                // set customerID to be the ID found on DB and save their membershipID
+            	customerID = result.getString("CustomerID");
+            	membershipID = result.getString("MembershipID");
+            	// membership validation
+                if(membershipID.equals("1") && type.equals("Movie") || type.equals("Box Set")) {
+                	System.out.println("This customer is not allowed to rent this type of title");
+                	return messageType = "membershipPermissionError";
+                }
+            } else {
+            	return messageType = "customerNotFoundError";
+            	
+            }
             
             
             // insert rent on transactions table on database
@@ -401,6 +457,6 @@ public class Title {
         catch( Exception e ){
                 System.out.println( e ) ;
         }
-        return isValid;
+        return messageType;
     }
 }
