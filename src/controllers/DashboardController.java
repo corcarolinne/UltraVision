@@ -71,7 +71,7 @@ public class DashboardController implements ActionListener {
             // redirects to rent page
            rentView = new RentView(this, titleToRent);
         } else if(e.getActionCommand().equals("rent")){
-        	titleModel.rentTitle(titleToRent, rentView.getEmailField());
+        	//titleModel.rentTitle(titleToRent, rentView.getEmailField());
         	// if method is successful
         	if(titleModel.rentTitle(titleToRent, rentView.getEmailField())) {
         		JFrame f = new JFrame();

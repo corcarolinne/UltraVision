@@ -334,8 +334,10 @@ public class Title {
     	boolean isValid = true;
         try{
         	String customerID = "";
+        	String membershipID = "";
         	
-        	
+        	String type = titleToRent.type;
+
         	DBConnection dbConnection = new DBConnection();
             
         	// query database for customer ID
@@ -343,15 +345,23 @@ public class Title {
         	
 	        ResultSet result = dbConnection.getStmt().executeQuery(findCustomerID) ;
            
-            // if a result it's a found, it means there's a customer with this email
+            // email validation
             if(result.next()) {
-                // set customerID to be the ID found on DB
+                // set customerID to be the ID found on DB and save their membershipID
             	customerID = result.getString("CustomerID");
+            	membershipID = result.getString("MembershipID");
+            	// membership validation
+                if(membershipID.equals("1") && type.equals("Movie")) {
+                	System.out.println("test comparison");
+                }
             } else {
             	isValid = false;
             	return isValid;
             	
             }
+            
+            
+            
             
             // insert rent on transactions table on database
             String insertQuery = "INSERT INTO ultravision.transactions (CustomerID, TitleID) VALUES ('"+customerID+"','"+titleToRent.getID()+"');";
