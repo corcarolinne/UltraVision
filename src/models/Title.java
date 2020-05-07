@@ -322,4 +322,55 @@ public class Title {
                 System.out.println( e ) ;
         }
     }
+    
+    // method to rent a title, receives a title object
+    public void rentTitle(Title titleToRent, String customerEmail){
+        try{
+        	String customerID = "";
+        	
+        	DBConnection dbConnection = new DBConnection();
+            
+        	// query database for customer ID
+        	String findCustomerID = "SELECT * FROM ultravision.customers WHERE Email = '"+customerEmail+"';";
+        	
+	        ResultSet result = dbConnection.getStmt().executeQuery(findCustomerID) ;
+           
+            // if a result it's a found, it means there's a customer with this email
+            if(result.next()) {
+                // set customerID to be the ID found on DB
+            	customerID = result.getString("CustomerID");
+            }
+            
+            // insert rent on transactions table on database
+            String insertQuery = "INSERT INTO ultravision.transactions (CustomerID, TitleID) VALUES ('"+customerID+"','"+titleToRent.getID()+"');";
+
+            // execute insert query
+	        dbConnection.getStmt().execute(insertQuery);
+	        
+	        // query to update title isAvailable column
+	        String updateTitleAvailability = "UPDATE ultravision.titles SET isAvailable = 0 WHERE titleID='"+titleToRent.getID()+"';";
+
+	        // execute update query
+	        dbConnection.getStmt().execute(updateTitleAvailability);
+	        
+            // closing statement and connections
+            dbConnection.getStmt().close();
+            dbConnection.getConnection().close();
+            
+        } catch( SQLException se ){
+            System.out.println( "SQL Exception:" ) ;
+
+            // Loop through the SQL Exceptions
+            while( se != null ){
+                System.out.println( "State  : " + se.getSQLState()  ) ;
+                System.out.println( "Message: " + se.getMessage()   ) ;
+                System.out.println( "Error  : " + se.getErrorCode() ) ;
+
+                se = se.getNextException() ;
+            }
+        }
+        catch( Exception e ){
+                System.out.println( e ) ;
+        }
+    }
 }

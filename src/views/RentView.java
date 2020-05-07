@@ -73,9 +73,15 @@ public class RentView extends JFrame {
     	panel.add(cancelButton);
 	}
 	
+	// getter for customer's email
+	public String getEmailField() {
+		return emailField.getText();
+	}
+
 	// validation and repainting
     private void validation(){
         this.validate();
         this.repaint();
     }
+
 }

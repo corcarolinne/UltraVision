@@ -38,7 +38,6 @@ public class DashboardController implements ActionListener {
 	RentView rentView;
 	Title titleToRent;
 	
-
 	// constructor
     public DashboardController(){
         titleModel = new Title();
@@ -67,6 +66,7 @@ public class DashboardController implements ActionListener {
             // redirects to rent page
            rentView = new RentView(this, titleToRent);
         } else if(e.getActionCommand().equals("rent")){
+        	titleModel.rentTitle(titleToRent, rentView.getEmailField());
             view.dispose();
             view = new DashboardView(this);
             rentView.dispose();
