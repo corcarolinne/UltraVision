@@ -10,6 +10,7 @@ import models.Title;
 import views.CreateCustomerView;
 import views.CreateTitleView;
 import views.DashboardView;
+import views.RentView;
 import views.SearchResultsView;
 import views.UpdateCustomerView;
 
@@ -34,6 +35,8 @@ public class DashboardController implements ActionListener {
 	Customer customerToUpdate;
 	UpdateCustomerView updateCustomerView;
 	String updatedMembership;
+	RentView rentView;
+	Title titleToRent;
 	
 
 	// constructor
@@ -58,7 +61,19 @@ public class DashboardController implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// if a certain button is clicked do the actions inside the brackets
-        if(e.getActionCommand().equals("add-customer")){
+		if(e.getActionCommand().equals("add-rent")){
+			// calling method from view to get title selected from table
+            this.titleToRent = view.getSelectedTitle();
+            // redirects to rent page
+           rentView = new RentView(this, titleToRent);
+        } else if(e.getActionCommand().equals("rent")){
+            view.dispose();
+            view = new DashboardView(this);
+            rentView.dispose();
+        } else if(e.getActionCommand().equals("cancel-rent")) {
+    		// dispose view
+        	rentView.dispose();
+        } else if(e.getActionCommand().equals("add-customer")){
         	createCustomerView = new CreateCustomerView(this);
         } else if(e.getActionCommand().equals("select-membership")) {
         	this.selectedMembership =  createCustomerView.getDropdownItem();
@@ -192,7 +207,7 @@ public class DashboardController implements ActionListener {
         		searchResult= this.customerModel.showCustomers(this.searchInput, this.selectedFilter);
         		searchResultsView = new SearchResultsView(this, searchResult, this.selectedFilter);
 	        }
-        } 
+        }
 	}
         
 }

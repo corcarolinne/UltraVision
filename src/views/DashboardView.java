@@ -12,6 +12,7 @@ import javax.swing.JTextField;
 
 import controllers.DashboardController;
 import models.Customer;
+import models.Title;
 
 public class DashboardView extends JFrame {
 
@@ -23,7 +24,7 @@ public class DashboardView extends JFrame {
 	private JTable availableTitlesTable;
 	private JTable rentedTitlesTable;
 	private JTable customersTable;
-	public String[][] availabletitlesData;
+	public String[][] availableTitlesData;
 	public String[][] rentedTitlesData;
 	public String[][] customersData;
     
@@ -51,7 +52,13 @@ public class DashboardView extends JFrame {
     	// creating label
     	JLabel brandLabel = new JLabel("Ultra Vision"); 
     	panel.add(brandLabel);
-		
+    	
+    	// adding button
+    	JButton addRentButton = new JButton("Rent");
+    	addRentButton.addActionListener((ActionListener) controller);
+    	addRentButton.setActionCommand("add-rent");
+    	panel.add(addRentButton);
+    	
     	// adding button
     	JButton addCustomerButton = new JButton("Add Customer");
     	addCustomerButton.addActionListener((ActionListener) controller);
@@ -91,13 +98,13 @@ public class DashboardView extends JFrame {
     	panel.add(availableTitlesLabel);
     	
 		// creating header
-   	 	String[] titlesHeader = {"Title", "Type","Year Of Release", "Genre", "Format", "Price", "Director", "Artist"};
+   	 	String[] titlesHeader = {"ID","Title", "Type","Year Of Release", "Genre", "Format", "Price", "Director", "Artist"};
    	
    	 	// calling method from model to show available titles
-   	 	availabletitlesData = controller.titleModel.showAvailableTitles("","");
+   	 	availableTitlesData = controller.titleModel.showAvailableTitles("","");
    	 
    	 	// creating table and adding it to the panel
-   	 	availableTitlesTable = new JTable(availabletitlesData, titlesHeader);
+   	 	availableTitlesTable = new JTable(availableTitlesData, titlesHeader);
         panel.add(availableTitlesTable);
    
         // scroll
@@ -146,6 +153,31 @@ public class DashboardView extends JFrame {
     public String getDropdownItem() {
         return this.dropdown.getSelectedItem().toString();
     }
+    
+    // method to pick title selected from table
+    public Title getSelectedTitle() {
+        // creates a new instance of Title
+    	Title selectedTitle = new Title(this.controller);
+       // save index from row in a variable
+       int selectedTitleIndex = availableTitlesTable.getSelectedRow();
+       // if something is selected
+       if (selectedTitleIndex > -1) {
+           // creates array to store selected row inside 2d array
+           String[] selectedTitlesArray = availableTitlesData[selectedTitleIndex];
+           // using setters to pass the values in the row to the Title object
+           selectedTitle.setID(Integer.parseInt(selectedTitlesArray[0]));
+           selectedTitle.setTitleName(selectedTitlesArray[1]);
+           selectedTitle.setType(selectedTitlesArray[2]);
+           selectedTitle.setYearOfRelease(selectedTitlesArray[3]);
+           selectedTitle.setGenre(selectedTitlesArray[4]);
+           selectedTitle.setFormat(selectedTitlesArray[5]);
+           selectedTitle.setPrice(Double.parseDouble(selectedTitlesArray[6]));
+           //selectedTitle.setAvailable(true);
+           selectedTitle.setDirector(selectedTitlesArray[7]);
+           selectedTitle.setArtist(selectedTitlesArray[8]);
+       }
+       return selectedTitle;
+   }
     
     // method to pick customer selected from table
     public Customer getSelectedCustomer() {

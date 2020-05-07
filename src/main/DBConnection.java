@@ -8,7 +8,7 @@ import java.sql.Statement;
 public class DBConnection {
 
 	// properties
-    String dbServer = "jdbc:mysql://localhost:3306/ultravision";// type of database/port/database name
+    String dbServer = "jdbc:mysql://localhost:3306/ultravision?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
     String user = "root";
     String password = "13 Hatnephfcfati_";
     Statement stmt;

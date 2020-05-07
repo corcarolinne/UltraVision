@@ -10,6 +10,7 @@ import views.SearchResultsView;
 public class Title {
 	
 	// properties
+	private int ID;
 	protected String titleName;
 	private String type;
 	protected String yearOfRelease;
@@ -19,11 +20,11 @@ public class Title {
 	protected String genre;
 	protected String director;
 	protected boolean isAvailable;
-	//protected DBConnection dbConnection;
 	private DashboardController controller;
 	
 	// constructors
-	public Title(String titleName, String type, String yearOfRelease, String format, double price, boolean isAvailable, String artist, String genre, String director, DashboardController controller) {
+	public Title(int ID, String titleName, String type, String yearOfRelease, String format, double price, boolean isAvailable, String artist, String genre, String director, DashboardController controller) {
+		this.ID = ID;
 		this.titleName = titleName;
 		this.type = type;
 		this.yearOfRelease = yearOfRelease;
@@ -33,18 +34,40 @@ public class Title {
 		this.artist = artist;
 		this.genre = genre;
 		this.director = director;
-		//this.dbConnection = dbConnection;
 		this.controller = controller;
 	}
 	public Title() {
 		// empty constructor
 	}
 
+	public Title(DashboardController controller) {
+		this.controller = controller;
+	}
+	
+	public Title(String titleName, String type, String yearOfRelease, String format, double price, boolean isAvailable, String artist, String genre, String director, DashboardController dashboardController) {
+		this.titleName = titleName;
+		this.type = type;
+		this.yearOfRelease = yearOfRelease;
+		this.format = format;
+		this.price = price;
+		this.isAvailable = isAvailable;
+		this.artist = artist;
+		this.genre = genre;
+		this.director = director;
+		this.controller = controller;
+	}
 	// getters and setters 
+	
 	public String getTitleName() {
 		return this.titleName;
 	}
 
+	public int getID() {
+		return this.ID;
+	}
+	public void setID(int iD) {
+		this.ID = iD;
+	}
 	public String getGenre() {
 		return this.genre;
 	}
@@ -91,10 +114,6 @@ public class Title {
 		return this.isAvailable;
 	}
 
-//	public DBConnection getDbConnection() {
-//		return dbConnection;
-//	}
-
 	public void setTitleName(String titleName) {
 		this.titleName = titleName;
 	}
@@ -115,10 +134,6 @@ public class Title {
 		this.isAvailable = isAvailable;
 	}
 	
-//	public void setDbConnection(DBConnection dbConnection) {
-//		this.dbConnection = dbConnection;
-//	}
-	
 	// method to display available titles
     public String[][] showAvailableTitles (String searchInput, String selectedFilter) {
         
@@ -130,7 +145,7 @@ public class Title {
         	if(searchInput.isEmpty()) {
                 // building the queries
                 String numOfRowsQuery = "SELECT * FROM ultravision.titles";
-                String availableTitlesQuery = "SELECT titles.Title, titles.Type, titles.YearOfRelease, titles.Genre, titles.Format, titles.Price, titles.Director, titles.Artist FROM ultravision.titles WHERE IsAvailable=1;";
+                String availableTitlesQuery = "SELECT titles.TitleID, titles.Title, titles.Type, titles.YearOfRelease, titles.Genre, titles.Format, titles.Price, titles.Director, titles.Artist FROM ultravision.titles WHERE IsAvailable=1;";
                 
                 // sending the query to the database       
                 ResultSet resultNumOfRows = dbConnection.getStmt().executeQuery(numOfRowsQuery) ;
@@ -144,20 +159,21 @@ public class Title {
                 
                 ResultSet result = dbConnection.getStmt().executeQuery(availableTitlesQuery) ;
                 // set titlesData number of rows and number of columns
-                titlesData= new String[numOfRows][8];
+                titlesData= new String[numOfRows][9];
                 
                 int row = 0;
                 // loop through result, while it's returns true (while there's lines in titles table)
                 while(result.next()) {
                     // set titlesData array to receive each value from each row, for each corresponding column
-                	titlesData[row][0] = result.getString("Title");
-                	titlesData[row][1] = result.getString("Type");
-                	titlesData[row][2] = result.getString("YearOfRelease");
-                	titlesData[row][3] = result.getString("Genre");
-                	titlesData[row][4] = result.getString("Format");
-                	titlesData[row][5] = result.getString("Price");
-                	titlesData[row][6] = result.getString("Director");
-                	titlesData[row][7] = result.getString("Artist");
+                	titlesData[row][0] = result.getString("TitleID");
+                	titlesData[row][1] = result.getString("Title");
+                	titlesData[row][2] = result.getString("Type");
+                	titlesData[row][3] = result.getString("YearOfRelease");
+                	titlesData[row][4] = result.getString("Genre");
+                	titlesData[row][5] = result.getString("Format");
+                	titlesData[row][6] = result.getString("Price");
+                	titlesData[row][7] = result.getString("Director");
+                	titlesData[row][8] = result.getString("Artist");
 
                    // increase row to populate the next row
                     row++;
@@ -182,7 +198,7 @@ public class Title {
                     }
                
                     // set artData number of rows and number of columns
-                   titlesData= new String[numOfRows][8];
+                   titlesData= new String[numOfRows][9];
                     
                    // sending the query to the database
                    ResultSet searchTitles = dbConnection.getStmt().executeQuery(searchedData);
@@ -192,14 +208,16 @@ public class Title {
                     while(searchTitles.next()) {
                         
                         // set artData array to receive each value from each row, for each corresponding column
-                    	titlesData[row][0] = searchTitles.getString("Title");
-                    	titlesData[row][1] = searchTitles.getString("Type");
-                    	titlesData[row][2] = searchTitles.getString("YearOfRelease");
-                    	titlesData[row][3] = searchTitles.getString("Genre");
-                    	titlesData[row][4] = searchTitles.getString("Format");
-                    	titlesData[row][5] = searchTitles.getString("Price");
-                    	titlesData[row][6] = searchTitles.getString("Director");
-                    	titlesData[row][7] = searchTitles.getString("Artist");
+                    	titlesData[row][0] = searchTitles.getString("TitleID");
+                    	titlesData[row][1] = searchTitles.getString("Title");
+                    	titlesData[row][2] = searchTitles.getString("Type");
+                    	titlesData[row][3] = searchTitles.getString("YearOfRelease");
+                    	titlesData[row][4] = searchTitles.getString("Genre");
+                    	titlesData[row][5] = searchTitles.getString("Format");
+                    	titlesData[row][6] = searchTitles.getString("Price");
+                    	titlesData[row][7] = searchTitles.getString("Director");
+                    	titlesData[row][8] = searchTitles.getString("Artist");
+
                     	
                     	row++;
                     }
@@ -228,7 +246,7 @@ public class Title {
         	if(searchInput.isEmpty()) {
                 // building the queries
                 String numOfRowsQuery = "SELECT * FROM ultravision.titles";
-                String availableTitlesQuery = "SELECT titles.Title, titles.Type, titles.YearOfRelease, titles.Genre, titles.Format, titles.Price, titles.Director, titles.Artist FROM ultravision.titles WHERE IsAvailable=0;";
+                String availableTitlesQuery = "SELECT titles.TitleID, titles.Title, titles.Type, titles.YearOfRelease, titles.Genre, titles.Format, titles.Price, titles.Director, titles.Artist FROM ultravision.titles WHERE IsAvailable=0;";
                 
                 // sending the query to the database       
                 ResultSet resultNumOfRows = dbConnection.getStmt().executeQuery(numOfRowsQuery) ;
@@ -242,20 +260,21 @@ public class Title {
                 
                 ResultSet result = dbConnection.getStmt().executeQuery(availableTitlesQuery) ;
                 // set titlesData number of rows and number of columns
-                titlesData= new String[numOfRows][8];
+                titlesData= new String[numOfRows][9];
                 
                 int row = 0;
                 // loop through result, while it's returns true (while there's lines in titles table)
                 while(result.next()) {
                     // set titlesData array to receive each value from each row, for each corresponding column
-                	titlesData[row][0] = result.getString("Title");
-                	titlesData[row][1] = result.getString("Type");
-                	titlesData[row][2] = result.getString("YearOfRelease");
-                	titlesData[row][3] = result.getString("Genre");
-                	titlesData[row][4] = result.getString("Format");
-                	titlesData[row][5] = result.getString("Price");
-                	titlesData[row][6] = result.getString("Director");
-                	titlesData[row][7] = result.getString("Artist");
+                	titlesData[row][0] = result.getString("TitleID");
+                	titlesData[row][1] = result.getString("Title");
+                	titlesData[row][2] = result.getString("Type");
+                	titlesData[row][3] = result.getString("YearOfRelease");
+                	titlesData[row][4] = result.getString("Genre");
+                	titlesData[row][5] = result.getString("Format");
+                	titlesData[row][6] = result.getString("Price");
+                	titlesData[row][7] = result.getString("Director");
+                	titlesData[row][8] = result.getString("Artist");
 
                    // increase row to populate the next row
                     row++;
