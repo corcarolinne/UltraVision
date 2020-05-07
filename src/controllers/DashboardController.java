@@ -91,6 +91,9 @@ public class DashboardController implements ActionListener {
         	} else if (titleModel.validateRent(titleToRent, rentView.getEmailField()).equals("membershipPermissionError3")) {
         		JFrame f = new JFrame();
         		JOptionPane.showMessageDialog(f,"This customer is not allowed to rent this title. Please select a Box Set.","Alert",JOptionPane.ERROR_MESSAGE);
+        	} else if (titleModel.validateRent(titleToRent, rentView.getEmailField()).equals("rentLimitError")) {
+        		JFrame f = new JFrame();
+        		JOptionPane.showMessageDialog(f,"This customer reached the rent limit! They need to return a title to be able to rent again.","Alert",JOptionPane.ERROR_MESSAGE);
         	}
             
         } else if(e.getActionCommand().equals("cancel-rent")) {

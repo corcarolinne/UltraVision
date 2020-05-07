@@ -342,23 +342,45 @@ public class Title {
         	// query database for customer ID
         	String findCustomerID = "SELECT * FROM ultravision.customers WHERE Email = '"+customerEmail+"';";
         	
-	        ResultSet result = dbConnection.getStmt().executeQuery(findCustomerID) ;
+	        ResultSet customerDetails = dbConnection.getStmt().executeQuery(findCustomerID) ;
            
             // email validation
-            if(result.next()) {
+	        // if a customer 
+            if(customerDetails.next()) {
                 // set customerID to be the ID found on DB and save their membershipID
-            	customerID = result.getString("CustomerID");
-            	membershipID = result.getString("MembershipID");
-            	// membership validation
-                if(membershipID.equals("1") && (type.equals("Movie") || type.equals("Box Set"))) {
-                	messageType = "membershipPermissionError1";
-                } else if(membershipID.equals("2") && (type.equals("Music") || type.equals("Live Concert") || type.equals("Box Set"))) {
-                	messageType = "membershipPermissionError2";
-                } else if(membershipID.equals("3") && (type.equals("Music") || type.equals("Live Concert") || type.equals("Movie"))) {
-                	messageType = "membershipPermissionError3";
-                } else {
-                	messageType = "successfulTransaction";
-                }
+            	customerID = customerDetails.getString("CustomerID");
+            	membershipID = customerDetails.getString("MembershipID");
+            	
+            	// check if this customer ID is found 4 times in the transactions table
+            	// if it's found, then it means that the customer is not allowed to rent more titles
+            	// query database for customer ID
+            	String findTransactions = "SELECT * FROM ultravision.transactions WHERE CustomerID = '"+customerID+"';";
+            	ResultSet transactionsNumber = dbConnection.getStmt().executeQuery(findTransactions) ;
+            	
+            	// count number of transactions found
+            	int counter = 0;
+            	while(transactionsNumber.next()) {
+            		counter++;
+            	}
+            	
+            	// number of rents validation
+            	if(counter > 3) {
+            		messageType = "rentLimitError";
+            	} else {
+            		// if the customer can rent titles, proceed with the next part of the validation
+            		// check membership to see if customer can rent that type of title
+                    if(membershipID.equals("1") && (type.equals("Movie") || type.equals("Box Set"))) {
+                    	messageType = "membershipPermissionError1";
+                    } else if(membershipID.equals("2") && (type.equals("Music") || type.equals("Live Concert") || type.equals("Box Set"))) {
+                    	messageType = "membershipPermissionError2";
+                    } else if(membershipID.equals("3") && (type.equals("Music") || type.equals("Live Concert") || type.equals("Movie"))) {
+                    	messageType = "membershipPermissionError3";
+                    } else {
+	            		// in case the customer has premium membership or its allowed to rent the selected title
+	                	messageType = "successfulTransaction";	
+                    }
+            	}
+            	
             } else {
             	messageType = "customerNotFoundError";
             	
