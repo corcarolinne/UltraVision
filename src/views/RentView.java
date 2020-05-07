@@ -77,6 +77,10 @@ public class RentView extends JFrame {
 	public String getEmailField() {
 		return emailField.getText();
 	}
+	public JPanel getPanel() {
+		return this.panel;
+	}
+	
 
 	// validation and repainting
     private void validation(){

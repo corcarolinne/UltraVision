@@ -2,7 +2,9 @@ package controllers;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import models.Customer;
@@ -56,6 +58,9 @@ public class DashboardController implements ActionListener {
 	public String getFormat() {
 		return this.format;
 	}
+	public RentView getRentView() {
+		return this.rentView;
+	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -67,9 +72,19 @@ public class DashboardController implements ActionListener {
            rentView = new RentView(this, titleToRent);
         } else if(e.getActionCommand().equals("rent")){
         	titleModel.rentTitle(titleToRent, rentView.getEmailField());
-            view.dispose();
-            view = new DashboardView(this);
-            rentView.dispose();
+        	// if method is successful
+        	if(titleModel.rentTitle(titleToRent, rentView.getEmailField())) {
+        		JFrame f = new JFrame();
+        		JOptionPane.showMessageDialog(f,"Rent successful!");
+        		
+        		view.dispose();
+                view = new DashboardView(this);
+                rentView.dispose();
+        	} else {
+        		JFrame f = new JFrame();
+        		JOptionPane.showMessageDialog(f,"Customer not found. Email do not match any customer.","Alert",JOptionPane.ERROR_MESSAGE);
+        	}
+            
         } else if(e.getActionCommand().equals("cancel-rent")) {
     		// dispose view
         	rentView.dispose();

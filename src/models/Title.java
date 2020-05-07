@@ -3,8 +3,13 @@ package models;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import controllers.DashboardController;
 import main.DBConnection;
+import views.DashboardView;
 import views.SearchResultsView;
 
 public class Title {
@@ -323,10 +328,13 @@ public class Title {
         }
     }
     
-    // method to rent a title, receives a title object
-    public void rentTitle(Title titleToRent, String customerEmail){
+    // method to rent a title, receives a title object and returns a boolean representing method status
+    public boolean rentTitle(Title titleToRent, String customerEmail){
+    	
+    	boolean isValid = true;
         try{
         	String customerID = "";
+        	
         	
         	DBConnection dbConnection = new DBConnection();
             
@@ -339,6 +347,10 @@ public class Title {
             if(result.next()) {
                 // set customerID to be the ID found on DB
             	customerID = result.getString("CustomerID");
+            } else {
+            	isValid = false;
+            	return isValid;
+            	
             }
             
             // insert rent on transactions table on database
@@ -349,9 +361,16 @@ public class Title {
 	        
 	        // query to update title isAvailable column
 	        String updateTitleAvailability = "UPDATE ultravision.titles SET isAvailable = 0 WHERE titleID='"+titleToRent.getID()+"';";
-
+	        
 	        // execute update query
 	        dbConnection.getStmt().execute(updateTitleAvailability);
+	        
+	        // query adds 10 to customer's score
+	        String updateScore = "UPDATE ultravision.customers SET Score = Score + 10 WHERE CustomerID='"+customerID+"';"; 
+	        
+	        // execute update query
+	       dbConnection.getStmt().execute(updateScore);
+	        
 	        
             // closing statement and connections
             dbConnection.getStmt().close();
@@ -372,5 +391,6 @@ public class Title {
         catch( Exception e ){
                 System.out.println( e ) ;
         }
+        return isValid;
     }
 }
