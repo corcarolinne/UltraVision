@@ -409,61 +409,40 @@ public class Title {
     }
     
     // method to rent a title, receives a title object and returns a string with the type of message that should be displayed
-    public String rentTitle(Title titleToRent, String customerEmail){
+    public void rentTitle(Title titleToRent, String customerEmail){
     	
-    	String messageType = "successfulTransaction";
-        try{
+    	try{
         	String customerID = "";
-        	String membershipID = "";
-        	
-        	String type = titleToRent.type;
 
         	DBConnection dbConnection = new DBConnection();
-            
+
         	// query database for customer ID
         	String findCustomerID = "SELECT * FROM ultravision.customers WHERE Email = '"+customerEmail+"';";
-        	
+
 	        ResultSet result = dbConnection.getStmt().executeQuery(findCustomerID) ;
-           
-            // email validation
+
+            // if a result it's a found, it means there's a customer with this email
             if(result.next()) {
-                // set customerID to be the ID found on DB and save their membershipID
+                // set customerID to be the ID found on DB
             	customerID = result.getString("CustomerID");
-            	membershipID = result.getString("MembershipID");
-            	// membership validation
-                if(membershipID.equals("1") && type.equals("Movie") || type.equals("Box Set")) {
-                	System.out.println("This customer is not allowed to rent this type of title");
-                	return messageType = "membershipPermissionError";
-                }
-            } else {
-            	return messageType = "customerNotFoundError";
-            	
             }
-            
-            
+
             // insert rent on transactions table on database
             String insertQuery = "INSERT INTO ultravision.transactions (CustomerID, TitleID) VALUES ('"+customerID+"','"+titleToRent.getID()+"');";
 
             // execute insert query
 	        dbConnection.getStmt().execute(insertQuery);
-	        
+
 	        // query to update title isAvailable column
 	        String updateTitleAvailability = "UPDATE ultravision.titles SET isAvailable = 0 WHERE titleID='"+titleToRent.getID()+"';";
-	        
+
 	        // execute update query
 	        dbConnection.getStmt().execute(updateTitleAvailability);
-	        
-	        // query adds 10 to customer's score
-	        String updateScore = "UPDATE ultravision.customers SET Score = Score + 10 WHERE CustomerID='"+customerID+"';"; 
-	        
-	        // execute update query
-	       dbConnection.getStmt().execute(updateScore);
-	        
-	        
+
             // closing statement and connections
             dbConnection.getStmt().close();
             dbConnection.getConnection().close();
-            
+
         } catch( SQLException se ){
             System.out.println( "SQL Exception:" ) ;
 
@@ -479,6 +458,5 @@ public class Title {
         catch( Exception e ){
                 System.out.println( e ) ;
         }
-        return messageType;
     }
 }
