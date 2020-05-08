@@ -439,6 +439,12 @@ public class Title {
 	        // execute update query
 	        dbConnection.getStmt().execute(updateTitleAvailability);
 
+	        // query adds 10 to customer's score
+	        String updateScore = "UPDATE ultravision.customers SET Score = Score + 10 WHERE CustomerID='"+customerID+"';"; 
+
+	        // execute update query
+	       dbConnection.getStmt().execute(updateScore);
+
             // closing statement and connections
             dbConnection.getStmt().close();
             dbConnection.getConnection().close();
