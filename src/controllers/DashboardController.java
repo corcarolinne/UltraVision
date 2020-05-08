@@ -194,7 +194,7 @@ public class DashboardController implements ActionListener {
          		// insert genre text field on create title view
          		this.type = "Box Set";
          		createTitleView.getGenreFieldComponent().setEnabled(true);      	
-         	}
+         	} 
          } else if(e.getActionCommand().equals("select-format")) {
           	this.selectedFormat =  createTitleView.getFormatDropdownItem();
           	if(createTitleView.getFormatDropdownItem().equals("CD")) {
@@ -203,22 +203,27 @@ public class DashboardController implements ActionListener {
           		this.format = "DVD";
           	} else if (createTitleView.getFormatDropdownItem().equals("Blu-Ray")) {
           		this.format = "Blu-Ray";
-          	} 
+          	}
          } else if(e.getActionCommand().equals("create-title")) {
-        	String titleName = createTitleView.getTitleField();
-        	String type = this.type;
-            String yearOfRelease = createTitleView.getYearOfReleaseField();
-            String format = this.format;
-            String price = createTitleView.getPriceField();
-            boolean isAvailable = true;
-            String artist = createTitleView.getArtistField();
-            String genre = createTitleView.getGenreField();
-            String director = createTitleView.getDirectorField();
-            
-        	// if any of mandatory fields are empty, show message to user
-            if(titleName.equals("") || yearOfRelease.equals("") || price.equals("")) {
-            	System.out.println("inputs are null error. please insert somethin.");
-            } else {
+        	 String titleName = createTitleView.getTitleField();
+         	String type = this.type;
+             String yearOfRelease = createTitleView.getYearOfReleaseField();
+             String format = this.format;
+             String price = createTitleView.getPriceField();
+             boolean isAvailable = true;
+             String artist = createTitleView.getArtistField();
+             String genre = createTitleView.getGenreField();
+             String director = createTitleView.getDirectorField();
+        	 // if fields are empty
+        	if(titleName.equals("") || yearOfRelease.equals("") || price.equals("")) {
+        		JFrame f = new JFrame();
+        		JOptionPane.showMessageDialog(f,"Mandatory fields are empty. Please type a Title, a Year and a Price.","Alert",JOptionPane.ERROR_MESSAGE);
+        	 // check if drop downs were selected
+         	} else if (createTitleView.getFormatDropdownItem().equals("Select") || createTitleView.getTypeDropdownItem().equals("Select"))  {
+         		JFrame f = new JFrame();
+        		JOptionPane.showMessageDialog(f,"Mandatory fields are empty. Please select a Format and a Type.","Alert",JOptionPane.ERROR_MESSAGE);
+           	} else {
+           		// if all necessary inputs were filled
             	try {
             		// if they are not null, try to parse price as double
                 	double priceAsDouble = Double.parseDouble(price);

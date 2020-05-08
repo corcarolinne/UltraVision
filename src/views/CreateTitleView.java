@@ -151,13 +151,13 @@ public class CreateTitleView extends JFrame{
         this.directorField.setEnabled(false);
     
         // drop down to select type
-        String typeOptions[]={"","Music","Live Concert","Movie","Box Set"};        
+        String typeOptions[]={"Select","Music","Live Concert","Movie","Box Set"};        
         this.typeDropdown = new JComboBox(typeOptions);
         typeDropdown.addActionListener((ActionListener) controller);
         typeDropdown.setActionCommand("select-type");
         
         // drop down to select format
-        String formatOptions[]={"","CD","DVD","Blu-Ray"};        
+        String formatOptions[]={"Select","CD","DVD","Blu-Ray"};        
         this.formatDropdown = new JComboBox(formatOptions);
         formatDropdown.addActionListener((ActionListener) controller);
         formatDropdown.setActionCommand("select-format");
