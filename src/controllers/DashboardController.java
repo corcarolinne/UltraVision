@@ -86,12 +86,11 @@ public class DashboardController implements ActionListener {
         			JFrame f = new JFrame();
             		JOptionPane.showMessageDialog(f,"Customer won a free title! This title is free!");
         		}
-        		
-        		// call method to rent title
-        		//titleModel.rentTitle(titleToRent, rentView.getEmailField());
+    			// call method to rent title
+        		titleModel.rentTitle(titleToRent, rentView.getEmailField());
         		// show message saying the rent was successful
-        		//JFrame f = new JFrame();
-        		//JOptionPane.showMessageDialog(f,"Rent Successfully Done!");
+        		JFrame f = new JFrame();
+        		JOptionPane.showMessageDialog(f,"Rent Successfully Done!");
         		// closing view and opening the dashboard again
         		view.dispose();
                 view = new DashboardView(this);
