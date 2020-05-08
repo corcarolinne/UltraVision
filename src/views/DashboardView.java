@@ -60,6 +60,12 @@ public class DashboardView extends JFrame {
     	panel.add(addRentButton);
     	
     	// adding button
+    	JButton addReturnButton = new JButton("Return");
+    	addReturnButton.addActionListener((ActionListener) controller);
+    	addReturnButton.setActionCommand("add-return");
+    	panel.add(addReturnButton);
+    	
+    	// adding button
     	JButton addCustomerButton = new JButton("Add Customer");
     	addCustomerButton.addActionListener((ActionListener) controller);
     	addCustomerButton.setActionCommand("add-customer");
@@ -115,7 +121,7 @@ public class DashboardView extends JFrame {
     	JLabel rentedTitlesLabel = new JLabel("In Transit"); 
     	panel.add(rentedTitlesLabel);
         		
-    	// calling method from model to show available titles
+    	// calling method from model to show rented titles
     	rentedTitlesData = controller.titleModel.showRentedTitles("","");
     	 
 		 // creating table and adding it to the panel
@@ -154,8 +160,8 @@ public class DashboardView extends JFrame {
         return this.dropdown.getSelectedItem().toString();
     }
     
-    // method to pick title selected from table
-    public Title getSelectedTitle() {
+    // method to pick title selected available titles table
+    public Title getAvailableTitle() {
         // creates a new instance of Title
     	Title selectedTitle = new Title(this.controller);
        // save index from row in a variable
@@ -173,6 +179,29 @@ public class DashboardView extends JFrame {
            selectedTitle.setFormat(selectedTitlesArray[5]);
            selectedTitle.setPrice(Double.parseDouble(selectedTitlesArray[6]));
            //selectedTitle.setAvailable(true);
+           selectedTitle.setDirector(selectedTitlesArray[7]);
+           selectedTitle.setArtist(selectedTitlesArray[8]);
+       }
+       return selectedTitle;
+   }
+    // method to pick title selected on in transit table
+    public Title getRentedTitle() {
+        // creates a new instance of Title
+    	Title selectedTitle = new Title(this.controller);
+       // save index from row in a variable
+       int selectedTitleIndex = rentedTitlesTable.getSelectedRow();
+       // if something is selected
+       if (selectedTitleIndex > -1) {
+           // creates array to store selected row inside 2d array
+           String[] selectedTitlesArray = rentedTitlesData[selectedTitleIndex];
+           // using setters to pass the values in the row to the Title object
+           selectedTitle.setID(Integer.parseInt(selectedTitlesArray[0]));
+           selectedTitle.setTitleName(selectedTitlesArray[1]);
+           selectedTitle.setType(selectedTitlesArray[2]);
+           selectedTitle.setYearOfRelease(selectedTitlesArray[3]);
+           selectedTitle.setGenre(selectedTitlesArray[4]);
+           selectedTitle.setFormat(selectedTitlesArray[5]);
+           selectedTitle.setPrice(Double.parseDouble(selectedTitlesArray[6]));
            selectedTitle.setDirector(selectedTitlesArray[7]);
            selectedTitle.setArtist(selectedTitlesArray[8]);
        }

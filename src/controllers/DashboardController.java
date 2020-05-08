@@ -13,6 +13,7 @@ import views.CreateCustomerView;
 import views.CreateTitleView;
 import views.DashboardView;
 import views.RentView;
+import views.ReturnView;
 import views.SearchResultsView;
 import views.UpdateCustomerView;
 
@@ -39,6 +40,8 @@ public class DashboardController implements ActionListener {
 	String updatedMembership;
 	RentView rentView;
 	Title titleToRent;
+	ReturnView returnView;
+	Title titleToReturn;
 	
 	// constructor
     public DashboardController(){
@@ -67,7 +70,7 @@ public class DashboardController implements ActionListener {
 		// if a certain button is clicked do the actions inside the brackets
 		if(e.getActionCommand().equals("add-rent")){
 			// calling method from view to get title selected from table
-			this.titleToRent = view.getSelectedTitle();
+			this.titleToRent = view.getAvailableTitle();
             if(this.titleToRent.getTitleName() == null) {
             	JFrame f = new JFrame();
         		JOptionPane.showMessageDialog(f,"Title not selected. Please select a title on Available Titles to rent.","Alert",JOptionPane.ERROR_MESSAGE);
@@ -91,7 +94,7 @@ public class DashboardController implements ActionListener {
         		// show message saying the rent was successful
         		JFrame f = new JFrame();
         		JOptionPane.showMessageDialog(f,"Rent Successfully Done!");
-        		// closing view and opening the dashboard again
+        		// closing view and opening the dash board again
         		view.dispose();
                 view = new DashboardView(this);
                 rentView.dispose();
@@ -115,6 +118,20 @@ public class DashboardController implements ActionListener {
         } else if(e.getActionCommand().equals("cancel-rent")) {
     		// dispose view
         	rentView.dispose();
+        } else if(e.getActionCommand().equals("add-return")){
+			// calling method from view to get title selected from table
+			this.titleToReturn = view.getRentedTitle();
+            if(this.titleToReturn.getTitleName() == null) {
+            	JFrame f = new JFrame();
+        		JOptionPane.showMessageDialog(f,"Title not selected. Please select a title on In Transit table.","Alert",JOptionPane.ERROR_MESSAGE);
+            } else {
+            	// redirects to return title page
+                returnView = new ReturnView(this, titleToReturn);
+            }
+            
+        } else if(e.getActionCommand().equals("cancel-return")) {
+    		// dispose view
+        	returnView.dispose();
         } else if(e.getActionCommand().equals("add-customer")){
         	createCustomerView = new CreateCustomerView(this);
         } else if(e.getActionCommand().equals("select-membership")) {
