@@ -334,9 +334,9 @@ public class Title {
         try{
         	String customerID = "";
         	String membershipID = "";
-        	
         	String type = titleToRent.type;
 
+        	
         	DBConnection dbConnection = new DBConnection();
             
         	// query database for customer ID

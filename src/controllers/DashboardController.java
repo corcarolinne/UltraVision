@@ -67,9 +67,15 @@ public class DashboardController implements ActionListener {
 		// if a certain button is clicked do the actions inside the brackets
 		if(e.getActionCommand().equals("add-rent")){
 			// calling method from view to get title selected from table
-            this.titleToRent = view.getSelectedTitle();
-            // redirects to rent page
-           rentView = new RentView(this, titleToRent);
+			this.titleToRent = view.getSelectedTitle();
+            if(this.titleToRent.getTitleName() == null) {
+            	JFrame f = new JFrame();
+        		JOptionPane.showMessageDialog(f,"Title not selected. Please select a title on Available Titles to rent.","Alert",JOptionPane.ERROR_MESSAGE);
+            } else {
+            	// redirects to rent page
+                rentView = new RentView(this, titleToRent);
+            }
+            
         } else if(e.getActionCommand().equals("rent")){
         	//titleModel.rentTitle(titleToRent, rentView.getEmailField());
         	// if method is successful
