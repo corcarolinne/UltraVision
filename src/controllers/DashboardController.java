@@ -210,21 +210,42 @@ public class DashboardController implements ActionListener {
             String yearOfRelease = createTitleView.getYearOfReleaseField();
             String format = this.format;
             String price = createTitleView.getPriceField();
-            double priceAsDouble = Double.parseDouble(price);
             boolean isAvailable = true;
             String artist = createTitleView.getArtistField();
             String genre = createTitleView.getGenreField();
             String director = createTitleView.getDirectorField();
-            // create an instance of the customer class with the data collated
-            Title newTitle = new Title(titleName, type, yearOfRelease, format, priceAsDouble, isAvailable, artist, genre, director, this);
-            // using model to call method
-            this.titleModel.createTitle(newTitle);
-            // dispose current view and call a new one to refresh table
-            view.dispose();
-            view = new DashboardView(this);
-            createTitleView.dispose();
-	        
-         }  if(e.getActionCommand().equals("update-customer-page")){
+            
+        	// if any of mandatory fields are empty, show message to user
+            if(titleName.equals("") || yearOfRelease.equals("") || price.equals("")) {
+            	System.out.println("inputs are null error. please insert somethin.");
+            } else {
+            	try {
+            		// if they are not null, try to parse price as double
+                	double priceAsDouble = Double.parseDouble(price);
+                	
+                	// if we convert the price successfully
+                	// set a title to be the title to be created passing the price as a double
+                    Title titleToBeCreated = new Title(titleName, type, yearOfRelease, format, priceAsDouble, isAvailable, artist, genre, director, this);
+                    // call method to make the validation
+                    System.out.println("call method to make validation");
+                    
+            	} catch (Exception e1) {
+                	JFrame f = new JFrame();
+            		JOptionPane.showMessageDialog(f,"Price input not valid. Please insert only numbers on price field.","Alert",JOptionPane.ERROR_MESSAGE);
+                }
+            }	
+              
+//                   create an instance of the title class with the data collated
+//                   Title newTitle = new Title(titleName, type, yearOfRelease, format, priceAsDouble, isAvailable, artist, genre, director, this);
+//                    // using model to call method
+//                    this.titleModel.createTitle(newTitle);
+//                    // dispose current view and call a new one to refresh table
+//                    view.dispose();
+//                    view = new DashboardView(this);
+//                    createTitleView.dispose();
+             
+            
+         }  else if(e.getActionCommand().equals("update-customer-page")){
         	// calling method from view to get customer selected from table
              this.customerToUpdate= view.getSelectedCustomer();
              // redirects to customer update page
