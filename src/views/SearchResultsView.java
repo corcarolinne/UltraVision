@@ -68,9 +68,9 @@ public class SearchResultsView extends JFrame {
         String[] header = null;
         
         if(this.selectedFilter.equals("Titles")) {
-        	header = new String[]{"Title", "Type","Year Of Release", "Genre", "Format", "Price", "Director", "Band"};
+        	header = new String[]{"ID","Title", "Type","Year Of Release", "Genre", "Format", "Price", "Director", "Artist"};
         } else {
-        	header = new String[]{"First Name", "Last Name","Address", "Email", "Phone", "Card Number", "Membership", "Loyalty Points"};
+        	header = new String[]{"ID","First Name", "Last Name","Address", "Email", "Phone", "Card Number", "Membership", "Loyalty Points"};
         }
         
         // table for search

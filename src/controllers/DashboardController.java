@@ -231,7 +231,6 @@ public class DashboardController implements ActionListener {
             updateCustomerView = new UpdateCustomerView(this, customerToUpdate);
          } else if(e.getActionCommand().equals("update-membership")) {
          	this.selectedMembership =  updateCustomerView.getDropdownItem();
-         	System.out.println(this.selectedMembership);
          	// setting membership ID according to selected drop down
          	if(updateCustomerView.getDropdownItem().equals("Music Lovers")) {
          		this.membershipID = 1;
@@ -264,17 +263,29 @@ public class DashboardController implements ActionListener {
 	        this.selectedFilter = view.getDropdownItem();
 	        if(view.getDropdownItem().equals("Titles")) {
         		// getting values from input
-                this.searchInput = view.getSearchInput();
-                // call method to pick data for titles tables passing the search inputs and filter and saving this into a 2d array
-                searchResult= this.titleModel.showAvailableTitles(this.searchInput, this.selectedFilter);
-                searchResultsView = new SearchResultsView(this, searchResult, this.selectedFilter);
+	        	this.searchInput = view.getSearchInput();
+                // if user doesn't enter anything on search text field
+                if(view.getSearchInput().equals("")) {
+                	JFrame f = new JFrame();
+            		JOptionPane.showMessageDialog(f,"No input on search field. Please type what you wanna search and select Titles or Customers.","Alert",JOptionPane.ERROR_MESSAGE);
+                } else {
+	                // call method to pick data for titles tables passing the search inputs and filter and saving this into a 2d array
+	                searchResult= this.titleModel.showAvailableTitles(this.searchInput, this.selectedFilter);
+	                searchResultsView = new SearchResultsView(this, searchResult, this.selectedFilter);
+                }
 	        } else if(view.getDropdownItem().equals("Customers")) {
         		// getting values from input
                 this.searchInput = view.getSearchInput();
-                // call method to pick data for titles tables passing the search inputs and filter and saving this into a 2d array
-        		searchResult= this.customerModel.showCustomers(this.searchInput, this.selectedFilter);
-        		searchResultsView = new SearchResultsView(this, searchResult, this.selectedFilter);
-	        }
+                if(view.getSearchInput().equals("")) {
+                	JFrame f = new JFrame();
+            		JOptionPane.showMessageDialog(f,"No input on search field. Please type what you wanna search and select Titles or Customers.","Alert",JOptionPane.ERROR_MESSAGE);
+                } else {
+                	// call method to pick data for titles tables passing the search inputs and filter and saving this into a 2d array
+            		searchResult= this.customerModel.showCustomers(this.searchInput, this.selectedFilter);
+            		searchResultsView = new SearchResultsView(this, searchResult, this.selectedFilter);
+    	        }
+                }
+                
         }
 	}
         
