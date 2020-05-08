@@ -80,8 +80,12 @@ public class DashboardController implements ActionListener {
         	
         	// if validation is successful
         	if(titleModel.validateRent(titleToRent, rentView.getEmailField()).equals("successfulValidation")) {
-        		// call method to check customer's score
-        		titleModel.checkScore(rentView.getEmailField());
+        		// call method to check customer's score, if it returns true
+        		if(titleModel.checkScore(rentView.getEmailField())) {
+        			// show message saying the customer won a free rent
+        			JFrame f = new JFrame();
+            		JOptionPane.showMessageDialog(f,"Customer won a free title! This title is free!");
+        		}
         		
         		// call method to rent title
         		//titleModel.rentTitle(titleToRent, rentView.getEmailField());

@@ -414,6 +414,7 @@ public class Title {
     	try{
     		
         	String customerID = "";
+        	String score = "";
 
         	DBConnection dbConnection = new DBConnection();
 
@@ -426,18 +427,18 @@ public class Title {
             if(customerFinding.next()) {
                 // set customerID to be the ID found on DB
             	customerID = customerFinding.getString("CustomerID");
+            	score = customerFinding.getString("Score");
             }
 
-	        // query to check if it's the first rent of this customer 10 to customer's score
-	        String checkTransactions = "SELECT * FROM ultravision.transactions WHERE CustomerID='"+customerID+"';";
-	        
-	        // execute update query
-	        ResultSet transactionsChecking  = dbConnection.getStmt().executeQuery(checkTransactions) ;
-
-	       // if there's no transaction with this customer
-	       if(transactionsChecking.next() == false) {
+	       // if the score of this customer is 0 or 100
+	       if(score.equals("0") || score.equals("100")) {
+	    	   // set this method to return true
 	    	   isFreeRentValid = true;
-	    	   System.out.println("test message");
+	    	   // update on database the score of this customer
+	    	   String updateScore = "UPDATE ultravision.customers SET Score = '0' WHERE CustomerID = '"+customerID+"';";
+	    	   // execute query
+		       dbConnection.getStmt().execute(updateScore);
+	    	   
 	       }
             // closing statement and connections
             dbConnection.getStmt().close();
