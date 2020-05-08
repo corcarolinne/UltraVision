@@ -128,7 +128,16 @@ public class DashboardController implements ActionListener {
             	// redirects to return title page
                 returnView = new ReturnView(this, titleToReturn);
             }
-            
+        } else if(e.getActionCommand().equals("return")){
+        	// call method to return title
+    		titleModel.returnTitle(titleToReturn);
+    		// show message saying the rent was successful
+    		JFrame f = new JFrame();
+    		JOptionPane.showMessageDialog(f,"Return Successfully Done!");
+    		// closing view and opening the dash board again
+    		view.dispose();
+            view = new DashboardView(this);
+            returnView.dispose();
         } else if(e.getActionCommand().equals("cancel-return")) {
     		// dispose view
         	returnView.dispose();

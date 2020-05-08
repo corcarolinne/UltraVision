@@ -461,7 +461,7 @@ public class Title {
         }
     	return isFreeRentValid;
     }
-    // method to rent a title, receives a title object and returns a string with the type of message that should be displayed
+    // method to rent a title, receives a title object and a string with customer's email entered on input
     public void rentTitle(Title titleToRent, String customerEmail){
     	
     	try{
@@ -497,6 +497,59 @@ public class Title {
 
 	        // execute update query
 	       dbConnection.getStmt().execute(updateScore);
+
+            // closing statement and connections
+            dbConnection.getStmt().close();
+            dbConnection.getConnection().close();
+
+        } catch( SQLException se ){
+            System.out.println( "SQL Exception:" ) ;
+
+            // Loop through the SQL Exceptions
+            while( se != null ){
+                System.out.println( "State  : " + se.getSQLState()  ) ;
+                System.out.println( "Message: " + se.getMessage()   ) ;
+                System.out.println( "Error  : " + se.getErrorCode() ) ;
+
+                se = se.getNextException() ;
+            }
+        }
+        catch( Exception e ){
+                System.out.println( e ) ;
+        }
+    }
+    // method to return a title, receives a title object
+    public void returnTitle(Title titleToRent){
+    	
+    	try{
+        	String transactionID = "";
+
+        	DBConnection dbConnection = new DBConnection();
+
+        	// search transactions with this title ID
+        	String searchQuery = "SELECT * FROM ultravision.transactions WHERE TitleID = '"+titleToRent.getID()+"';";
+        	ResultSet result = dbConnection.getStmt().executeQuery(searchQuery) ;
+        	
+        	// if there's a transaction with this title ID
+        	if(result.next()) {
+        		// save transaction ID
+        		transactionID = result.getString("TransactionID");
+        	}
+        	
+        	// convert transactionID to integer
+        	int transactionIDAsInt = Integer.parseInt(transactionID);  
+        	
+            // update column with return date on transactions table with current time
+            String updateQuery = "UPDATE ultravision.transactions SET ReturnedAt = current_timestamp() WHERE TransactionID = '"+transactionIDAsInt+"';";
+
+            // execute update query
+	        dbConnection.getStmt().executeUpdate(updateQuery);
+
+	        // query to update title isAvailable column
+	        String updateTitleAvailability = "UPDATE ultravision.titles SET isAvailable = 1 WHERE titleID='"+titleToRent.getID()+"';";
+
+	        // execute update title query
+	        dbConnection.getStmt().execute(updateTitleAvailability);
 
             // closing statement and connections
             dbConnection.getStmt().close();
