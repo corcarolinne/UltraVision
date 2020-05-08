@@ -78,13 +78,16 @@ public class DashboardController implements ActionListener {
             
         } else if(e.getActionCommand().equals("rent")){
         	
-        	// if method is successful
-        	if(titleModel.validateRent(titleToRent, rentView.getEmailField()).equals("successfulTransaction")) {
+        	// if validation is successful
+        	if(titleModel.validateRent(titleToRent, rentView.getEmailField()).equals("successfulValidation")) {
+        		// call method to check customer's score
+        		titleModel.checkScore(rentView.getEmailField());
+        		
         		// call method to rent title
-        		titleModel.rentTitle(titleToRent, rentView.getEmailField());
+        		//titleModel.rentTitle(titleToRent, rentView.getEmailField());
         		// show message saying the rent was successful
-        		JFrame f = new JFrame();
-        		JOptionPane.showMessageDialog(f,"Rent Successfully Done!");
+        		//JFrame f = new JFrame();
+        		//JOptionPane.showMessageDialog(f,"Rent Successfully Done!");
         		// closing view and opening the dashboard again
         		view.dispose();
                 view = new DashboardView(this);

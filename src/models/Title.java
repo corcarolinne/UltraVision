@@ -377,7 +377,7 @@ public class Title {
                     	messageType = "membershipPermissionError3";
                     } else {
 	            		// in case the customer has premium membership or its allowed to rent the selected title
-	                	messageType = "successfulTransaction";	
+	                	messageType = "successfulValidation";	
                     }
             	}
             	
@@ -407,7 +407,59 @@ public class Title {
         }
         return messageType;
     }
-    
+    // method to check score of a customer, if they are able to get a free rent or not
+    public boolean checkScore(String customerEmail){
+    	
+    	boolean isFreeRentValid = false;
+    	try{
+    		
+        	String customerID = "";
+
+        	DBConnection dbConnection = new DBConnection();
+
+        	// query database for customer ID
+        	String findCustomerID = "SELECT * FROM ultravision.customers WHERE Email = '"+customerEmail+"';";
+
+	        ResultSet customerFinding = dbConnection.getStmt().executeQuery(findCustomerID) ;
+
+            // if a result it's a found, it means there's a customer with this email
+            if(customerFinding.next()) {
+                // set customerID to be the ID found on DB
+            	customerID = customerFinding.getString("CustomerID");
+            }
+
+	        // query to check if it's the first rent of this customer 10 to customer's score
+	        String checkTransactions = "SELECT * FROM ultravision.transactions WHERE CustomerID='"+customerID+"';";
+	        
+	        // execute update query
+	        ResultSet transactionsChecking  = dbConnection.getStmt().executeQuery(checkTransactions) ;
+
+	       // if there's no transaction with this customer
+	       if(transactionsChecking.next() == false) {
+	    	   isFreeRentValid = true;
+	    	   System.out.println("test message");
+	       }
+            // closing statement and connections
+            dbConnection.getStmt().close();
+            dbConnection.getConnection().close();
+
+        } catch( SQLException se ){
+            System.out.println( "SQL Exception:" ) ;
+
+            // Loop through the SQL Exceptions
+            while( se != null ){
+                System.out.println( "State  : " + se.getSQLState()  ) ;
+                System.out.println( "Message: " + se.getMessage()   ) ;
+                System.out.println( "Error  : " + se.getErrorCode() ) ;
+
+                se = se.getNextException() ;
+            }
+        }
+        catch( Exception e ){
+                System.out.println( e ) ;
+        }
+    	return isFreeRentValid;
+    }
     // method to rent a title, receives a title object and returns a string with the type of message that should be displayed
     public void rentTitle(Title titleToRent, String customerEmail){
     	
