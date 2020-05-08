@@ -1,6 +1,7 @@
 package controllers;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.regex.Pattern;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -214,42 +215,48 @@ public class DashboardController implements ActionListener {
              String artist = createTitleView.getArtistField();
              String genre = createTitleView.getGenreField();
              String director = createTitleView.getDirectorField();
+             
+             // regex pattern for year from 1900 to 2099
+             Pattern DATE_PATTERN = Pattern.compile("\\b(19|20)\\d\\d\\b");
+             // saving matching result in a variable
+             boolean isYearValid = DATE_PATTERN.matcher(yearOfRelease).matches();
+             
         	 // if fields are empty
         	if(titleName.equals("") || yearOfRelease.equals("") || price.equals("")) {
         		JFrame f = new JFrame();
         		JOptionPane.showMessageDialog(f,"Mandatory fields are empty. Please type a Title, a Year and a Price.","Alert",JOptionPane.ERROR_MESSAGE);
-        	 // check if drop downs were selected
-         	} else if (createTitleView.getFormatDropdownItem().equals("Select") || createTitleView.getTypeDropdownItem().equals("Select"))  {
+         	}
+        	// check if drop downs were selected
+        	else if (createTitleView.getFormatDropdownItem().equals("Select") || createTitleView.getTypeDropdownItem().equals("Select"))  {
          		JFrame f = new JFrame();
         		JOptionPane.showMessageDialog(f,"Mandatory fields are empty. Please select a Format and a Type.","Alert",JOptionPane.ERROR_MESSAGE);
-           	} else {
-           		// if all necessary inputs were filled
+           	}
+        	// if year is not a valid year
+        	else if (isYearValid == false) {
+        		JFrame f = new JFrame();
+        		JOptionPane.showMessageDialog(f,"Please enter a valid year on Year Of Release.","Alert",JOptionPane.ERROR_MESSAGE);
+         	} 
+        	// if all necessary inputs were filled and year is valid 
+        	else {
             	try {
-            		// if they are not null, try to parse price as double
+            		// if price is not null, try to parse price as double
                 	double priceAsDouble = Double.parseDouble(price);
                 	
                 	// if we convert the price successfully
-                	// set a title to be the title to be created passing the price as a double
-                    Title titleToBeCreated = new Title(titleName, type, yearOfRelease, format, priceAsDouble, isAvailable, artist, genre, director, this);
-                    // call method to make the validation
-                    System.out.println("call method to make validation");
-                    
+                	//create an instance of the title class with the data collated
+                	Title newTitle = new Title(titleName, type, yearOfRelease, format, priceAsDouble, isAvailable, artist, genre, director, this);
+					// using model to call method
+					this.titleModel.createTitle(newTitle);
+					// dispose current view and call a new one to refresh table
+					view.dispose();
+					view = new DashboardView(this);
+					createTitleView.dispose();
+    
             	} catch (Exception e1) {
                 	JFrame f = new JFrame();
             		JOptionPane.showMessageDialog(f,"Price input not valid. Please insert only numbers on price field.","Alert",JOptionPane.ERROR_MESSAGE);
                 }
-            }	
-              
-//                   create an instance of the title class with the data collated
-//                   Title newTitle = new Title(titleName, type, yearOfRelease, format, priceAsDouble, isAvailable, artist, genre, director, this);
-//                    // using model to call method
-//                    this.titleModel.createTitle(newTitle);
-//                    // dispose current view and call a new one to refresh table
-//                    view.dispose();
-//                    view = new DashboardView(this);
-//                    createTitleView.dispose();
-             
-            
+            }	  
          }  else if(e.getActionCommand().equals("update-customer-page")){
         	// calling method from view to get customer selected from table
              this.customerToUpdate= view.getSelectedCustomer();
