@@ -201,21 +201,20 @@ public class DashboardController implements ActionListener {
         	// if phone number is entered check if it's a phone number
         	else if (isPhoneNumberValid == false) {
         		JFrame f = new JFrame();
-        		JOptionPane.showMessageDialog(f,"Please enter phone number including your country code such as: (999) 999 999-999.","Alert",JOptionPane.ERROR_MESSAGE);
+        		JOptionPane.showMessageDialog(f,"Please enter phone number such as: (999) 999 999-999.","Alert",JOptionPane.ERROR_MESSAGE);
          	}else {
-         		System.out.println("call create method");
+         		// create an instance of the customer class with the data collated
+                Customer newCustomer = new Customer(firstName, lastName, address, email, phone, cardNumber, membership, this);
+                // using model to call method
+                this.customerModel.createCustomer(newCustomer);
+                // show message to the user
+                JFrame f = new JFrame();
+        		JOptionPane.showMessageDialog(f,"Customer created successfully!");
+                // dispose current view and call a new one to refresh table
+                view.dispose();
+                view = new DashboardView(this);
+                createCustomerView.dispose();
          	}
-        	
-        	
-            // create an instance of the customer class with the data collated
-            //Customer newCustomer = new Customer(firstName, lastName, address, email, phone, cardNumber, membership, this);
-            // using model to call method
-            //this.customerModel.createCustomer(newCustomer);
-            // dispose current view and call a new one to refresh table
-            //view.dispose();
-            //view = new DashboardView(this);
-            //createCustomerView.dispose();
-	        
          } else if(e.getActionCommand().equals("add-title")){
          	createTitleView = new CreateTitleView(this);
          } else if(e.getActionCommand().equals("select-type")) {
@@ -228,7 +227,6 @@ public class DashboardController implements ActionListener {
          		// insert band text field on create title view
          		this.type = "Live Concert";
          		createTitleView.getArtistFieldComponent().setEnabled(true);
-         		System.out.println("Test Live Concert");
          	} else if (createTitleView.getTypeDropdownItem().equals("Movie")) {
          		// insert genre, director text fields on create title view
          		this.type = "Movie";
@@ -290,6 +288,9 @@ public class DashboardController implements ActionListener {
                 	Title newTitle = new Title(titleName, type, yearOfRelease, format, priceAsDouble, isAvailable, artist, genre, director, this);
 					// using model to call method
 					this.titleModel.createTitle(newTitle);
+					// success message to user
+					JFrame f = new JFrame();
+	        		JOptionPane.showMessageDialog(f,"Title created successfully!");
 					// dispose current view and call a new one to refresh table
 					view.dispose();
 					view = new DashboardView(this);
@@ -303,9 +304,17 @@ public class DashboardController implements ActionListener {
          }  else if(e.getActionCommand().equals("update-customer-page")){
         	// calling method from view to get customer selected from table
              this.customerToUpdate= view.getSelectedCustomer();
-             // redirects to customer update page
-            updateCustomerView = new UpdateCustomerView(this, customerToUpdate);
-         } else if(e.getActionCommand().equals("update-membership")) {
+             if(this.customerToUpdate.getFirstName() == null) {
+              	JFrame f = new JFrame();
+          		JOptionPane.showMessageDialog(f,"Customer not selected. Please select a customer on Customers table.","Alert",JOptionPane.ERROR_MESSAGE);
+              } else {
+            	// redirects to customer update page
+                  updateCustomerView = new UpdateCustomerView(this, customerToUpdate);
+              }
+         } else if(e.getActionCommand().equals("cancel-update")) {
+     		// dispose view
+         	updateCustomerView.dispose();
+         }else if(e.getActionCommand().equals("update-membership")) {
          	this.selectedMembership =  updateCustomerView.getDropdownItem();
          	// setting membership ID according to selected drop down
          	if(updateCustomerView.getDropdownItem().equals("Music Lovers")) {
@@ -325,15 +334,57 @@ public class DashboardController implements ActionListener {
             String phone = updateCustomerView.getPhoneField();
             String cardNumber = updateCustomerView.getCardNumberField();
             int membership = this.getMembershipID();
-            // create an instance of the customer class with the data collated
-            Customer customerSelected = new Customer(firstName, lastName, address, email, phone, cardNumber, membership, this);
-            // using model to call method
-            this.customerModel.updateCustomer(customerSelected, this.customerToUpdate);
-            // dispose current view and call a new one to refresh table
-            view.dispose();
-            view = new DashboardView(this);
-            updateCustomerView.dispose();
-	        
+            
+            // regex pattern for email
+            Pattern EMAIL_PATTERN = Pattern.compile("\\b[\\w\\.-]+@[\\w\\.-]+\\.\\w{2,4}\\b");
+            // saving matching result in a variable
+            boolean isEmailValid = EMAIL_PATTERN.matcher(email).matches();
+            
+            // regex pattern for card number
+            Pattern CARD_NUMBER_PATTERN = Pattern.compile("(\\d{4}[-. ]?){4}|\\d{4}[-. ]?\\d{6}[-. ]?\\d{5}");
+            // saving matching result in a variable
+            boolean isCardNumberValid = CARD_NUMBER_PATTERN.matcher(cardNumber).matches();
+
+            // regex pattern for phone number
+            Pattern PHONE_NUMBER_PATTERN = Pattern.compile("^(\\(\\d+\\)\\s{0,1}){0,1}(\\d+((\\-|\\s){0,1})\\d+){0,}$");
+            // saving matching result in a variable
+            boolean isPhoneNumberValid = PHONE_NUMBER_PATTERN.matcher(phone).matches();
+            
+            // if mandatory fields are empty
+        	if(firstName.equals("") || lastName.equals("") || address.equals("")){
+        		JFrame f = new JFrame();
+        		JOptionPane.showMessageDialog(f,"Mandatory fields are empty. Please type First Name, Last Name and Address of customer.","Alert",JOptionPane.ERROR_MESSAGE);
+         	} else if (updateCustomerView.getDropdownItem().equals("Select"))  {
+         		JFrame f = new JFrame();
+        		JOptionPane.showMessageDialog(f,"Mandatory field is empty. Please select a Membership.","Alert",JOptionPane.ERROR_MESSAGE);
+           	}
+        	// if email is not a valid email
+        	else if (isEmailValid == false) {
+        		JFrame f = new JFrame();
+        		JOptionPane.showMessageDialog(f,"Please enter email address in format: youremail@example.com","Alert",JOptionPane.ERROR_MESSAGE);
+         	} 
+        	// if card number is not a valid card number
+        	else if (isCardNumberValid == false) {
+        		JFrame f = new JFrame();
+        		JOptionPane.showMessageDialog(f,"Wrong card number. Please enter a valid card number.","Alert",JOptionPane.ERROR_MESSAGE);
+         	}
+        	// if phone number is entered check if it's a phone number
+        	else if (isPhoneNumberValid == false) {
+        		JFrame f = new JFrame();
+        		JOptionPane.showMessageDialog(f,"Please enter a valid phone number such as (999) 999 999-999.","Alert",JOptionPane.ERROR_MESSAGE);
+         	}else {
+         	// create an instance of the customer class with the data collated
+                Customer customerSelected = new Customer(firstName, lastName, address, email, phone, cardNumber, membership, this);
+                // using model to call method
+                this.customerModel.updateCustomer(customerSelected, this.customerToUpdate);
+                // show message saying the update was successful
+        		JFrame f = new JFrame();
+        		JOptionPane.showMessageDialog(f,"Update Successfully Done!");
+                // dispose current view and call a new one to refresh table
+                view.dispose();
+                view = new DashboardView(this);
+                updateCustomerView.dispose();
+         	} 
          } else if(e.getActionCommand().equals("filter")) {
 	        // call method in view to get selected item in drop down
 	        this.selectedFilter = view.getDropdownItem();

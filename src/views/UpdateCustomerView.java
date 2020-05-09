@@ -129,7 +129,7 @@ public class UpdateCustomerView extends JFrame {
         cardNumberField = new JTextField(this.customerToUpdate.getCardNumber(), 20);
    
         // drop down to select membership
-        String membershipOptions[]={"","Music Lovers","Video Lovers", "TV Lovers", "Premium"};        
+        String membershipOptions[]={"Select","Music Lovers","Video Lovers", "TV Lovers", "Premium"};        
         this.membershipDropdown = new JComboBox(membershipOptions);
         this.membershipDropdown.addActionListener((ActionListener) controller);
         this.membershipDropdown.setActionCommand("update-membership");
@@ -139,6 +139,12 @@ public class UpdateCustomerView extends JFrame {
         updateCustomerButton.addActionListener((ActionListener) controller);
         updateCustomerButton.setActionCommand("update-customer");
         
+        // adding button
+    	JButton cancelButton = new JButton("Cancel");
+    	cancelButton.addActionListener((ActionListener) controller);
+    	cancelButton.setActionCommand("cancel-update");
+    	
+    	
         // adding components to the panel
         panel.add(firstNameLabel);
         panel.add(firstNameField);
@@ -155,6 +161,7 @@ public class UpdateCustomerView extends JFrame {
         panel.add(membershipLabel);
         panel.add(membershipDropdown);
         panel.add(updateCustomerButton);
+        panel.add(cancelButton);
     }
     
     // validation and repainting

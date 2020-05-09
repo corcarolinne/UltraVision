@@ -49,7 +49,7 @@ public class Title {
 		this.controller = controller;
 	}
 	
-	public Title(String titleName, String type, String yearOfRelease, String format, double price, boolean isAvailable, String artist, String genre, String director, DashboardController dashboardController) {
+	public Title(String titleName, String type, String yearOfRelease, String format, double price, boolean isAvailable, String artist, String genre, String director, DashboardController controller) {
 		this.titleName = titleName;
 		this.type = type;
 		this.yearOfRelease = yearOfRelease;
