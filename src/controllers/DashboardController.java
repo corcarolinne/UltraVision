@@ -164,14 +164,47 @@ public class DashboardController implements ActionListener {
             String phone = createCustomerView.getPhoneField();
             String cardNumber = createCustomerView.getCardNumberField();
             int membership = this.membershipID;
+            
+            // regex pattern for email
+            Pattern EMAIL_PATTERN = Pattern.compile("\\b[\\w\\.-]+@[\\w\\.-]+\\.\\w{2,4}\\b");
+            // saving matching result in a variable
+            boolean isEmailValid = EMAIL_PATTERN.matcher(email).matches();
+            
+            // regex pattern for card number
+            Pattern CARD_NUMBER_PATTERN = Pattern.compile("(\\d{4}[-. ]?){4}|\\d{4}[-. ]?\\d{6}[-. ]?\\d{5}");
+            // saving matching result in a variable
+            boolean isCardNumberValid = CARD_NUMBER_PATTERN.matcher(cardNumber).matches();
+            
+            // if mandatory fields are empty
+        	if(firstName.equals("") || lastName.equals("") || address.equals("")){
+        		JFrame f = new JFrame();
+        		JOptionPane.showMessageDialog(f,"Mandatory fields are empty. Please type First Name, Last Name and Address of customer.","Alert",JOptionPane.ERROR_MESSAGE);
+         	} else if (createCustomerView.getDropdownItem().equals("Select"))  {
+         		JFrame f = new JFrame();
+        		JOptionPane.showMessageDialog(f,"Mandatory field is empty. Please select a Membership.","Alert",JOptionPane.ERROR_MESSAGE);
+           	}
+        	// if email is not a valid email
+        	else if (isEmailValid == false) {
+        		JFrame f = new JFrame();
+        		JOptionPane.showMessageDialog(f,"Please enter email address in format: youremail@example.com","Alert",JOptionPane.ERROR_MESSAGE);
+         	} 
+        	// if card number is not a valid card number
+        	else if (isCardNumberValid == false) {
+        		JFrame f = new JFrame();
+        		JOptionPane.showMessageDialog(f,"Please enter a valid card number.","Alert",JOptionPane.ERROR_MESSAGE);
+         	} else {
+         		System.out.println("call create method");
+         	}
+        	
+        	
             // create an instance of the customer class with the data collated
-            Customer newCustomer = new Customer(firstName, lastName, address, email, phone, cardNumber, membership, this);
+            //Customer newCustomer = new Customer(firstName, lastName, address, email, phone, cardNumber, membership, this);
             // using model to call method
-            this.customerModel.createCustomer(newCustomer);
+            //this.customerModel.createCustomer(newCustomer);
             // dispose current view and call a new one to refresh table
-            view.dispose();
-            view = new DashboardView(this);
-            createCustomerView.dispose();
+            //view.dispose();
+            //view = new DashboardView(this);
+            //createCustomerView.dispose();
 	        
          } else if(e.getActionCommand().equals("add-title")){
          	createTitleView = new CreateTitleView(this);
@@ -217,16 +250,16 @@ public class DashboardController implements ActionListener {
              String director = createTitleView.getDirectorField();
              
              // regex pattern for year from 1900 to 2099
-             Pattern DATE_PATTERN = Pattern.compile("\\b(19|20)\\d\\d\\b");
+             Pattern YEAR_PATTERN = Pattern.compile("\\b(19|20)\\d\\d\\b");
              // saving matching result in a variable
-             boolean isYearValid = DATE_PATTERN.matcher(yearOfRelease).matches();
+             boolean isYearValid = YEAR_PATTERN.matcher(yearOfRelease).matches();
              
         	 // if fields are empty
         	if(titleName.equals("") || yearOfRelease.equals("") || price.equals("")) {
         		JFrame f = new JFrame();
         		JOptionPane.showMessageDialog(f,"Mandatory fields are empty. Please type a Title, a Year and a Price.","Alert",JOptionPane.ERROR_MESSAGE);
          	}
-        	// check if drop downs were selected
+        	// check if drop downs weren't selected
         	else if (createTitleView.getFormatDropdownItem().equals("Select") || createTitleView.getTypeDropdownItem().equals("Select"))  {
          		JFrame f = new JFrame();
         		JOptionPane.showMessageDialog(f,"Mandatory fields are empty. Please select a Format and a Type.","Alert",JOptionPane.ERROR_MESSAGE);

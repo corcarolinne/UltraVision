@@ -125,7 +125,7 @@ public class CreateCustomerView extends JFrame {
         cardNumberField = new JTextField(20);
     
         // drop down to select membership
-        String membershipOptions[]={"","Music Lovers","Video Lovers", "TV Lovers", "Premium"};        
+        String membershipOptions[]={"Select","Music Lovers","Video Lovers", "TV Lovers", "Premium"};        
         this.membershipDropdown = new JComboBox(membershipOptions);
         membershipDropdown.addActionListener((ActionListener) controller);
         membershipDropdown.setActionCommand("select-membership");
