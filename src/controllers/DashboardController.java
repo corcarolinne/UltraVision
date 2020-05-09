@@ -174,6 +174,11 @@ public class DashboardController implements ActionListener {
             Pattern CARD_NUMBER_PATTERN = Pattern.compile("(\\d{4}[-. ]?){4}|\\d{4}[-. ]?\\d{6}[-. ]?\\d{5}");
             // saving matching result in a variable
             boolean isCardNumberValid = CARD_NUMBER_PATTERN.matcher(cardNumber).matches();
+
+            // regex pattern for phone number
+            Pattern PHONE_NUMBER_PATTERN = Pattern.compile("^(\\(\\d+\\)\\s{0,1}){0,1}(\\d+((\\-|\\s){0,1})\\d+){0,}$");
+            // saving matching result in a variable
+            boolean isPhoneNumberValid = PHONE_NUMBER_PATTERN.matcher(phone).matches();
             
             // if mandatory fields are empty
         	if(firstName.equals("") || lastName.equals("") || address.equals("")){
@@ -191,8 +196,13 @@ public class DashboardController implements ActionListener {
         	// if card number is not a valid card number
         	else if (isCardNumberValid == false) {
         		JFrame f = new JFrame();
-        		JOptionPane.showMessageDialog(f,"Please enter a valid card number.","Alert",JOptionPane.ERROR_MESSAGE);
-         	} else {
+        		JOptionPane.showMessageDialog(f,"Wrong card number. Please enter a valid card number.","Alert",JOptionPane.ERROR_MESSAGE);
+         	}
+        	// if phone number is entered check if it's a phone number
+        	else if (isPhoneNumberValid == false) {
+        		JFrame f = new JFrame();
+        		JOptionPane.showMessageDialog(f,"Please enter phone number including your country code such as: (999) 999 999-999.","Alert",JOptionPane.ERROR_MESSAGE);
+         	}else {
          		System.out.println("call create method");
          	}
         	
