@@ -193,6 +193,10 @@ public class DashboardController implements ActionListener {
         		JFrame f = new JFrame();
         		JOptionPane.showMessageDialog(f,"Please enter email address in format: youremail@example.com","Alert",JOptionPane.ERROR_MESSAGE);
          	} 
+        	else if (this.customerModel.validateEmail(email) == true) {
+        		JFrame f = new JFrame();
+        		JOptionPane.showMessageDialog(f,"This email is already in use. Please type another email.","Alert",JOptionPane.ERROR_MESSAGE);
+         	} 
         	// if card number is not a valid card number
         	else if (isCardNumberValid == false) {
         		JFrame f = new JFrame();

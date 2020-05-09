@@ -243,6 +243,7 @@ public class Customer {
     public void createCustomer(Customer newCustomer){
         try{
         	DBConnection dbConnection = new DBConnection();
+      
             
             // building the query
             String query = "INSERT INTO ultravision.customers (FirstName, LastName, Address, Email, Phone, CardNumber, MembershipID) VALUES ('"+newCustomer.getFirstName()+"','"+newCustomer.getLastName()+"','"+newCustomer.getAddress()+"','"+newCustomer.getEmail()+"','"+newCustomer.getPhoneNumber()+"', '"+newCustomer.getCardNumber()+"', '"+newCustomer.getMembership()+"');";
@@ -311,6 +312,47 @@ public class Customer {
         catch( Exception e ){
                 System.out.println( e ) ;
         }
+    }
+    
+ // method to validate customer email, it receives a string with the email input, returns a string with type of message
+    public boolean validateEmail(String email){
+    	
+    	boolean isEmailInUse = true;
+        try{
+        	DBConnection dbConnection = new DBConnection();
+            
+            // search for customer with this email on db
+            String searchQuery = "SELECT * FROM ultravision.customers WHERE Email = '"+email+"';";
+            
+            // sending the query to the database
+            ResultSet searchResult = dbConnection.getStmt().executeQuery(searchQuery);
+
+            if(searchResult.next()) {
+            	isEmailInUse = true;
+            } else {
+            	isEmailInUse = false;
+            }
+            
+            // closing statement and connections
+            dbConnection.getStmt().close();
+            dbConnection.getConnection().close();
+            
+        } catch( SQLException se ){
+            System.out.println( "SQL Exception:" ) ;
+
+            // Loop through the SQL Exceptions
+            while( se != null ){
+                System.out.println( "State  : " + se.getSQLState()  ) ;
+                System.out.println( "Message: " + se.getMessage()   ) ;
+                System.out.println( "Error  : " + se.getErrorCode() ) ;
+
+                se = se.getNextException() ;
+            }
+        }
+        catch( Exception e ){
+                System.out.println( e ) ;
+        }
+		return isEmailInUse;
     }
 		
 }
