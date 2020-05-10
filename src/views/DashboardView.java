@@ -1,6 +1,9 @@
 package views;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -36,22 +39,21 @@ public class DashboardView extends JFrame {
         this.componentsSetter();
     	this.tablesSetter();
     	this.validation();
+    	
 	}
 	
 	public void attributesSetter() {
 		// basic window properties
 		this.setVisible(true);
-        this.setSize(1500,550);
+        this.setSize(1000,1000);
         this.setTitle("Ultra Vision System");
 	}
 	public void componentsSetter() {
+		
 		// creating panel
 		panel = new JPanel();
+		//panel.setLayout();
     	this.add(panel);
-    	
-    	// creating label
-    	JLabel brandLabel = new JLabel("Ultra Vision"); 
-    	panel.add(brandLabel);
     	
     	// adding button
     	JButton addRentButton = new JButton("Rent");
@@ -100,9 +102,6 @@ public class DashboardView extends JFrame {
 	
 	// method to create tables for view 
 	public void tablesSetter() {
-		// creating label for table
-    	JLabel availableTitlesLabel = new JLabel("Available Titles"); 
-    	panel.add(availableTitlesLabel);
     	
 		// creating header
    	 	String[] titlesHeader = {"ID","Title", "Type","Year Of Release", "Genre", "Format", "Price", "Director", "Artist"};
@@ -116,11 +115,8 @@ public class DashboardView extends JFrame {
    
         // scroll
         JScrollPane scroll = new JScrollPane(availableTitlesTable);
+        scroll.setBorder(BorderFactory.createTitledBorder ("Available Titles"));
         panel.add(scroll);
-        
-        // creating label for table
-    	JLabel rentedTitlesLabel = new JLabel("In Transit"); 
-    	panel.add(rentedTitlesLabel);
         		
     	// calling method from model to show rented titles
     	rentedTitlesData = controller.titleModel.showRentedTitles("","");
@@ -131,11 +127,8 @@ public class DashboardView extends JFrame {
     
 		 // scroll
 		 JScrollPane scroll2 = new JScrollPane(rentedTitlesTable);
+		 scroll2.setBorder(BorderFactory.createTitledBorder ("In Transit"));
 		 panel.add(scroll2);    
-		 
-		// creating label for table
-    	JLabel customersLabel = new JLabel("Customers"); 
-    	panel.add(customersLabel);
     	
     	// creating header
    	 	String[] customersHeader = {"ID", "First Name", "Last Name","Address", "Email", "Phone", "Card Number", "Membership", "Loyalty Points"};
@@ -149,6 +142,7 @@ public class DashboardView extends JFrame {
     
 		// scroll
 		JScrollPane scroll3 = new JScrollPane(customersTable);
+		scroll3.setBorder(BorderFactory.createTitledBorder ("Customers"));
 		panel.add(scroll3);    
 	}
 	

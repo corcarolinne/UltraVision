@@ -36,7 +36,7 @@ public class CreateTitleView extends JFrame{
     // method to set attributes
     private void attributesSetter(){
         this.setVisible(true);
-        this.setSize(275,500);
+        this.setSize(410,400);
         this.setTitle("Create Title");
     }
 
@@ -139,12 +139,12 @@ public class CreateTitleView extends JFrame{
         artistLabel = new JLabel("Artist");
         genreLabel = new JLabel("Genre");
         directorLabel = new JLabel("Director");
-        titleField = new JTextField(20);
-        yearOfReleaseField = new JTextField(20);
+        titleField = new JTextField(30);
+        yearOfReleaseField = new JTextField(10);
         priceField = new JTextField(20);
-        artistField = new JTextField(20);
-        genreField = new JTextField(20);
-        directorField = new JTextField(20);
+        artistField = new JTextField(15);
+        genreField = new JTextField(10);
+        directorField = new JTextField(30);
         
         // set some fields unable to edit
         this.artistField.setEnabled(false);

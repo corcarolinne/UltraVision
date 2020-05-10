@@ -1,12 +1,17 @@
 package views;
 
+import java.awt.Dimension;
+import java.awt.Insets;
 import java.awt.event.ActionListener;
 
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
 
 import controllers.DashboardController;
 import models.Title;
@@ -35,31 +40,27 @@ public class RentView extends JFrame {
 	public void attributesSetter() {
 		// basic window properties
 		this.setVisible(true);
-		 this.setSize(300,400);
+		 this.setSize(500,300);
         this.setTitle("Rent");
 	}
 	public void componentsSetter() {
 		// creating panel
 		panel = new JPanel();
     	this.add(panel);
-    	
+      
     	// title label
-    	titleLabel = new JLabel("Title: " + this.titleToRent.getTitleName());
+    	titleLabel = new JLabel("Title: " + this.titleToRent.getTitleName() + ".");
     	panel.add(titleLabel);
-    	
+    
     	// email label & text field
     	emailLabel = new JLabel("Customer Email: ");
     	panel.add(emailLabel);
-    	emailField = new JTextField(20);
+    	emailField = new JTextField(15);
     	panel.add(emailField);
     	
     	// price label
     	priceLabel = new JLabel("Price: €" + String.valueOf(this.titleToRent.getPrice()));
     	panel.add(priceLabel);
-    	
-    	// return label
-    	returnDateLabel = new JLabel("This title should be returned at: <date goes here>");
-    	panel.add(returnDateLabel);
     	
     	// adding button
     	JButton rentButton = new JButton("Confirm Rent");
