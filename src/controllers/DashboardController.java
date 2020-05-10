@@ -8,6 +8,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
+import interfaces.CustomerInterface;
+import interfaces.TitleInterface;
 import models.Customer;
 import models.Title;
 import views.CreateCustomerView;
@@ -21,8 +23,8 @@ import views.UpdateCustomerView;
 public class DashboardController implements ActionListener {
 	
 	// properties
-	public Title titleModel;
-	public Customer customerModel;
+	public TitleInterface titleModel;
+	public CustomerInterface customerModel;
     public DashboardView view;
     String selectedFilter;
     String searchInput;

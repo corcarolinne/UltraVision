@@ -4,10 +4,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import controllers.DashboardController;
+import interfaces.CustomerInterface;
 import main.DBConnection;
 import views.DashboardView;
 
-public class Customer {
+public class Customer implements CustomerInterface {
 	
 	// properties
 	private int ID;
@@ -133,6 +134,7 @@ public class Customer {
 	}
 
 	// method to query database for customer data, receives 2 strings corresponding to the search and returns an array with the data
+	@Override
 	public String[][] showCustomers(String searchInput, String selectedFilter) {
 	        
     	// declaring result 2d array with data
@@ -239,7 +241,8 @@ public class Customer {
    }
 	
 	// method to create a customer, receives a customer object
-    public void createCustomer(Customer newCustomer){
+    @Override
+	public void createCustomer(Customer newCustomer){
         try{
         	DBConnection dbConnection = new DBConnection();
       
@@ -272,7 +275,8 @@ public class Customer {
     }
 	
     // method to update customer details, receives 2 instances of Customer object
-    public void updateCustomer(Customer customerToUpdate, Customer customerSelected ){
+    @Override
+	public void updateCustomer(Customer customerToUpdate, Customer customerSelected ){
         try{
         	DBConnection dbConnection = new DBConnection();
 
@@ -314,7 +318,8 @@ public class Customer {
     }
     
     // method to validate customer email, it receives a string with the email input, returns a boolean with the result of validation
-    public boolean validateEmail(String email){
+    @Override
+	public boolean validateEmail(String email){
     	
     	boolean isEmailInUse = true;
         try{

@@ -8,11 +8,12 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import controllers.DashboardController;
+import interfaces.TitleInterface;
 import main.DBConnection;
 import views.DashboardView;
 import views.SearchResultsView;
 
-public class Title {
+public class Title implements TitleInterface {
 	
 	// properties
 	private int ID;
@@ -130,7 +131,8 @@ public class Title {
 	}
 	
 	// method to display available titles
-    public String[][] showAvailableTitles (String searchInput, String selectedFilter) {
+    @Override
+	public String[][] showAvailableTitles (String searchInput, String selectedFilter) {
         
     	// declaring result 2d array with data
         String[][] titlesData = null;
@@ -227,7 +229,8 @@ public class Title {
    }
     
     // method to display rented titles
-    public String[][] showRentedTitles (String searchInput, String selectedFilter) {
+    @Override
+	public String[][] showRentedTitles (String searchInput, String selectedFilter) {
         
     	// declaring result 2d array with data
         String[][] titlesData = null;
@@ -280,7 +283,8 @@ public class Title {
    }
     
     // method to create a title, receives a title object
-    public void createTitle(Title newTitle){
+    @Override
+	public void createTitle(Title newTitle){
         try{
         	DBConnection dbConnection = new DBConnection();
             
@@ -311,7 +315,8 @@ public class Title {
         }
     }
     // method to make the validation of a rent, receives a title object and returns a string with the type of message that should be displayed
-    public String validateRent(Title titleToRent, String customerEmail){
+    @Override
+	public String validateRent(Title titleToRent, String customerEmail){
     	
     	String messageType = "";
         try{
@@ -387,7 +392,8 @@ public class Title {
     }
     
     // method to check score of a customer, if they are able to get a free rent or not, receives an email and returns the result in boolean
-    public boolean checkScore(String customerEmail){
+    @Override
+	public boolean checkScore(String customerEmail){
     	
     	boolean isFreeRentValid = false;
     	try{
@@ -442,7 +448,8 @@ public class Title {
     }
     
     // method to rent a title, receives a title object and a string with customer's email entered on input
-    public void rentTitle(Title titleToRent, String customerEmail){
+    @Override
+	public void rentTitle(Title titleToRent, String customerEmail){
     	
     	try{
         	String customerID = "";
@@ -500,7 +507,8 @@ public class Title {
     }
     
     // method to return a title, receives a title object
-    public void returnTitle(Title titleToRent){
+    @Override
+	public void returnTitle(Title titleToRent){
     	
     	try{
         	String transactionID = "";
