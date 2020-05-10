@@ -13,7 +13,10 @@ public interface CustomerInterface {
 	// method to update customer details, receives 2 instances of Customer object
 	void updateCustomer(Customer customerToUpdate, Customer customerSelected);
 
-	// method to validate customer email, it receives a string with the email input, returns a boolean with the result of validation
-	boolean validateEmail(String email);
+	// method to validate customer email in update, it receives a string with the email input, returns a boolean with the result of validation
+	boolean validateEmail(String email, int iDAsInt);
+
+	// method to validate customer email in create customer, it receives a string with the email input, returns a boolean with the result of validation
+	boolean validateCreateEmail(String email);
 
 }

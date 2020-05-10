@@ -26,25 +26,25 @@ public class DashboardController implements ActionListener {
 	public TitleInterface titleModel;
 	public CustomerInterface customerModel;
     public DashboardView view;
-    String selectedFilter;
-    String searchInput;
-    String[][] searchResult;
-    SearchResultsView searchResultsView;
-	CreateCustomerView createCustomerView;
-	String selectedMembership;
+    private String selectedFilter;
+    private String searchInput;
+    private String[][] searchResult;
+    private SearchResultsView searchResultsView;
+    private CreateCustomerView createCustomerView;
+    private String selectedMembership;
 	private int membershipID;
-	CreateTitleView createTitleView;
-	String selectedType;
-	String selectedFormat;
+	private CreateTitleView createTitleView;
+	private String selectedType;
+	private String selectedFormat;
 	private String type;
 	private String format;
-	Customer customerToUpdate;
-	UpdateCustomerView updateCustomerView;
-	String updatedMembership;
-	RentView rentView;
-	Title titleToRent;
-	ReturnView returnView;
-	Title titleToReturn;
+	private Customer customerToUpdate;
+	private UpdateCustomerView updateCustomerView;
+	private String updatedMembership;
+	private RentView rentView;
+	private Title titleToRent;
+	private ReturnView returnView;
+	private Title titleToReturn;
 	
 	// constructor
     public DashboardController(){
@@ -205,7 +205,7 @@ public class DashboardController implements ActionListener {
         	else if (isEmailValid == false) {
         		JFrame f = new JFrame();
         		JOptionPane.showMessageDialog(f,"Please enter email address in format: youremail@example.com","Alert",JOptionPane.ERROR_MESSAGE);
-         	} else if (this.customerModel.validateEmail(email) == true) {
+         	} else if (this.customerModel.validateCreateEmail(email) == false) {
         		JFrame f = new JFrame();
         		JOptionPane.showMessageDialog(f,"This email is already in use. Please type another email.","Alert",JOptionPane.ERROR_MESSAGE);
          	} 
@@ -354,6 +354,7 @@ public class DashboardController implements ActionListener {
          // action listener for update customer button
          } else if(e.getActionCommand().equals("update-customer")) {
         	// get inputs from view
+        	int ID = customerToUpdate.getID();
         	String firstName = updateCustomerView.getFirstNameField();
             String lastName = updateCustomerView.getLastNameField();
             String address = updateCustomerView.getAddressField();
@@ -390,7 +391,7 @@ public class DashboardController implements ActionListener {
         		JFrame f = new JFrame();
         		JOptionPane.showMessageDialog(f,"Please enter email address in format: youremail@example.com","Alert",JOptionPane.ERROR_MESSAGE);
          	} 
-        	else if (this.customerModel.validateEmail(email) == true) {
+        	else if (this.customerModel.validateEmail(email, ID) == false) {
         		JFrame f = new JFrame();
         		JOptionPane.showMessageDialog(f,"This email is already in use. Please type another email.","Alert",JOptionPane.ERROR_MESSAGE);
          	}

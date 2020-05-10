@@ -316,12 +316,11 @@ public class Customer implements CustomerInterface {
                 System.out.println( e ) ;
         }
     }
-    
-    // method to validate customer email, it receives a string with the email input, returns a boolean with the result of validation
+ // method to validate customer email, it receives a string with the email input, returns a boolean with the result of validation
     @Override
-	public boolean validateEmail(String email){
-    	
-    	boolean isEmailInUse = true;
+	public boolean validateCreateEmail(String email){
+    	String emailFromDB = "";
+    	boolean isEmailValid = false;
         try{
         	DBConnection dbConnection = new DBConnection();
             
@@ -331,12 +330,13 @@ public class Customer implements CustomerInterface {
             // sending the query to the database
             ResultSet searchResult = dbConnection.getStmt().executeQuery(searchQuery);
 
-            // if email is in use, set the boolean to true
+            // if email the search returns something, this email is already in the db
             if(searchResult.next()) {
-            	isEmailInUse = true;
+            	emailFromDB = searchResult.getString("Email"); 
+            	isEmailValid = false;
             } else {
-            	// otherwise, set it to false
-            	isEmailInUse = false;
+            	// otherwise is a valid email
+            	isEmailValid = true;
             }
             
             // closing statement and connections
@@ -358,7 +358,63 @@ public class Customer implements CustomerInterface {
         catch( Exception e ){
                 System.out.println( e ) ;
         }
-		return isEmailInUse;
+		return isEmailValid;
+    }
+    
+    // method to validate customer email in update, it receives a string with the email input and an int with customer id, returns a boolean with the result of validation
+    @Override
+	public boolean validateEmail(String email, int customerID){
+    	String emailFromDB = "";
+    	String IDFromDB = "";
+    	
+    	boolean isEmailValid = false;
+        try{
+        	DBConnection dbConnection = new DBConnection();
+            
+            // search for customer with this email on database
+            String searchQuery = "SELECT * FROM ultravision.customers WHERE Email = '"+email+"';";
+            
+            // sending the query to the database
+            ResultSet searchResult = dbConnection.getStmt().executeQuery(searchQuery);
+
+            // if email the search returns something, this email is already in the db and its not from this same customer
+            if(searchResult.next()) {
+            	// save values from database
+            	IDFromDB = searchResult.getString("CustomerID");
+            	int IDAsInt = Integer.parseInt(IDFromDB);
+            	emailFromDB = searchResult.getString("Email");
+            	
+            	// if email from DB is equal to the one entered, email is not valid
+            	if(emailFromDB.equals(email) && IDAsInt != customerID) {
+            		isEmailValid = false;
+            	} else {
+            		isEmailValid = true;
+            	}
+            } else {
+            	// otherwise, set it to false
+            	isEmailValid = true;
+            }
+            
+            // closing statement and connections
+            dbConnection.getStmt().close();
+            dbConnection.getConnection().close();
+            
+        } catch( SQLException se ){
+            System.out.println( "SQL Exception:" ) ;
+
+            // Loop through the SQL Exceptions
+            while( se != null ){
+                System.out.println( "State  : " + se.getSQLState()  ) ;
+                System.out.println( "Message: " + se.getMessage()   ) ;
+                System.out.println( "Error  : " + se.getErrorCode() ) ;
+
+                se = se.getNextException() ;
+            }
+        }
+        catch( Exception e ){
+                System.out.println( e ) ;
+        }
+		return isEmailValid;
     }
 		
 }
