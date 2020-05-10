@@ -89,7 +89,7 @@ public class DashboardView extends JFrame {
         panel.add(searchLabel);
         panel.add(searchTextField);
         
-        // filter drop down
+        // filter/search drop down
         String filterOptions[]={"","Titles","Customers"};        
         this.dropdown = new JComboBox(filterOptions);
         dropdown.addActionListener((ActionListener) controller);
@@ -97,6 +97,7 @@ public class DashboardView extends JFrame {
         panel.add(dropdown);
         
 	}
+	
 	// method to create tables for view 
 	public void tablesSetter() {
 		// creating label for table
@@ -142,68 +143,67 @@ public class DashboardView extends JFrame {
     	// calling method from model to show available titles
     	customersData = controller.customerModel.showCustomers("","");
     	 
-		 // creating table and adding it to the panel
-		 customersTable = new JTable(customersData, customersHeader);
-		 panel.add(customersTable);
+		// creating table and adding it to the panel
+		customersTable = new JTable(customersData, customersHeader);
+		panel.add(customersTable);
     
-		 // scroll
-		 JScrollPane scroll3 = new JScrollPane(customersTable);
-		 panel.add(scroll3);    
+		// scroll
+		JScrollPane scroll3 = new JScrollPane(customersTable);
+		panel.add(scroll3);    
 	}
 	
 	// getters for search 
     public String getSearchInput() {
          return this.searchTextField.getText();
     }
-    
     public String getDropdownItem() {
         return this.dropdown.getSelectedItem().toString();
     }
     
     // method to pick title selected available titles table
     public Title getAvailableTitle() {
-        // creates a new instance of Title
+    	// creates a new instance of Title
     	Title selectedTitle = new Title(this.controller);
-       // save index from row in a variable
-       int selectedTitleIndex = availableTitlesTable.getSelectedRow();
-       // if something is selected
-       if (selectedTitleIndex > -1) {
-           // creates array to store selected row inside 2d array
-           String[] selectedTitlesArray = availableTitlesData[selectedTitleIndex];
-           // using setters to pass the values in the row to the Title object
-           selectedTitle.setID(Integer.parseInt(selectedTitlesArray[0]));
-           selectedTitle.setTitleName(selectedTitlesArray[1]);
-           selectedTitle.setType(selectedTitlesArray[2]);
-           selectedTitle.setYearOfRelease(selectedTitlesArray[3]);
-           selectedTitle.setGenre(selectedTitlesArray[4]);
-           selectedTitle.setFormat(selectedTitlesArray[5]);
-           selectedTitle.setPrice(Double.parseDouble(selectedTitlesArray[6]));
-           //selectedTitle.setAvailable(true);
-           selectedTitle.setDirector(selectedTitlesArray[7]);
-           selectedTitle.setArtist(selectedTitlesArray[8]);
+    	// save index from row in a variable
+    	int selectedTitleIndex = availableTitlesTable.getSelectedRow();
+    	// if something is selected
+    	if (selectedTitleIndex > -1) {
+    		// creates array to store selected row inside 2d array
+    		String[] selectedTitlesArray = availableTitlesData[selectedTitleIndex];
+    		// using setters to pass the values in the row to the Title object
+    		selectedTitle.setID(Integer.parseInt(selectedTitlesArray[0]));
+    		selectedTitle.setTitleName(selectedTitlesArray[1]);
+    		selectedTitle.setType(selectedTitlesArray[2]);
+    		selectedTitle.setYearOfRelease(selectedTitlesArray[3]);
+    		selectedTitle.setGenre(selectedTitlesArray[4]);
+    		selectedTitle.setFormat(selectedTitlesArray[5]);
+    		selectedTitle.setPrice(Double.parseDouble(selectedTitlesArray[6]));
+    		selectedTitle.setDirector(selectedTitlesArray[7]);
+    		selectedTitle.setArtist(selectedTitlesArray[8]);
        }
        return selectedTitle;
-   }
+    }
+    
     // method to pick title selected on in transit table
     public Title getRentedTitle() {
-        // creates a new instance of Title
+    	// creates a new instance of Title
     	Title selectedTitle = new Title(this.controller);
-       // save index from row in a variable
-       int selectedTitleIndex = rentedTitlesTable.getSelectedRow();
-       // if something is selected
-       if (selectedTitleIndex > -1) {
-           // creates array to store selected row inside 2d array
-           String[] selectedTitlesArray = rentedTitlesData[selectedTitleIndex];
-           // using setters to pass the values in the row to the Title object
-           selectedTitle.setID(Integer.parseInt(selectedTitlesArray[0]));
-           selectedTitle.setTitleName(selectedTitlesArray[1]);
-           selectedTitle.setType(selectedTitlesArray[2]);
-           selectedTitle.setYearOfRelease(selectedTitlesArray[3]);
-           selectedTitle.setGenre(selectedTitlesArray[4]);
-           selectedTitle.setFormat(selectedTitlesArray[5]);
-           selectedTitle.setPrice(Double.parseDouble(selectedTitlesArray[6]));
-           selectedTitle.setDirector(selectedTitlesArray[7]);
-           selectedTitle.setArtist(selectedTitlesArray[8]);
+    	// save index from row in a variable
+    	int selectedTitleIndex = rentedTitlesTable.getSelectedRow();
+    	// if something is selected
+    	if (selectedTitleIndex > -1) {
+    		// creates array to store selected row inside 2d array
+    		String[] selectedTitlesArray = rentedTitlesData[selectedTitleIndex];
+    		// using setters to pass the values in the row to the Title object
+    		selectedTitle.setID(Integer.parseInt(selectedTitlesArray[0]));
+    		selectedTitle.setTitleName(selectedTitlesArray[1]);
+    		selectedTitle.setType(selectedTitlesArray[2]);
+    		selectedTitle.setYearOfRelease(selectedTitlesArray[3]);
+    		selectedTitle.setGenre(selectedTitlesArray[4]);
+    		selectedTitle.setFormat(selectedTitlesArray[5]);
+    		selectedTitle.setPrice(Double.parseDouble(selectedTitlesArray[6]));
+    		selectedTitle.setDirector(selectedTitlesArray[7]);
+    		selectedTitle.setArtist(selectedTitlesArray[8]);
        }
        return selectedTitle;
    }
@@ -226,7 +226,6 @@ public class DashboardView extends JFrame {
            selectedCustomer.setEmail(selectedCustomersArray[4]);
            selectedCustomer.setPhoneNumber(selectedCustomersArray[5]);
            selectedCustomer.setCardNumber(selectedCustomersArray[6]);
-           
            // to select membership
            if(selectedCustomersArray[7].equals("Music Lovers")) {
         	   selectedCustomer.setMembership(1);

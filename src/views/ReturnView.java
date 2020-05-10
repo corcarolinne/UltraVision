@@ -28,12 +28,15 @@ public class ReturnView extends JFrame {
     	this.validation();
 	}
 	
+	// method to build the view
 	public void attributesSetter() {
 		// basic window properties
 		this.setVisible(true);
 		 this.setSize(320,300);
         this.setTitle("Return");
 	}
+	
+	// method to organize components on view
 	public void componentsSetter() {
 		// creating panel
 		panel = new JPanel();
@@ -61,7 +64,6 @@ public class ReturnView extends JFrame {
 		return this.panel;
 	}
 	
-
 	// validation and repainting
     private void validation(){
         this.validate();

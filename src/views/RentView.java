@@ -31,6 +31,7 @@ public class RentView extends JFrame {
     	this.validation();
 	}
 	
+	// calling method to build the view
 	public void attributesSetter() {
 		// basic window properties
 		this.setVisible(true);
@@ -81,7 +82,6 @@ public class RentView extends JFrame {
 		return this.panel;
 	}
 	
-
 	// validation and repainting
     private void validation(){
         this.validate();

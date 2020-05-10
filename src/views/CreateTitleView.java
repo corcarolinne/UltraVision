@@ -123,6 +123,7 @@ public class CreateTitleView extends JFrame{
 	public JTextField getDirectorFieldComponent() {
 		return directorField;
 	}
+	
 	// method to organise components of the window
     private void components(){
         JPanel panel = new JPanel();

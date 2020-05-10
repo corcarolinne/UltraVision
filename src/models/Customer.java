@@ -21,7 +21,7 @@ public class Customer {
 	private int score;
 	private DashboardController controller;
 	
-	// constructor
+	// constructors
 	public Customer(int ID, String firstName, String lastName, String address, String email, String phoneNumber, String cardNumber, int membership, int score, DashboardController controller) {
 		this.ID = ID;
 		this.firstName = firstName;
@@ -34,11 +34,9 @@ public class Customer {
 		this.score = score;
 		this.controller = controller;
 	}
-
 	public Customer(DashboardController controller) {
 		this.controller = controller;
 	}
-
 	public Customer(String firstName, String lastName, String address, String email, String phoneNumber, String cardNumber, int membership, DashboardController controller) {
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -49,11 +47,11 @@ public class Customer {
 		this.membership = membership;
 		this.controller = controller;
 	}
-
 	public Customer() {
 		// empty constructor 
 	}
 
+	// getters and setters
 	public int getID() {
 		return this.ID;
 	}
@@ -134,7 +132,7 @@ public class Customer {
 		return this.controller.getMembershipID();
 	}
 
-	// method to query database for customer data
+	// method to query database for customer data, receives 2 strings corresponding to the search and returns an array with the data
 	public String[][] showCustomers(String searchInput, String selectedFilter) {
 	        
     	// declaring result 2d array with data
@@ -143,6 +141,7 @@ public class Customer {
        try {
         	DBConnection dbConnection = new DBConnection();
         	if(searchInput.isEmpty()) {
+        		
 		        // building the queries
 		        String numOfRowsQuery = "SELECT * FROM ultravision.customers";
 		        String customersQuery = "SELECT customers.CustomerID, customers.FirstName, customers.LastName, customers.Address, customers.Email, customers.Phone, customers.CardNumber, memberships.Type, customers.Score FROM ultravision.customers INNER JOIN ultravision.memberships ON customers.MembershipID = memberships.MembershipID ORDER BY customers.CustomerID;"; 
@@ -208,14 +207,14 @@ public class Customer {
                    // sending the query to the database
                    ResultSet searchCustomers = dbConnection.getStmt().executeQuery(searchedData);
                    
-                   // set artData number of rows and number of columns
+                   // set customerData number of rows and number of columns
                    customersData= new String[numOfRows][9];
                    
                     int row = 0;
                     // while there's a result 
                     while(searchCustomers.next()) {
                         
-                        // set artData array to receive each value from each row, for each corresponding column
+                        // set customerData array to receive each value from each row, for each corresponding column
                     	customersData[row][0] = searchCustomers.getString("CustomerID");
                     	customersData[row][1] = searchCustomers.getString("FirstName");
                     	customersData[row][2] = searchCustomers.getString("LastName");
@@ -272,7 +271,7 @@ public class Customer {
         }
     }
 	
- // method to update customer details, receives 2 instances of Customer object
+    // method to update customer details, receives 2 instances of Customer object
     public void updateCustomer(Customer customerToUpdate, Customer customerSelected ){
         try{
         	DBConnection dbConnection = new DBConnection();
@@ -287,7 +286,7 @@ public class Customer {
             dbConnection.getStmt().close();
             dbConnection.getConnection().close();
             
-            // setting art object to have the values from the other art that now has new values
+            // setting customer object to have the values from the other customer that now has new values
             customerSelected.setFirstName(customerToUpdate.getFirstName());
             customerSelected.setLastName(customerToUpdate.getLastName());
             customerSelected.setAddress(customerToUpdate.getAddress());
@@ -314,22 +313,24 @@ public class Customer {
         }
     }
     
- // method to validate customer email, it receives a string with the email input, returns a string with type of message
+    // method to validate customer email, it receives a string with the email input, returns a boolean with the result of validation
     public boolean validateEmail(String email){
     	
     	boolean isEmailInUse = true;
         try{
         	DBConnection dbConnection = new DBConnection();
             
-            // search for customer with this email on db
+            // search for customer with this email on database
             String searchQuery = "SELECT * FROM ultravision.customers WHERE Email = '"+email+"';";
             
             // sending the query to the database
             ResultSet searchResult = dbConnection.getStmt().executeQuery(searchQuery);
 
+            // if email is in use, set the boolean to true
             if(searchResult.next()) {
             	isEmailInUse = true;
             } else {
+            	// otherwise, set it to false
             	isEmailInUse = false;
             }
             
@@ -356,5 +357,3 @@ public class Customer {
     }
 		
 }
-
-	

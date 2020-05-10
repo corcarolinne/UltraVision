@@ -8,6 +8,7 @@ import javax.swing.JTable;
 import controllers.DashboardController;
 
 public class SearchResultsView extends JFrame {
+	
 	// properties
     private DashboardController controller;
     private String[][] searchData;
@@ -72,14 +73,14 @@ public class SearchResultsView extends JFrame {
         } else {
         	header = new String[]{"ID","First Name", "Last Name","Address", "Email", "Phone", "Card Number", "Membership", "Loyalty Points"};
         }
-        
+     
         // table for search
         JTable searchTable = new JTable(this.searchData, header);
         panel.add(searchTable);
-        
         JScrollPane scroll = new JScrollPane(searchTable);
         panel.add(scroll); 
         
+        // call validation method
         validation();  
     }
    

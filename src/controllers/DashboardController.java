@@ -48,8 +48,7 @@ public class DashboardController implements ActionListener {
     public DashboardController(){
         titleModel = new Title();
         customerModel = new Customer();
-        view = new DashboardView(this);
-       
+        view = new DashboardView(this);   
     }
     
     // some getters and setters
@@ -66,22 +65,24 @@ public class DashboardController implements ActionListener {
 		return this.rentView;
 	}
 	
+	// action listener
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// if a certain button is clicked do the actions inside the brackets
 		if(e.getActionCommand().equals("add-rent")){
 			// calling method from view to get title selected from table
 			this.titleToRent = view.getAvailableTitle();
+			// if title is not selected, display the following message
             if(this.titleToRent.getTitleName() == null) {
             	JFrame f = new JFrame();
         		JOptionPane.showMessageDialog(f,"Title not selected. Please select a title on Available Titles to rent.","Alert",JOptionPane.ERROR_MESSAGE);
             } else {
-            	// redirects to rent page
+            	// otherwise, redirects to rent page
                 rentView = new RentView(this, titleToRent);
             }
-            
+        
+        // action listener of button to make the rent of a title
         } else if(e.getActionCommand().equals("rent")){
-        	
         	// if validation is successful
         	if(titleModel.validateRent(titleToRent, rentView.getEmailField()).equals("successfulValidation")) {
         		// call method to check customer's score, if it returns true
@@ -99,6 +100,7 @@ public class DashboardController implements ActionListener {
         		view.dispose();
                 view = new DashboardView(this);
                 rentView.dispose();
+              // series of messages that will be displayed depending on the result of validateRent method
         	} else if (titleModel.validateRent(titleToRent, rentView.getEmailField()).equals("customerNotFoundError")) {
         		JFrame f = new JFrame();
         		JOptionPane.showMessageDialog(f,"This email do not match any customer. Please enter another email.","Alert",JOptionPane.ERROR_MESSAGE);
@@ -115,13 +117,15 @@ public class DashboardController implements ActionListener {
         		JFrame f = new JFrame();
         		JOptionPane.showMessageDialog(f,"This customer reached the rent limit! They need to return a title to be able to rent again.","Alert",JOptionPane.ERROR_MESSAGE);
         	}
-            
+        // action listener for button to cancel a rent   
         } else if(e.getActionCommand().equals("cancel-rent")) {
     		// dispose view
         	rentView.dispose();
+        // action listener for button to redirect to return title page
         } else if(e.getActionCommand().equals("add-return")){
 			// calling method from view to get title selected from table
 			this.titleToReturn = view.getRentedTitle();
+			// if title from appropriate table is not selected, display the following message
             if(this.titleToReturn.getTitleName() == null) {
             	JFrame f = new JFrame();
         		JOptionPane.showMessageDialog(f,"Title not selected. Please select a title on In Transit table.","Alert",JOptionPane.ERROR_MESSAGE);
@@ -129,6 +133,7 @@ public class DashboardController implements ActionListener {
             	// redirects to return title page
                 returnView = new ReturnView(this, titleToReturn);
             }
+        // action listener for button to make the return
         } else if(e.getActionCommand().equals("return")){
         	// call method to return title
     		titleModel.returnTitle(titleToReturn);
@@ -139,11 +144,14 @@ public class DashboardController implements ActionListener {
     		view.dispose();
             view = new DashboardView(this);
             returnView.dispose();
+        // action listener to cancel a return
         } else if(e.getActionCommand().equals("cancel-return")) {
     		// dispose view
         	returnView.dispose();
+        // action listener for button to redirects to page to add a customer
         } else if(e.getActionCommand().equals("add-customer")){
         	createCustomerView = new CreateCustomerView(this);
+        // when membership is selected on create customer page, make it to match the right ID
         } else if(e.getActionCommand().equals("select-membership")) {
         	this.selectedMembership =  createCustomerView.getDropdownItem();
         	// setting membership ID according to selected drop down
@@ -156,13 +164,16 @@ public class DashboardController implements ActionListener {
         	} else if (createCustomerView.getDropdownItem().equals("Premium")) {
         		this.membershipID = 4;
         	}
+        // action listener for button to create customer 
         } else if(e.getActionCommand().equals("create-customer")) {
+        	// getting values from the fields on create customer page
         	String firstName = createCustomerView.getFirstNameField();
             String lastName = createCustomerView.getLastNameField();
             String address = createCustomerView.getAddressField();
             String email = createCustomerView.getEmailField();
             String phone = createCustomerView.getPhoneField();
             String cardNumber = createCustomerView.getCardNumberField();
+            // setting membership to be the selected one
             int membership = this.membershipID;
             
             // regex pattern for email
@@ -180,7 +191,7 @@ public class DashboardController implements ActionListener {
             // saving matching result in a variable
             boolean isPhoneNumberValid = PHONE_NUMBER_PATTERN.matcher(phone).matches();
             
-            // if mandatory fields are empty
+            // if mandatory fields are empty display following message
         	if(firstName.equals("") || lastName.equals("") || address.equals("")){
         		JFrame f = new JFrame();
         		JOptionPane.showMessageDialog(f,"Mandatory fields are empty. Please type First Name, Last Name and Address of customer.","Alert",JOptionPane.ERROR_MESSAGE);
@@ -192,8 +203,7 @@ public class DashboardController implements ActionListener {
         	else if (isEmailValid == false) {
         		JFrame f = new JFrame();
         		JOptionPane.showMessageDialog(f,"Please enter email address in format: youremail@example.com","Alert",JOptionPane.ERROR_MESSAGE);
-         	} 
-        	else if (this.customerModel.validateEmail(email) == true) {
+         	} else if (this.customerModel.validateEmail(email) == true) {
         		JFrame f = new JFrame();
         		JOptionPane.showMessageDialog(f,"This email is already in use. Please type another email.","Alert",JOptionPane.ERROR_MESSAGE);
          	} 
@@ -206,12 +216,14 @@ public class DashboardController implements ActionListener {
         	else if (isPhoneNumberValid == false) {
         		JFrame f = new JFrame();
         		JOptionPane.showMessageDialog(f,"Please enter phone number such as: (999) 999 999-999.","Alert",JOptionPane.ERROR_MESSAGE);
-         	}else {
+         	} 
+        	// if all the inputs are valid
+        	else {
          		// create an instance of the customer class with the data collated
                 Customer newCustomer = new Customer(firstName, lastName, address, email, phone, cardNumber, membership, this);
                 // using model to call method
                 this.customerModel.createCustomer(newCustomer);
-                // show message to the user
+                // show success message to the user
                 JFrame f = new JFrame();
         		JOptionPane.showMessageDialog(f,"Customer created successfully!");
                 // dispose current view and call a new one to refresh table
@@ -219,8 +231,10 @@ public class DashboardController implements ActionListener {
                 view = new DashboardView(this);
                 createCustomerView.dispose();
          	}
+         // action listener for button to redirects to add a title page
          } else if(e.getActionCommand().equals("add-title")){
          	createTitleView = new CreateTitleView(this);
+         //  when type is selected on create title page, enable the corresponding fields
          } else if(e.getActionCommand().equals("select-type")) {
          	this.selectedType =  createTitleView.getTypeDropdownItem();
          	if(createTitleView.getTypeDropdownItem().equals("Music")) {
@@ -241,6 +255,7 @@ public class DashboardController implements ActionListener {
          		this.type = "Box Set";
          		createTitleView.getGenreFieldComponent().setEnabled(true);      	
          	} 
+         //  when format is selected on create title page, match it to the corresponding value
          } else if(e.getActionCommand().equals("select-format")) {
           	this.selectedFormat =  createTitleView.getFormatDropdownItem();
           	if(createTitleView.getFormatDropdownItem().equals("CD")) {
@@ -250,9 +265,11 @@ public class DashboardController implements ActionListener {
           	} else if (createTitleView.getFormatDropdownItem().equals("Blu-Ray")) {
           		this.format = "Blu-Ray";
           	}
+         // action listener for create title button
          } else if(e.getActionCommand().equals("create-title")) {
+        	 // set the variables to be the value of the input on create title page
         	 String titleName = createTitleView.getTitleField();
-         	String type = this.type;
+        	 String type = this.type;
              String yearOfRelease = createTitleView.getYearOfReleaseField();
              String format = this.format;
              String price = createTitleView.getPriceField();
@@ -285,8 +302,7 @@ public class DashboardController implements ActionListener {
         	else {
             	try {
             		// if price is not null, try to parse price as double
-                	double priceAsDouble = Double.parseDouble(price);
-                	
+                	double priceAsDouble = Double.parseDouble(price); 	
                 	// if we convert the price successfully
                 	//create an instance of the title class with the data collated
                 	Title newTitle = new Title(titleName, type, yearOfRelease, format, priceAsDouble, isAvailable, artist, genre, director, this);
@@ -299,15 +315,16 @@ public class DashboardController implements ActionListener {
 					view.dispose();
 					view = new DashboardView(this);
 					createTitleView.dispose();
-    
             	} catch (Exception e1) {
                 	JFrame f = new JFrame();
             		JOptionPane.showMessageDialog(f,"Price input not valid. Please insert only numbers on price field.","Alert",JOptionPane.ERROR_MESSAGE);
                 }
-            }	  
-         }  else if(e.getActionCommand().equals("update-customer-page")){
+            }
+        	// action listener for button to redirects to update customer page
+         	} else if(e.getActionCommand().equals("update-customer-page")){
         	// calling method from view to get customer selected from table
              this.customerToUpdate= view.getSelectedCustomer();
+             // if nothing is selected, display the following message
              if(this.customerToUpdate.getFirstName() == null) {
               	JFrame f = new JFrame();
           		JOptionPane.showMessageDialog(f,"Customer not selected. Please select a customer on Customers table.","Alert",JOptionPane.ERROR_MESSAGE);
@@ -315,10 +332,12 @@ public class DashboardController implements ActionListener {
             	// redirects to customer update page
                   updateCustomerView = new UpdateCustomerView(this, customerToUpdate);
               }
-         } else if(e.getActionCommand().equals("cancel-update")) {
-     		// dispose view
-         	updateCustomerView.dispose();
-         }else if(e.getActionCommand().equals("update-membership")) {
+             // action listener for button to cancel update
+         	} else if(e.getActionCommand().equals("cancel-update")) {
+         		// dispose view
+         		updateCustomerView.dispose();
+         	// set membership to match its right ID
+         	} else if(e.getActionCommand().equals("update-membership")) {
          	this.selectedMembership =  updateCustomerView.getDropdownItem();
          	// setting membership ID according to selected drop down
          	if(updateCustomerView.getDropdownItem().equals("Music Lovers")) {
@@ -330,7 +349,9 @@ public class DashboardController implements ActionListener {
          	} else if (updateCustomerView.getDropdownItem().equals("Premium")) {
          		this.membershipID = 4;
          	}
+         // action listener for update customer button
          } else if(e.getActionCommand().equals("update-customer")) {
+        	// get inputs from view
         	String firstName = updateCustomerView.getFirstNameField();
             String lastName = updateCustomerView.getLastNameField();
             String address = updateCustomerView.getAddressField();
@@ -380,7 +401,7 @@ public class DashboardController implements ActionListener {
         	else if (isPhoneNumberValid == false) {
         		JFrame f = new JFrame();
         		JOptionPane.showMessageDialog(f,"Please enter a valid phone number such as (999) 999 999-999.","Alert",JOptionPane.ERROR_MESSAGE);
-         	}else {
+         	} else {
          	// create an instance of the customer class with the data collated
                 Customer customerSelected = new Customer(firstName, lastName, address, email, phone, cardNumber, membership, this);
                 // using model to call method
@@ -393,8 +414,9 @@ public class DashboardController implements ActionListener {
                 view = new DashboardView(this);
                 updateCustomerView.dispose();
          	} 
-         } else if(e.getActionCommand().equals("filter")) {
-	        // call method in view to get selected item in drop down
+        // action listener for filter/search button
+        } else if(e.getActionCommand().equals("filter")) {
+        	// call method in view to get selected item in drop down
 	        this.selectedFilter = view.getDropdownItem();
 	        if(view.getDropdownItem().equals("Titles")) {
         		// getting values from input
@@ -409,19 +431,17 @@ public class DashboardController implements ActionListener {
 	                searchResultsView = new SearchResultsView(this, searchResult, this.selectedFilter);
                 }
 	        } else if(view.getDropdownItem().equals("Customers")) {
-        		// getting values from input
-                this.searchInput = view.getSearchInput();
-                if(view.getSearchInput().equals("")) {
-                	JFrame f = new JFrame();
-            		JOptionPane.showMessageDialog(f,"No input on search field. Please type what you wanna search and select Titles or Customers.","Alert",JOptionPane.ERROR_MESSAGE);
-                } else {
-                	// call method to pick data for titles tables passing the search inputs and filter and saving this into a 2d array
-            		searchResult= this.customerModel.showCustomers(this.searchInput, this.selectedFilter);
-            		searchResultsView = new SearchResultsView(this, searchResult, this.selectedFilter);
-    	        }
-                }
-                
+	        	// getting values from input
+	            this.searchInput = view.getSearchInput();
+	            if(view.getSearchInput().equals("")) {
+	            	JFrame f = new JFrame();
+	            	JOptionPane.showMessageDialog(f,"No input on search field. Please type what you wanna search and select Titles or Customers.","Alert",JOptionPane.ERROR_MESSAGE);
+	            } else {
+	            	// call method to pick data for titles tables passing the search inputs and filter and saving this into a 2d array
+	            	searchResult= this.customerModel.showCustomers(this.searchInput, this.selectedFilter);
+	            	searchResultsView = new SearchResultsView(this, searchResult, this.selectedFilter);
+	            }
+	        }        
         }
-	}
-        
+	}  
 }

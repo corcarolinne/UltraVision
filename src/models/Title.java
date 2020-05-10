@@ -44,11 +44,9 @@ public class Title {
 	public Title() {
 		// empty constructor
 	}
-
 	public Title(DashboardController controller) {
 		this.controller = controller;
 	}
-	
 	public Title(String titleName, String type, String yearOfRelease, String format, double price, boolean isAvailable, String artist, String genre, String director, DashboardController controller) {
 		this.titleName = titleName;
 		this.type = type;
@@ -61,12 +59,11 @@ public class Title {
 		this.director = director;
 		this.controller = controller;
 	}
-	// getters and setters 
 	
+	// getters and setters 
 	public String getTitleName() {
 		return this.titleName;
 	}
-
 	public int getID() {
 		return this.ID;
 	}
@@ -110,31 +107,24 @@ public class Title {
 	public String getFormat() {
 		return this.controller.getFormat();
 	}
-
 	public double getPrice() {
 		return this.price;
 	}
-
 	public boolean isAvailable() {
 		return this.isAvailable;
 	}
-
 	public void setTitleName(String titleName) {
 		this.titleName = titleName;
 	}
-
 	public void setYearOfRelease(String yearOfRelease) {
 		this.yearOfRelease = yearOfRelease;
 	}
-
 	public void setFormat(String format) {
 		this.format = format;
 	}
-
 	public void setPrice(double price) {
 		this.price = price;
 	}
-
 	public void setAvailable(boolean isAvailable) {
 		this.isAvailable = isAvailable;
 	}
@@ -160,9 +150,9 @@ public class Title {
                 while(resultNumOfRows.next()) {
                     // add one to rows
                     numOfRows++;
-                }
-                
-                ResultSet result = dbConnection.getStmt().executeQuery(availableTitlesQuery) ;
+                }     
+                // making a result set
+                ResultSet result = dbConnection.getStmt().executeQuery(availableTitlesQuery);
                 // set titlesData number of rows and number of columns
                 titlesData= new String[numOfRows][9];
                 
@@ -202,7 +192,7 @@ public class Title {
                         numOfRows++;
                     }
                
-                    // set artData number of rows and number of columns
+                    // set titlesData number of rows and number of columns
                    titlesData= new String[numOfRows][9];
                     
                    // sending the query to the database
@@ -212,7 +202,7 @@ public class Title {
                     // while there's a result 
                     while(searchTitles.next()) {
                         
-                        // set artData array to receive each value from each row, for each corresponding column
+                        // set titlesData array to receive each value from each row, for each corresponding column
                     	titlesData[row][0] = searchTitles.getString("TitleID");
                     	titlesData[row][1] = searchTitles.getString("Title");
                     	titlesData[row][2] = searchTitles.getString("Type");
@@ -221,14 +211,10 @@ public class Title {
                     	titlesData[row][5] = searchTitles.getString("Format");
                     	titlesData[row][6] = searchTitles.getString("Price");
                     	titlesData[row][7] = searchTitles.getString("Director");
-                    	titlesData[row][8] = searchTitles.getString("Artist");
-
-                    	
+                    	titlesData[row][8] = searchTitles.getString("Artist");                 	
                     	row++;
-                    }
-                    
+                    }   
                 }
-
         	}
 
            // close statement and connection
@@ -280,13 +266,10 @@ public class Title {
                 	titlesData[row][6] = result.getString("Price");
                 	titlesData[row][7] = result.getString("Director");
                 	titlesData[row][8] = result.getString("Artist");
-
                    // increase row to populate the next row
                     row++;
                 }
-        	} else {
-        	}
-        	
+        	} 
            // close statement and connection
            dbConnection.getStmt().close();
            dbConnection.getConnection().close();
@@ -335,7 +318,6 @@ public class Title {
         	String customerID = "";
         	String membershipID = "";
         	String type = titleToRent.type;
-
         	
         	DBConnection dbConnection = new DBConnection();
             
@@ -344,8 +326,6 @@ public class Title {
         	
 	        ResultSet customerDetails = dbConnection.getStmt().executeQuery(findCustomerID) ;
            
-            // email validation
-	        // if a customer 
             if(customerDetails.next()) {
                 // set customerID to be the ID found on DB and save their membershipID
             	customerID = customerDetails.getString("CustomerID");
@@ -379,11 +359,9 @@ public class Title {
 	            		// in case the customer has premium membership or its allowed to rent the selected title
 	                	messageType = "successfulValidation";	
                     }
-            	}
-            	
+            	}	
             } else {
-            	messageType = "customerNotFoundError";
-            	
+            	messageType = "customerNotFoundError";	
             }
 	        
             // closing statement and connections
@@ -407,7 +385,8 @@ public class Title {
         }
         return messageType;
     }
-    // method to check score of a customer, if they are able to get a free rent or not
+    
+    // method to check score of a customer, if they are able to get a free rent or not, receives an email and returns the result in boolean
     public boolean checkScore(String customerEmail){
     	
     	boolean isFreeRentValid = false;
@@ -461,6 +440,7 @@ public class Title {
         }
     	return isFreeRentValid;
     }
+    
     // method to rent a title, receives a title object and a string with customer's email entered on input
     public void rentTitle(Title titleToRent, String customerEmail){
     	
@@ -518,6 +498,7 @@ public class Title {
                 System.out.println( e ) ;
         }
     }
+    
     // method to return a title, receives a title object
     public void returnTitle(Title titleToRent){
     	
