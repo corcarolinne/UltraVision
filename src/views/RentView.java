@@ -62,7 +62,7 @@ public class RentView extends JFrame {
     	panel.add(returnDateLabel);
     	
     	// adding button
-    	JButton rentButton = new JButton("Rent");
+    	JButton rentButton = new JButton("Confirm Rent");
     	rentButton.addActionListener((ActionListener) controller);
     	rentButton.setActionCommand("rent");
     	panel.add(rentButton);
